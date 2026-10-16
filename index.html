@@ -3,15 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - Dr_wolf Mobile Applications</title>
+  <title>DigitalNexus (digitalnexus.io) - Mobile Applications & Legal Compliance</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --border: #334155;
-      --text: #f8fafc;
-      --muted: #94a3b8;
+      --bg: #0a0e17;
+      --card: #111827;
+      --card-hover: #1e293b;
+      --border: #1f2937;
+      --text: #f9fafb;
+      --muted: #9ca3af;
       --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -22,98 +24,163 @@
       padding: 40px 20px;
     }
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 40px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      border-radius: 16px;
+      padding: 48px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     }
-    h1 { color: #fff; margin-top: 0; font-size: 28px; border-bottom: 2px solid var(--border); padding-bottom: 16px; }
-    h2 { color: var(--accent); margin-top: 32px; font-size: 20px; }
-    p, li { color: var(--text); font-size: 15px; }
-    ul { padding-left: 20px; }
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+    .logo-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 24px;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+    .brand-text h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .brand-text p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin: 32px 0;
+    }
+    .card {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      border-color: var(--accent);
+      background: var(--card-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px var(--accent-glow);
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      color: #fff;
+      font-size: 18px;
+    }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
     .badge {
       display: inline-block;
       background: #0284c7;
       color: #fff;
-      font-size: 12px;
-      font-weight: bold;
-      padding: 4px 10px;
-      border-radius: 20px;
-      margin-bottom: 16px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .footer {
-      margin-top: 40px;
-      padding-top: 20px;
+      margin-top: 48px;
+      padding-top: 24px;
       border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
       font-size: 13px;
       color: var(--muted);
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <span class="badge">Official Legal Document</span>
-    <h1>Privacy Policy</h1>
-    <p><strong>Effective Date:</strong> October 16, 2026</p>
-    <p>This Privacy Policy applies to the mobile and tablet applications developed and published by <strong>Dr_wolf</strong> ("we", "our", or "us") on Google Play, including but not limited to:</p>
+    <div class="brand-header">
+      <div class="logo-badge">DN</div>
+      <div class="brand-text">
+        <h1>DigitalNexus</h1>
+        <p>Official Legal, Policy & Developer Portal &bull; <strong>digitalnexus.io</strong></p>
+      </div>
+    </div>
+
+    <p>Welcome to the official legal and policy repository for mobile and web applications developed and published by <strong>DigitalNexus (digitalnexus.io)</strong>. Below you can find all compliance documentation, privacy frameworks, and terms governing our mobile software suite.</p>
+
+    <div class="grid">
+      <a href="privacy.html" class="card">
+        <span class="badge">Universal Legal</span>
+        <h3>Privacy Policy</h3>
+        <p>Comprehensive data protection, offline-first storage practices, and permissions policy for all DigitalNexus mobile applications.</p>
+      </a>
+
+      <a href="fleetdvir-privacy.html" class="card">
+        <span class="badge" style="background: #d97706;">Commercial Compliance</span>
+        <h3>FleetDVIR DOT Privacy</h3>
+        <p>Dedicated privacy policy for commercial vehicle pre-trip inspections, offline safety logs, and DOT/FMCSA compliance.</p>
+      </a>
+
+      <a href="terms.html" class="card">
+        <span class="badge" style="background: #10b981;">User Agreement</span>
+        <h3>Terms of Service</h3>
+        <p>Rules, licensing, Google Play in-app billing terms, and disclaimers for all software published by DigitalNexus.</p>
+      </a>
+    </div>
+
+    <h2>Published Software Portfolio</h2>
+    <p>Our utility and mobile solutions published under the DigitalNexus umbrella on Google Play include:</p>
     <ul>
-      <li><a href="fleetdvir-privacy.html">FleetDVIR: Commercial DOT Pre-Trip Inspection (com.benbdira.fleetdvir)</a></li>
-      <li><a href="jobproof-privacy.html">JobProof: Field GPS & Quote (com.benbdira.jobproof)</a></li>
-      <li><a href="crewtalk-privacy.html">CrewTalk: PTT Radio & Intercom (com.benbdira.crewtalk)</a></li>
-      <li><a href="taphook-privacy.html">TapHook: NFC Webhook Trigger (com.benbdira.taphook)</a></li>
-      <li><a href="sitesnap-privacy.html">SiteSnap: Daily Log & OSHA (com.benbdira.sitesnap)</a></li>
-      <li><a href="toolvault-privacy.html">ToolVault: Jobsite Tool Log (com.benbdira.toolvault)</a></li>
-      <li><a href="certpulse-privacy.html">CertPulse: Nurse Credential Tracker (com.benbdira.certpulse)</a></li>
-      <li><a href="expiryvault-privacy.html">ExpiryVault: Batch & Expiry Tracker (com.benbdira.expiryvault)</a></li>
-      <li><a href="split-privacy.html">Split: Group Expense Sharing</a></li>
-      <li><a href="stake-privacy.html">Stake: Habit & Goal Tracker</a></li>
+      <li><strong>Split: Group Expense Sharing</strong> (Fintech & smart bill settlement)</li>
+      <li><strong>JobProof: Field GPS & Quote</strong> (Contractor GPS timestamped verification & quotes)</li>
+      <li><strong>Stake: Habit & Goal Tracker</strong> (Discipline streaks & habit staking)</li>
+      <li><strong>FleetDVIR: Commercial DOT Pre-Trip Inspection</strong> (DOT 49 CFR truck & trailer DVIR logs)</li>
+      <li><strong>CrewTalk: PTT Radio & Intercom</strong> (Industrial low-latency team voice intercom)</li>
+      <li><strong>TapHook: NFC Webhook Trigger</strong> (Field NFC automation engine)</li>
+      <li><strong>SiteSnap: Daily Log & OSHA</strong> (Jobsite safety & compliance documentation)</li>
+      <li><strong>ToolVault: Jobsite Tool Log</strong> (Equipment tracking & inventory management)</li>
     </ul>
-
-    <h2>1. Data Collection & Purpose</h2>
-    <p>Our applications are designed as utility tools that prioritize offline local storage. We do not sell, rent, or trade your personal information.</p>
-    <ul>
-      <li><strong>Local Operational Data:</strong> Vehicle inspections, equipment logs, timestamped notes, and inventory records are stored securely in local app storage (SQLite / Room / encrypted preferences).</li>
-      <li><strong>Camera & Photos:</strong> When you photograph equipment, defect points, receipts, or job sites, images are saved locally to your device and attached to your inspection reports. Photos are not accessed without your direct action.</li>
-      <li><strong>Location Data (Optional):</strong> If enabled, GPS coordinates are queried solely to stamp verifiable physical location proof onto your reports or webhook payloads. We do not track background user locations.</li>
-      <li><strong>Audio & Microphone (Where applicable):</strong> In Push-to-Talk communication applications (CrewTalk), audio is transmitted in real time strictly across active intercom channels. Recordings are not permanently stored on remote servers.</li>
-    </ul>
-
-    <h2>2. Permissions Requested</h2>
-    <ul>
-      <li><code>android.permission.CAMERA</code>: Used strictly to capture inspection photos and scan QR / barcodes.</li>
-      <li><code>android.permission.ACCESS_FINE_LOCATION</code> / <code>ACCESS_COARSE_LOCATION</code>: Used strictly when attaching GPS coordinates to inspection proofs.</li>
-      <li><code>android.permission.INTERNET</code>: Used to verify Google Play subscriptions, fetch updates, or dispatch user-configured webhooks.</li>
-      <li><code>android.permission.RECORD_AUDIO</code>: Used exclusively during active Push-to-Talk sessions.</li>
-    </ul>
-
-    <h2>3. Third-Party Services</h2>
-    <p>Our applications integrate standard Google Play infrastructure services:</p>
-    <ul>
-      <li><strong>Google Play In-App Billing:</strong> Processes premium subscriptions and one-time purchases securely via Google Play. We never handle or store payment card details.</li>
-      <li><strong>Google Play Services:</strong> Used for app integrity, update delivery, and anonymized crash reporting.</li>
-    </ul>
-
-    <h2>4. Data Retention & Deletion</h2>
-    <p>You have full control over your data. You may delete any report, photo, or log entry directly from within the app at any time. To request complete deletion of any associated account records or customer service emails, please email us at <a href="mailto:fredjbdira@gmail.com">fredjbdira@gmail.com</a>.</p>
-
-    <h2>5. Children's Privacy</h2>
-    <p>Our applications are professional and commercial utility tools intended for adults and workplace professionals. We do not knowingly collect personal information from children under the age of 13.</p>
-
-    <h2>6. Contact Us</h2>
-    <p>If you have any questions or concerns regarding this Privacy Policy, please contact:</p>
-    <p>
-      <strong>Developer:</strong> Dr_wolf / Proligand Nexus<br>
-      <strong>Email:</strong> <a href="mailto:fredjbdira@gmail.com">fredjbdira@gmail.com</a><br>
-      <strong>Address:</strong> Amsterdam, Netherlands
-    </p>
 
     <div class="footer">
-      &copy; 2026 Dr_wolf. All rights reserved. &bull; <a href="terms.html">Terms of Service</a>
+      <div>&copy; 2026 DigitalNexus (digitalnexus.io). All rights reserved.</div>
+      <div>
+        <a href="privacy.html">Privacy Policy</a> &bull; 
+        <a href="terms.html">Terms of Service</a> &bull; 
+        <a href="mailto:fredjbdira@gmail.com">Contact Support</a>
+      </div>
     </div>
   </div>
 </body>

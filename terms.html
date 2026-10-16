@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - Dr_wolf Mobile Applications</title>
+  <title>Terms of Service - DigitalNexus (digitalnexus.io)</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --border: #334155;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --accent: #38bdf8;
+      --bg: #0a0e17;
+      --card: #111827;
+      --border: #1f2937;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --accent: #10b981;
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -22,13 +22,13 @@
       padding: 40px 20px;
     }
     .container {
-      max-width: 800px;
+      max-width: 820px;
       margin: 0 auto;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 40px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     }
     h1 { color: #fff; margin-top: 0; font-size: 28px; border-bottom: 2px solid var(--border); padding-bottom: 16px; }
     h2 { color: var(--accent); margin-top: 32px; font-size: 20px; }
@@ -36,7 +36,7 @@
     ul { padding-left: 20px; }
     .badge {
       display: inline-block;
-      background: #0284c7;
+      background: #059669;
       color: #fff;
       font-size: 12px;
       font-weight: bold;
@@ -51,69 +51,50 @@
       font-size: 13px;
       color: var(--muted);
     }
-    a { color: var(--accent); text-decoration: none; }
+    a { color: #38bdf8; text-decoration: none; }
     a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <div class="container">
-    <span class="badge">Official Legal Document</span>
-    <h1>Privacy Policy</h1>
+    <span class="badge">Official Legal Agreement</span>
+    <h1>Terms of Service</h1>
     <p><strong>Effective Date:</strong> October 16, 2026</p>
-    <p>This Privacy Policy applies to the mobile and tablet applications developed and published by <strong>Dr_wolf</strong> ("we", "our", or "us") on Google Play, including but not limited to:</p>
+    <p>These Terms of Service ("Terms") govern your use of the mobile applications, tools, and services developed, owned, and published by <strong>DigitalNexus</strong> (domain: <strong>digitalnexus.io</strong>) across mobile platforms, including Google Play.</p>
+
+    <h2>1. Acceptance of Terms</h2>
+    <p>By downloading, installing, accessing, or using any DigitalNexus application, you agree to be bound by these Terms. If you do not agree, you must immediately discontinue use and uninstall the application.</p>
+
+    <h2>2. License & Acceptable Use</h2>
+    <p>DigitalNexus grants you a personal, worldwide, revocable, non-exclusive, non-transferable license to use our applications on your compatible devices in accordance with these Terms.</p>
     <ul>
-      <li><a href="fleetdvir-privacy.html">FleetDVIR: Commercial DOT Pre-Trip Inspection (com.benbdira.fleetdvir)</a></li>
-      <li><a href="jobproof-privacy.html">JobProof: Field GPS & Quote (com.benbdira.jobproof)</a></li>
-      <li><a href="crewtalk-privacy.html">CrewTalk: PTT Radio & Intercom (com.benbdira.crewtalk)</a></li>
-      <li><a href="taphook-privacy.html">TapHook: NFC Webhook Trigger (com.benbdira.taphook)</a></li>
-      <li><a href="sitesnap-privacy.html">SiteSnap: Daily Log & OSHA (com.benbdira.sitesnap)</a></li>
-      <li><a href="toolvault-privacy.html">ToolVault: Jobsite Tool Log (com.benbdira.toolvault)</a></li>
-      <li><a href="certpulse-privacy.html">CertPulse: Nurse Credential Tracker (com.benbdira.certpulse)</a></li>
-      <li><a href="expiryvault-privacy.html">ExpiryVault: Batch & Expiry Tracker (com.benbdira.expiryvault)</a></li>
-      <li><a href="split-privacy.html">Split: Group Expense Sharing</a></li>
-      <li><a href="stake-privacy.html">Stake: Habit & Goal Tracker</a></li>
+      <li>You agree not to reverse engineer, decompile, or disassemble our application binaries.</li>
+      <li>You agree not to use our tools to violate local, national, or international transport, safety, or legal regulations.</li>
+      <li>Commercial tools such as FleetDVIR provide inspection logging assistance; drivers and operators remain solely responsible for physical vehicle safety compliance under relevant DOT/FMCSA statutes.</li>
     </ul>
 
-    <h2>1. Data Collection & Purpose</h2>
-    <p>Our applications are designed as utility tools that prioritize offline local storage. We do not sell, rent, or trade your personal information.</p>
-    <ul>
-      <li><strong>Local Operational Data:</strong> Vehicle inspections, equipment logs, timestamped notes, and inventory records are stored securely in local app storage (SQLite / Room / encrypted preferences).</li>
-      <li><strong>Camera & Photos:</strong> When you photograph equipment, defect points, receipts, or job sites, images are saved locally to your device and attached to your inspection reports. Photos are not accessed without your direct action.</li>
-      <li><strong>Location Data (Optional):</strong> If enabled, GPS coordinates are queried solely to stamp verifiable physical location proof onto your reports or webhook payloads. We do not track background user locations.</li>
-      <li><strong>Audio & Microphone (Where applicable):</strong> In Push-to-Talk communication applications (CrewTalk), audio is transmitted in real time strictly across active intercom channels. Recordings are not permanently stored on remote servers.</li>
-    </ul>
+    <h2>3. Subscriptions & Billing</h2>
+    <p>All in-app purchases and auto-renewing subscriptions are processed through <strong>Google Play In-App Billing</strong>. Pricing, renewal periods, and terms are clearly presented prior to purchase. You may manage or cancel subscriptions at any time through your Google Play account settings.</p>
 
-    <h2>2. Permissions Requested</h2>
-    <ul>
-      <li><code>android.permission.CAMERA</code>: Used strictly to capture inspection photos and scan QR / barcodes.</li>
-      <li><code>android.permission.ACCESS_FINE_LOCATION</code> / <code>ACCESS_COARSE_LOCATION</code>: Used strictly when attaching GPS coordinates to inspection proofs.</li>
-      <li><code>android.permission.INTERNET</code>: Used to verify Google Play subscriptions, fetch updates, or dispatch user-configured webhooks.</li>
-      <li><code>android.permission.RECORD_AUDIO</code>: Used exclusively during active Push-to-Talk sessions.</li>
-    </ul>
+    <h2>4. Intellectual Property</h2>
+    <p>All source code, designs, graphical assets, trademarks, icons, and features are the exclusive intellectual property of DigitalNexus (digitalnexus.io) and its licensors, protected by international copyright laws.</p>
 
-    <h2>3. Third-Party Services</h2>
-    <p>Our applications integrate standard Google Play infrastructure services:</p>
-    <ul>
-      <li><strong>Google Play In-App Billing:</strong> Processes premium subscriptions and one-time purchases securely via Google Play. We never handle or store payment card details.</li>
-      <li><strong>Google Play Services:</strong> Used for app integrity, update delivery, and anonymized crash reporting.</li>
-    </ul>
+    <h2>5. Disclaimer of Warranties</h2>
+    <p>Our applications are provided "AS IS" and "AS AVAILABLE" without warranties of any kind, whether express or implied. DigitalNexus disclaims all warranties to the fullest extent permissible by applicable law.</p>
 
-    <h2>4. Data Retention & Deletion</h2>
-    <p>You have full control over your data. You may delete any report, photo, or log entry directly from within the app at any time. To request complete deletion of any associated account records or customer service emails, please email us at <a href="mailto:fredjbdira@gmail.com">fredjbdira@gmail.com</a>.</p>
+    <h2>6. Limitation of Liability</h2>
+    <p>Under no circumstances shall DigitalNexus be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use our applications.</p>
 
-    <h2>5. Children's Privacy</h2>
-    <p>Our applications are professional and commercial utility tools intended for adults and workplace professionals. We do not knowingly collect personal information from children under the age of 13.</p>
-
-    <h2>6. Contact Us</h2>
-    <p>If you have any questions or concerns regarding this Privacy Policy, please contact:</p>
+    <h2>7. Contact Information</h2>
     <p>
-      <strong>Developer:</strong> Dr_wolf / Proligand Nexus<br>
-      <strong>Email:</strong> <a href="mailto:fredjbdira@gmail.com">fredjbdira@gmail.com</a><br>
-      <strong>Address:</strong> Amsterdam, Netherlands
+      <strong>Entity:</strong> DigitalNexus<br>
+      <strong>Web Portal:</strong> <a href="https://digitalnexus.io">digitalnexus.io</a><br>
+      <strong>Legal & Support Email:</strong> <a href="mailto:fredjbdira@gmail.com">fredjbdira@gmail.com</a><br>
+      <strong>Hosting Verification:</strong> <a href="https://fredjbdira.github.io/terms.html">https://fredjbdira.github.io/terms.html</a>
     </p>
 
     <div class="footer">
-      &copy; 2026 Dr_wolf. All rights reserved. &bull; <a href="terms.html">Terms of Service</a>
+      &copy; 2026 DigitalNexus (digitalnexus.io). All rights reserved. &bull; <a href="privacy.html">Privacy Policy</a> &bull; <a href="fleetdvir-privacy.html">FleetDVIR Compliance</a>
     </div>
   </div>
 </body>
