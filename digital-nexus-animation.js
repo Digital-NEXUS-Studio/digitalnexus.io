@@ -17,10 +17,11 @@
   }
 
   function preloadFrames() {
+    const packed = window.DIGITAL_NEXUS_FRAMES;
     for (let i = 1; i <= TOTAL_FRAMES; i++) {
       const img = new Image();
       img.decoding = 'async';
-      img.src = `${FRAME_PATH}${padFrame(i)}.jpg`;
+      img.src = packed && packed[i - 1] ? packed[i - 1] : `${FRAME_PATH}${padFrame(i)}.jpg`;
       img.onload = () => {
         if (i === 1 && !firstFrameLoaded) {
           firstFrameLoaded = true;
