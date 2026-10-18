@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital NEXUS — Official Field Utilities &amp; Apps</title>
+  <meta name="description" content="Official link-in-bio hub for Digital NEXUS commercial Android utilities. Offline-first compliance tools for contractors, HVAC technicians, truckers, and clinicians.">
+  <link rel="icon" type="image/png" href="logo.png">
+  <style>
+    :root {
+      --bg: #030712;
+      --card: rgba(17, 24, 39, 0.92);
+      --border: rgba(245, 158, 11, 0.35);
+      --border-subtle: rgba(75, 85, 99, 0.4);
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --gold: #f59e0b;
+      --cyan: #38bdf8;
+      --emerald: #10b981;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 32px 16px;
+    }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #1f2937, #111827);
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.25);
+      padding: 8px;
+      object-fit: contain;
+    }
+    .title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 380px;
+    }
+    .links-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .app-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .app-card:hover, .app-card:active {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.18);
+    }
+    .app-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #1f2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .app-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .app-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .app-desc {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .get-btn {
+      background: linear-gradient(135deg, var(--gold), #d97706);
+      color: #000;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 10px;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="logo.png" alt="Digital Nexus" class="avatar">
+      <div class="badge">Verified Studio</div>
+      <h1 class="title">Digital NEXUS</h1>
+      <p class="subtitle">Commercial-grade offline Android utilities for independent contractors, HVAC techs, and commercial drivers.</p>
+    </div>
+
+    <div class="links-list">
+      <!-- JobProof -->
+      <a href="https://play.google.com/store/apps/details?id=com.jobproof.nexus" class="app-card">
+        <div class="app-info">
+          <div class="app-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">📸</div>
+          <div class="app-meta">
+            <div class="app-name">JobProof</div>
+            <div class="app-desc">GPS Camera &amp; Tamper-Proof Estimates</div>
+          </div>
+        </div>
+        <div class="get-btn">Get App</div>
+      </a>
+
+      <!-- LeakCheck -->
+      <a href="https://play.google.com/store/apps/details?id=com.leakcheck.nexus" class="app-card">
+        <div class="app-info">
+          <div class="app-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">❄️</div>
+          <div class="app-meta">
+            <div class="app-name">LeakCheck Pro</div>
+            <div class="app-desc">EPA 608 Refrigerant &amp; Leak Logbook</div>
+          </div>
+        </div>
+        <div class="get-btn">Get App</div>
+      </a>
+
+      <!-- FleetDVIR -->
+      <a href="https://play.google.com/store/apps/details?id=com.fleetdvir.nexus" class="app-card">
+        <div class="app-info">
+          <div class="app-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">🚛</div>
+          <div class="app-meta">
+            <div class="app-name">FleetDVIR</div>
+            <div class="app-desc">Commercial DOT Pre-Trip Inspection</div>
+          </div>
+        </div>
+        <div class="get-btn">Get App</div>
+      </a>
+
+      <!-- CertPulse -->
+      <a href="https://play.google.com/store/apps/details?id=com.certpulse.nexus" class="app-card">
+        <div class="app-info">
+          <div class="app-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">🩺</div>
+          <div class="app-meta">
+            <div class="app-name">CertPulse</div>
+            <div class="app-desc">Travel Nurse CE &amp; License Radar</div>
+          </div>
+        </div>
+        <div class="get-btn">Get App</div>
+      </a>
+
+      <!-- LienShield -->
+      <a href="https://play.google.com/store/apps/details?id=com.lienshield.nexus" class="app-card">
+        <div class="app-info">
+          <div class="app-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">🛡️</div>
+          <div class="app-meta">
+            <div class="app-name">LienShield</div>
+            <div class="app-desc">Mechanics Lien &amp; Notice Deadlines</div>
+          </div>
+        </div>
+        <div class="get-btn">Get App</div>
+      </a>
+    </div>
+
+    <div class="footer">
+      <div>100% Offline Capable • Zero Bloat • Direct Production Rollout</div>
+      <div>© 2026 Digital NEXUS. All rights reserved. <a href="privacy.html">Privacy</a></div>
+    </div>
+  </div>
+</body>
+</html>
