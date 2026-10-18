@@ -8,12 +8,12 @@
   <link rel="icon" type="image/png" href="logo.png">
   <style>
     :root {
-      --bg: #0A0F2C;
-      --bg-deep: #06091B;
-      --bg-elevated: #0E153A;
-      --card: rgba(14, 21, 58, 0.78);
-      --card-hover: rgba(20, 30, 78, 0.92);
-      --border: rgba(148, 163, 184, 0.16);
+      --bg: #020515;
+      --bg-deep: #01030d;
+      --bg-elevated: #080d26;
+      --card: rgba(10, 16, 42, 0.78);
+      --card-hover: rgba(16, 25, 64, 0.92);
+      --border: rgba(148, 163, 184, 0.14);
       --border-gold: rgba(245, 158, 11, 0.48);
       --border-cyan: rgba(56, 189, 248, 0.48);
       --text: #f8fafc;
@@ -37,10 +37,6 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
-      background-image:
-        radial-gradient(circle at 15% 8%, rgba(245, 158, 11, 0.12), transparent 36%),
-        radial-gradient(circle at 85% 14%, rgba(56, 189, 248, 0.14), transparent 40%),
-        radial-gradient(circle at 50% 85%, rgba(2, 132, 199, 0.10), transparent 45%);
       color: var(--text);
       line-height: 1.6;
       margin: 0;
@@ -54,7 +50,7 @@
       z-index: 100;
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      background: rgba(10, 15, 44, 0.85);
+      background: rgba(2, 5, 21, 0.85);
       border-bottom: 1px solid var(--border);
     }
 
@@ -131,14 +127,14 @@
       box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
     }
 
-    /* Hero Section with Auto-Loop 24 FPS Animation */
+    /* Hero Section with Seamless Floating 24 FPS Animation */
     .hero {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 64px 24px 48px;
+      padding: 56px 24px 44px;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 40px;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 32px;
       align-items: center;
     }
 
@@ -223,32 +219,16 @@
       background: rgba(245, 158, 11, 0.14);
     }
 
-    /* Hero Auto-Loop Sequence Card */
+    /* Seamless Floating Sequence Container (No Box, No Border) */
     .hero-sequence-card {
-      background: radial-gradient(circle at 50% 42%, #0e163d 0%, #0A0F2C 68%, #06091c 100%);
-      border: 1px solid var(--border-gold);
-      border-radius: 26px;
-      padding: 24px 20px 26px;
-      text-align: center;
-      box-shadow: 0 28px 64px rgba(0, 0, 0, 0.65), 0 0 45px rgba(245, 158, 11, 0.14);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-sequence-badge {
-      display: inline-flex;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      box-shadow: none;
+      display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--cyan);
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 10px;
+      justify-content: center;
     }
 
     .dn-canvas-wrap {
@@ -261,17 +241,17 @@
 
     .dn-sequence-canvas {
       width: 100%;
-      max-width: 460px;
+      max-width: 580px;
       height: auto;
       aspect-ratio: 672 / 448;
       display: block;
       margin: 0 auto;
-      border-radius: 16px;
       opacity: 0;
-      transform: scale(0.96);
+      transform: scale(0.97);
       transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-      -webkit-mask-image: radial-gradient(ellipse 88% 86% at 50% 50%, #000 68%, transparent 100%);
-      mask-image: radial-gradient(ellipse 88% 86% at 50% 50%, #000 68%, transparent 100%);
+      mix-blend-mode: lighten;
+      -webkit-mask-image: radial-gradient(ellipse 74% 72% at 50% 50%, #000 46%, rgba(0, 0, 0, 0.75) 66%, rgba(0, 0, 0, 0.18) 84%, transparent 97%);
+      mask-image: radial-gradient(ellipse 74% 72% at 50% 50%, #000 46%, rgba(0, 0, 0, 0.75) 66%, rgba(0, 0, 0, 0.18) 84%, transparent 97%);
     }
 
     .dn-sequence-canvas.dn-loaded {
@@ -714,10 +694,6 @@
     <div class="hero-sequence-card" id="dnHeroSequenceCard">
       <div class="dn-canvas-wrap">
         <canvas id="dnHeroSequenceCanvas" class="dn-sequence-canvas" width="672" height="448" aria-label="Digital NEXUS Animated Gold and Blue Logo"></canvas>
-      </div>
-      <div class="dn-wordmark-block">
-        <h2 class="dn-wordmark-title" data-dn-wordmark>DIGITAL NEXUS</h2>
-        <div class="dn-wordmark-divider" data-dn-divider></div>
       </div>
     </div>
   </section>
