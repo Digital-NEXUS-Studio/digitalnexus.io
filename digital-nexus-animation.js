@@ -59,6 +59,7 @@
     if (!rootEl) return;
     const wordmark = rootEl.querySelector('[data-dn-wordmark]');
     const divider = rootEl.querySelector('[data-dn-divider]');
+    if (!wordmark && !divider) return;
 
     const reveal = Math.min(1, Math.max(0.25, progress * 1.8));
     const glowIntensity = Math.max(0, (progress - 0.5) * 2);
