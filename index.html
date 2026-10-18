@@ -509,17 +509,14 @@
     }
 
     .app-icon {
-      width: 52px;
-      height: 52px;
+      width: 54px;
+      height: 54px;
       border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 18px;
-      color: #fff;
+      object-fit: cover;
       flex-shrink: 0;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: block;
     }
 
     .cat-tag {
@@ -723,7 +720,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #0284c7, #38bdf8);">CP</div>
+            <img src="icons/certpulse.png" alt="CertPulse" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Healthcare Compliance</span>
               <h3 class="app-title">CertPulse: Nurse Credentials</h3>
@@ -742,7 +739,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #d97706, #f59e0b);">CT</div>
+            <img src="icons/crewtalk.png" alt="CrewTalk" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Field Communications</span>
               <h3 class="app-title">CrewTalk: PTT Radio &amp; Intercom</h3>
@@ -761,7 +758,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #059669, #10b981);">EV</div>
+            <img src="icons/expiryvault.png" alt="ExpiryVault" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Retail &amp; Cold Chain</span>
               <h3 class="app-title">ExpiryVault: FIFO Batch Track</h3>
@@ -780,7 +777,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #dc2626, #f97316);">FD</div>
+            <img src="icons/fleetdvir.png" alt="FleetDVIR" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">DOT &amp; FMCSA Trucking</span>
               <h3 class="app-title">FleetDVIR: DOT Pre-Trip Truck</h3>
@@ -800,7 +797,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #2563eb, #60a5fa);">JP</div>
+            <img src="icons/jobproof.png" alt="JobProof" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Contractor Operations</span>
               <h3 class="app-title">JobProof: Field GPS &amp; Quote</h3>
@@ -820,7 +817,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #7c3aed, #a855f7);">TH</div>
+            <img src="icons/taphook.png" alt="TapHook" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">IoT &amp; Automation</span>
               <h3 class="app-title">TapHook: NFC Webhook Trigger</h3>
@@ -839,7 +836,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #ea580c, #fbbf24);">TV</div>
+            <img src="icons/toolvault.png" alt="ToolVault" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Equipment Custody</span>
               <h3 class="app-title">ToolVault: Jobsite Tool Log</h3>
@@ -858,7 +855,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #ca8a04, #facc15);">SS</div>
+            <img src="icons/sitesnap.png" alt="SiteSnap" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Construction &amp; OSHA</span>
               <h3 class="app-title">SiteSnap: Daily Log &amp; OSHA</h3>
@@ -877,7 +874,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #b45309, #f59e0b);">LS</div>
+            <img src="icons/lienshield.png" alt="LienShield" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Construction Legal Tech</span>
               <h3 class="app-title">LienShield: Mechanics Lien Log</h3>
@@ -896,7 +893,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #0891b2, #22d3ee);">FT</div>
+            <img src="icons/flowtest.png" alt="FlowTest" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Water &amp; Cross-Connection</span>
               <h3 class="app-title">FlowTest Pro: Backflow Tester</h3>
@@ -915,7 +912,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #dc2626, #fb923c);">DS</div>
+            <img src="icons/decisafe.png" alt="DeciSafe" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Industrial Hygiene</span>
               <h3 class="app-title">DeciSafe: OSHA Noise Dosimeter</h3>
@@ -934,7 +931,7 @@
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #0d9488, #2dd4bf);">LC</div>
+            <img src="icons/leakcheck.png" alt="LeakCheck" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">HVACR &amp; EPA 608</span>
               <h3 class="app-title">LeakCheck: EPA 608 Refrigerant</h3>
@@ -954,7 +951,7 @@
       <div class="app-card" data-cat="life">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #059669, #34d399);">SP</div>
+            <img src="icons/split.png" alt="Split" class="app-icon">
             <div>
               <span class="cat-tag tag-life">Personal Finance</span>
               <h3 class="app-title">Split: Group Expense Sharing</h3>
@@ -973,7 +970,7 @@
       <div class="app-card" data-cat="life">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #4f46e5, #818cf8);">ST</div>
+            <img src="icons/stake.png" alt="Stake" class="app-icon">
             <div>
               <span class="cat-tag tag-life">Habit &amp; Performance</span>
               <h3 class="app-title">Stake: Habit &amp; Goal Tracker</h3>
@@ -992,7 +989,7 @@
       <div class="app-card" data-cat="heritage">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #b45309, #fbbf24);">FR</div>
+            <img src="icons/firasah.png" alt="Firasah" class="app-icon">
             <div>
               <span class="cat-tag tag-heritage">Psychology &amp; Heritage</span>
               <h3 class="app-title">Firasah: Character &amp; Face Reading</h3>
@@ -1011,7 +1008,7 @@
       <div class="app-card" data-cat="heritage">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #92400e, #f59e0b);">AJ</div>
+            <img src="icons/aljafr.png" alt="Ilm Al-Jafr" class="app-icon">
             <div>
               <span class="cat-tag tag-heritage">Classical Manuscripts</span>
               <h3 class="app-title">Ilm Al-Jafr: Numerology &amp; Letters</h3>
@@ -1030,7 +1027,7 @@
       <div class="app-card" data-cat="game">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #7e22ce, #c084fc);">RL</div>
+            <img src="icons/robotlab.png" alt="Robot Lab" class="app-icon">
             <div>
               <span class="cat-tag tag-game">3D STEM Simulation</span>
               <h3 class="app-title">Assemble: Robot Lab</h3>
@@ -1049,7 +1046,7 @@
       <div class="app-card" data-cat="game">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #6d28d9, #a78bfa);">BB</div>
+            <img src="icons/bopbolt.png" alt="Bop & Bolt" class="app-icon">
             <div>
               <span class="cat-tag tag-game">Arcade Platformer</span>
               <h3 class="app-title">Bop &amp; Bolt</h3>
@@ -1068,7 +1065,7 @@
       <div class="app-card" data-cat="game">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #c2410c, #fb923c);">IC</div>
+            <img src="icons/idlecoreminer.png" alt="Idle Core Miner" class="app-icon">
             <div>
               <span class="cat-tag tag-game">Sci-Fi Strategy</span>
               <h3 class="app-title">Idle Core Miner</h3>
@@ -1087,7 +1084,7 @@
       <div class="app-card" data-cat="game">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #1d4ed8, #38bdf8);">KB</div>
+            <img src="icons/kitbot.png" alt="Kitbot" class="app-icon">
             <div>
               <span class="cat-tag tag-game">3D Mecha Action</span>
               <h3 class="app-title">Kitbot: Robot Transform 3D</h3>
@@ -1106,7 +1103,7 @@
       <div class="app-card" data-cat="game">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #be123c, #fb7185);">RS</div>
+            <img src="icons/rocksmasher.png" alt="Rock Smasher 3D" class="app-icon">
             <div>
               <span class="cat-tag tag-game">3D Physics Arcade</span>
               <h3 class="app-title">Rock Smasher 3D</h3>
@@ -1125,7 +1122,7 @@
       <div class="app-card" data-cat="game">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #047857, #34d399);">RE</div>
+            <img src="icons/rockexpedition.png" alt="Rock Smasher Expedition" class="app-icon">
             <div>
               <span class="cat-tag tag-game">Adventure Mining</span>
               <h3 class="app-title">Rock Smasher: Expedition</h3>
@@ -1144,7 +1141,7 @@
       <div class="app-card" data-cat="game">
         <div>
           <div class="app-top">
-            <div class="app-icon" style="background: linear-gradient(135deg, #4338ca, #818cf8);">SR</div>
+            <img src="icons/smashrocks.png" alt="Smash Rocks Classic" class="app-icon">
             <div>
               <span class="cat-tag tag-game">Retro Arcade</span>
               <h3 class="app-title">Smash Rocks Classic</h3>
