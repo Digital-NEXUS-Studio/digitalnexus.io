@@ -611,22 +611,27 @@
             </div>
           </div>
 
-          <!-- Channel Filter Pills -->
+          <!-- Channel Filter Pills with Official Channel SVGs -->
           <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/80 font-mono-code text-xs">
-            <button onclick="filterFeed('all')" id="filterBtnAll" class="px-3 py-1.5 rounded-lg bg-[var(--hud-cyan)]/20 border border-[var(--hud-cyan)] text-[var(--hud-cyan)] font-bold transition">
-              ALL CHANNELS (14)
+            <button onclick="filterFeed('all')" id="filterBtnAll" class="px-3 py-1.5 rounded-lg bg-[var(--hud-cyan)]/20 border border-[var(--hud-cyan)] text-[var(--hud-cyan)] font-bold transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              <span>ALL (14)</span>
             </button>
-            <button onclick="filterFeed('x')" id="filterBtnX" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition">
-              𝕏 X / TWITTER (6)
+            <button onclick="filterFeed('x')" id="filterBtnX" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              <span>X (6)</span>
             </button>
-            <button onclick="filterFeed('reddit')" id="filterBtnReddit" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition">
-              🔴 REDDIT (5)
+            <button onclick="filterFeed('reddit')" id="filterBtnReddit" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 fill-[#FF4500]" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.56 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.56 12 8 12.56 8 13.25c0 .688.56 1.25 1.25 1.25.688 0 1.25-.56 1.25-1.25C10.5 12.56 9.94 12 9.25 12zm5.5 0c-.688 0-1.25.56-1.25 1.25 0 .688.56 1.25 1.25 1.25.688 0 1.25-.56 1.25-1.25 0-.688-.56-1.25-1.25-1.25zm-5.465 4.14a.5.5 0 0 0-.07.701c.728.847 1.84 1.335 3.035 1.335 1.196 0 2.308-.488 3.036-1.335a.5.5 0 0 0-.766-.642c-.524.625-1.344.977-2.27.977-.925 0-1.745-.352-2.27-.977a.5.5 0 0 0-.695-.06z"/></svg>
+              <span>REDDIT (5)</span>
             </button>
-            <button onclick="filterFeed('linkedin')" id="filterBtnLinkedin" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition">
-              💼 LINKEDIN (1)
+            <button onclick="filterFeed('linkedin')" id="filterBtnLinkedin" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 fill-[#0A66C2]" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              <span>LINKEDIN (1)</span>
             </button>
-            <button onclick="filterFeed('youtube')" id="filterBtnYoutube" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition">
-              ▶️ YOUTUBE (2)
+            <button onclick="filterFeed('youtube')" id="filterBtnYoutube" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition flex items-center gap-1.5">
+              <svg class="w-4 h-3" viewBox="0 0 24 24"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><polygon fill="#FFFFFF" points="9.545,15.568 15.818,12 9.545,8.432"/></svg>
+              <span>YOUTUBE (2)</span>
             </button>
 
             <!-- Sort By Engagements -->
@@ -1245,6 +1250,54 @@
       if (commEl) commEl.innerText = totalComms.toLocaleString();
     }
 
+
+    // --- OFFICIAL BRAND SVG ICONS ---
+    function getPlatformIconSVG(platform, size = "w-4 h-4") {
+      switch(platform) {
+        case 'x':
+          return `<svg class="${size} fill-white shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`;
+        case 'reddit':
+          return `<svg class="${size} fill-[#FF4500] shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.56 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.56 12 8 12.56 8 13.25c0 .688.56 1.25 1.25 1.25.688 0 1.25-.56 1.25-1.25C10.5 12.56 9.94 12 9.25 12zm5.5 0c-.688 0-1.25.56-1.25 1.25 0 .688.56 1.25 1.25 1.25.688 0 1.25-.56 1.25-1.25 0-.688-.56-1.25-1.25-1.25zm-5.465 4.14a.5.5 0 0 0-.07.701c.728.847 1.84 1.335 3.035 1.335 1.196 0 2.308-.488 3.036-1.335a.5.5 0 0 0-.766-.642c-.524.625-1.344.977-2.27.977-.925 0-1.745-.352-2.27-.977a.5.5 0 0 0-.695-.06z"/></svg>`;
+        case 'linkedin':
+          return `<svg class="${size} fill-[#0A66C2] shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>`;
+        case 'youtube':
+          return `<svg class="${size} shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><polygon fill="#FFFFFF" points="9.545,15.568 15.818,12 9.545,8.432"/></svg>`;
+        default:
+          return `<span class="text-sm">📡</span>`;
+      }
+    }
+
+    function getPlatformAvatarBadge(platform) {
+      switch(platform) {
+        case 'x':
+          return `
+            <div class="w-10 h-10 rounded-xl bg-black border border-slate-700 flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(255,255,255,0.08)]">
+              <svg class="w-5 h-5 fill-white" viewBox="0 0 24 24" aria-label="Official X Logo"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+          `;
+        case 'reddit':
+          return `
+            <div class="w-10 h-10 rounded-xl bg-[#FF4500] border border-[#FF4500]/80 flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,69,0,0.35)]">
+              <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24" aria-label="Official Reddit Logo"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.56 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.56 12 8 12.56 8 13.25c0 .688.56 1.25 1.25 1.25.688 0 1.25-.56 1.25-1.25C10.5 12.56 9.94 12 9.25 12zm5.5 0c-.688 0-1.25.56-1.25 1.25 0 .688.56 1.25 1.25 1.25.688 0 1.25-.56 1.25-1.25 0-.688-.56-1.25-1.25-1.25zm-5.465 4.14a.5.5 0 0 0-.07.701c.728.847 1.84 1.335 3.035 1.335 1.196 0 2.308-.488 3.036-1.335a.5.5 0 0 0-.766-.642c-.524.625-1.344.977-2.27.977-.925 0-1.745-.352-2.27-.977a.5.5 0 0 0-.695-.06z"/></svg>
+            </div>
+          `;
+        case 'linkedin':
+          return `
+            <div class="w-10 h-10 rounded-xl bg-[#0A66C2] border border-[#0A66C2]/80 flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(10,102,194,0.35)]">
+              <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24" aria-label="Official LinkedIn Logo"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </div>
+          `;
+        case 'youtube':
+          return `
+            <div class="w-10 h-10 rounded-xl bg-black border border-red-500/50 flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(255,0,0,0.3)]">
+              <svg class="w-6 h-5" viewBox="0 0 24 24" aria-label="Official YouTube Logo"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><polygon fill="#FFFFFF" points="9.545,15.568 15.818,12 9.545,8.432"/></svg>
+            </div>
+          `;
+        default:
+          return `<div class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-lg font-bold">📡</div>`;
+      }
+    }
+
     // --- RENDER SOCIAL FEED CARDS ---
     function renderSocialFeed() {
       const container = document.getElementById('socialFeedContainer');
@@ -1319,9 +1372,7 @@
             <!-- Platform & Author Header -->
             <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80 mb-4">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl ${platformBg} border ${platformBorder} flex items-center justify-center text-lg font-bold shrink-0">
-                  ${post.platform === 'x' ? '𝕏' : (post.platform === 'reddit' ? '🔴' : (post.platform === 'linkedin' ? '💼' : '▶️'))}
-                </div>
+${getPlatformAvatarBadge(post.platform)}
                 <div>
                   <div class="flex items-center gap-1.5">
                     <strong class="text-white text-xs sm:text-sm font-semibold">${post.account_name}</strong>
@@ -1485,7 +1536,8 @@
             <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/80">
               
               <div class="flex items-center gap-2">
-                <a href="${post.link}" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-[var(--hud-cyan)] text-xs text-slate-300 hover:text-[var(--hud-cyan)] font-mono-code transition flex items-center gap-1.5">
+                <a href="${post.link}" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-[var(--hud-cyan)] text-xs text-slate-300 hover:text-[var(--hud-cyan)] font-mono-code transition flex items-center gap-2">
+                  ${getPlatformIconSVG(post.platform, 'w-3.5 h-3.5')}
                   <span>${post.link_text}</span>
                 </a>
                 
