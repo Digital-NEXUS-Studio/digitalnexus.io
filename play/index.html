@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Nexus Arcade — Instant Playable WebGL & Twitter Cards</title>
+  <meta name="description" content="Instant-play 3D games and simulations directly in your browser and on X / Twitter. Zero downloads, zero latency.">
+  <meta name="theme-color" content="#060911">
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Digital Nexus Arcade">
+  <meta property="og:title" content="Digital Nexus Instant Arcade — Play 3D Games in Browser & on X">
+  <meta property="og:description" content="Experience instant-play 3D mecha, tactile physics puzzles, and sci-fi simulations. Embeddable directly into Twitter / X timeline posts.">
+  <meta property="og:url" content="https://digitalnexus.io/play/">
+  <meta property="og:image" content="https://digitalnexus.io/logo.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@DigitalNexusHQ">
+  <meta name="twitter:title" content="Digital Nexus Instant Arcade — Play 3D in Your Timeline">
+  <meta name="twitter:description" content="Instant-play HTML5/WebGL games embedded straight in the X feed. Zero downloads, pure 60 FPS.">
+  <meta name="twitter:image" content="https://digitalnexus.io/logo.png">
+
+  <link rel="icon" type="image/png" href="../logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #060911;
+      --card-bg: #0C1220;
+      --card-hover: #121A2D;
+      --border: rgba(255, 255, 255, 0.08);
+      --cyan: #00F0FF;
+      --cyan-glow: rgba(0, 240, 255, 0.25);
+      --amber: #FFB300;
+      --text: #F8FAFC;
+      --muted: #94A3B8;
+      --purple: #8B5CF6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 90% 40%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+    }
+
+    /* Header */
+    .nav {
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 16, 28, 0.85);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+    }
+    .brand-title {
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+    .brand-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-link:hover {
+      color: var(--text);
+    }
+    .nav-cta {
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      color: var(--cyan);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover {
+      background: var(--cyan);
+      color: #000;
+      box-shadow: 0 0 16px var(--cyan-glow);
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 24px 36px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 179, 0, 0.12);
+      border: 1px solid rgba(255, 179, 0, 0.3);
+      color: var(--amber);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 54px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #FFFFFF 30%, #94A3B8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      max-width: 680px;
+      margin: 0 auto 32px;
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Filter Bar */
+    .filter-section {
+      max-width: 1200px;
+      margin: 0 auto 36px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+    .filter-btn.active {
+      background: var(--cyan);
+      color: #000;
+      border-color: var(--cyan);
+      box-shadow: 0 0 14px var(--cyan-glow);
+    }
+
+    /* Arcade Grid */
+    .arcade-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      width: 100%;
+    }
+
+    /* Arcade Card */
+    .arcade-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .arcade-card:hover {
+      transform: translateY(-4px);
+      background: var(--card-hover);
+      border-color: rgba(0, 240, 255, 0.35);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 240, 255, 0.15);
+    }
+    .card-media {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
+    }
+    .arcade-card:hover .card-icon {
+      transform: scale(1.06) rotate(-2deg);
+    }
+    .orient-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+    .card-cat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #FFF;
+      line-height: 1.3;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .btn-play {
+      flex: 1;
+      height: 42px;
+      background: linear-gradient(135deg, var(--cyan) 0%, #00C2D1 100%);
+      color: #000;
+      border: 0;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-play:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px var(--cyan-glow);
+    }
+    .footer-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .icon-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .x-btn:hover {
+      color: #1DA1F2;
+      border-color: rgba(29, 161, 242, 0.5);
+      background: rgba(29, 161, 242, 0.12);
+    }
+    .play-btn:hover {
+      color: var(--cyan);
+      border-color: rgba(0, 240, 255, 0.5);
+      background: rgba(0, 240, 255, 0.12);
+    }
+
+    /* Twitter Info Banner */
+    .twitter-explainer {
+      max-width: 1200px;
+      margin: 0 auto 60px;
+      padding: 0 24px;
+    }
+    .explainer-box {
+      background: linear-gradient(135deg, rgba(29, 161, 242, 0.08) 0%, rgba(10, 16, 28, 0.8) 100%);
+      border: 1px solid rgba(29, 161, 242, 0.28);
+      border-radius: 20px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .explainer-content h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #FFF;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .explainer-content p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      max-width: 650px;
+    }
+    .explainer-code {
+      font-family: 'JetBrains Mono', monospace;
+      color: #70c4ff;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .footer a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../" class="brand">
+        <img src="../logo.png" alt="Digital Nexus">
+        <span class="brand-title">Digital Nexus</span>
+        <span class="brand-pill">Arcade</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="../" class="nav-link">Main Portal</a>
+        <a href="../links.html" class="nav-link">App Directory</a>
+        <a href="https://x.com/DigitalNexusHQ" target="_blank" rel="noopener" class="nav-cta">@DigitalNexusHQ</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-eyebrow">&#9889; Zero-Download HTML5 &amp; WebGL 3D</div>
+    <h1>Instant Play Arcade</h1>
+    <p>Play 3D mechas, tactile mineral crushers, and sci-fi simulations directly inside your browser or embedded seamlessly within your X / Twitter timeline.</p>
+  </section>
+
+  <!-- Filter Bar -->
+  <section class="filter-section">
+    <button class="filter-btn active" onclick="filterGames('all', this)">All Titles (7)</button>
+    <button class="filter-btn" onclick="filterGames('mecha', this)">3D Mecha &amp; Robots (3)</button>
+    <button class="filter-btn" onclick="filterGames('physics', this)">Tactile Physics &amp; Puzzles (3)</button>
+    <button class="filter-btn" onclick="filterGames('idle', this)">Idle &amp; Simulation (1)</button>
+  </section>
+
+  <!-- Game Cards Grid -->
+  <main class="arcade-grid" id="arcadeGrid">
+
+      <div class="arcade-card" data-cat="mecha">
+        <div class="card-media">
+          <img src="../icons/kitbot.png" alt="Kitbot 3D: Mecha Transformer" class="card-icon">
+          <div class="orient-pill">🖥️ Landscape</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">3D Mecha & Robots</div>
+          <h3 class="card-title">Kitbot 3D: Mecha Transformer</h3>
+          <p class="card-desc">Snap weapons, configure armor plates, and watch modular combat mechs fold into high-speed vehicles in realtime 3D.</p>
+        </div>
+        <div class="card-footer">
+          <a href="kitbot/" class="btn-play">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Play Now</span>
+          </a>
+          <div class="footer-actions">
+            <a href="https://twitter.com/intent/tweet?text=Build%20and%20transform%20combat%20robots%20right%20in%20your%20timeline!%20⚡🤖%20Play%20Kitbot%203D%20instantly%20—%20no%20install%20needed:%20https://digitalnexus.io/play/kitbot/" target="_blank" rel="noopener" class="icon-btn x-btn" title="Tweet Playable to X timeline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.kitbot.nexus" target="_blank" rel="noopener" class="icon-btn play-btn" title="View on Google Play">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a2.007 2.007 0 0 1-.22-.916V2.73c0-.337.08-.654.219-.916zm11.603 11.605l2.457 2.456-11.836 6.833 9.379-9.289zm0-2.838L5.833 1.292l11.836 6.833-2.457 2.456zm1.414 1.419l3.864 2.231c.904.522.904 1.378 0 1.9l-3.864 2.23-2.148-2.147 2.148-2.214z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+        
+
+      <div class="arcade-card" data-cat="physics">
+        <div class="card-media">
+          <img src="../icons/rocksmasher.png" alt="Rock Smasher 3D" class="card-icon">
+          <div class="orient-pill">📱 Portrait</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Tactile Physics & Puzzles</div>
+          <h3 class="card-title">Rock Smasher 3D</h3>
+          <p class="card-desc">Spin the stone, match crystal cleavage planes, and shatter rare minerals in tactile physics-driven 3D.</p>
+        </div>
+        <div class="card-footer">
+          <a href="rock-smasher-3d/" class="btn-play">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Play Now</span>
+          </a>
+          <div class="footer-actions">
+            <a href="https://twitter.com/intent/tweet?text=Spin%20the%20mineral%20stone%20and%20shatter%20crystals%20with%20haptic%20precision%20💎⚡%20Play%20Rock%20Smasher%203D%20directly%20in%20your%20feed:%20https://digitalnexus.io/play/rock-smasher-3d/" target="_blank" rel="noopener" class="icon-btn x-btn" title="Tweet Playable to X timeline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.rocksmasher.nexus" target="_blank" rel="noopener" class="icon-btn play-btn" title="View on Google Play">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a2.007 2.007 0 0 1-.22-.916V2.73c0-.337.08-.654.219-.916zm11.603 11.605l2.457 2.456-11.836 6.833 9.379-9.289zm0-2.838L5.833 1.292l11.836 6.833-2.457 2.456zm1.414 1.419l3.864 2.231c.904.522.904 1.378 0 1.9l-3.864 2.23-2.148-2.147 2.148-2.214z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+        
+
+      <div class="arcade-card" data-cat="idle">
+        <div class="card-media">
+          <img src="../icons/idlecoreminer.png" alt="Idle Core Miner" class="card-icon">
+          <div class="orient-pill">📱 Portrait</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Idle & Simulation</div>
+          <h3 class="card-title">Idle Core Miner</h3>
+          <p class="card-desc">Drill through planetary crusts, extract rare plasma isotopes, and automate industrial laser mining rigs.</p>
+        </div>
+        <div class="card-footer">
+          <a href="idle-core-miner/" class="btn-play">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Play Now</span>
+          </a>
+          <div class="footer-actions">
+            <a href="https://twitter.com/intent/tweet?text=Drill%20through%20planetary%20crusts%20and%20unlock%20geothermal%20laser%20extractors%20🚀⚡%20Play%20Idle%20Core%20Miner%20right%20here:%20https://digitalnexus.io/play/idle-core-miner/" target="_blank" rel="noopener" class="icon-btn x-btn" title="Tweet Playable to X timeline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.idlecoreminer.nexus" target="_blank" rel="noopener" class="icon-btn play-btn" title="View on Google Play">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a2.007 2.007 0 0 1-.22-.916V2.73c0-.337.08-.654.219-.916zm11.603 11.605l2.457 2.456-11.836 6.833 9.379-9.289zm0-2.838L5.833 1.292l11.836 6.833-2.457 2.456zm1.414 1.419l3.864 2.231c.904.522.904 1.378 0 1.9l-3.864 2.23-2.148-2.147 2.148-2.214z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+        
+
+      <div class="arcade-card" data-cat="physics">
+        <div class="card-media">
+          <img src="../icons/rockexpedition.png" alt="Rock Smasher: Expedition" class="card-icon">
+          <div class="orient-pill">📱 Portrait</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Tactile Physics & Puzzles</div>
+          <h3 class="card-title">Rock Smasher: Expedition</h3>
+          <p class="card-desc">Excavate ancient relics, break enchanted boulders, and uncover lost civilizations across archaeological biomes.</p>
+        </div>
+        <div class="card-footer">
+          <a href="rock-smasher-expedition/" class="btn-play">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Play Now</span>
+          </a>
+          <div class="footer-actions">
+            <a href="https://twitter.com/intent/tweet?text=Excavate%20ancient%20artifacts%20and%20crack%20relic%20runes%20across%20lost%20worlds%20🏺⚡%20Play%20Rock%20Smasher:%20Expedition%20now:%20https://digitalnexus.io/play/rock-smasher-expedition/" target="_blank" rel="noopener" class="icon-btn x-btn" title="Tweet Playable to X timeline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.rockexpedition.nexus" target="_blank" rel="noopener" class="icon-btn play-btn" title="View on Google Play">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a2.007 2.007 0 0 1-.22-.916V2.73c0-.337.08-.654.219-.916zm11.603 11.605l2.457 2.456-11.836 6.833 9.379-9.289zm0-2.838L5.833 1.292l11.836 6.833-2.457 2.456zm1.414 1.419l3.864 2.231c.904.522.904 1.378 0 1.9l-3.864 2.23-2.148-2.147 2.148-2.214z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+        
+
+      <div class="arcade-card" data-cat="physics">
+        <div class="card-media">
+          <img src="../icons/smashrocks.png" alt="Smash Rocks Classic" class="card-icon">
+          <div class="orient-pill">📱 Portrait</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Tactile Physics & Puzzles</div>
+          <h3 class="card-title">Smash Rocks Classic</h3>
+          <p class="card-desc">High-velocity tactile stone shattering. Strike the fracture lines before time expires!</p>
+        </div>
+        <div class="card-footer">
+          <a href="smash-rocks-classic/" class="btn-play">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Play Now</span>
+          </a>
+          <div class="footer-actions">
+            <a href="https://twitter.com/intent/tweet?text=Test%20your%20reaction%20speed!%20Strike%20the%20fracture%20lines%20before%20the%20timer%20runs%20out%20⏱️⚡%20Play%20Smash%20Rocks%20Classic:%20https://digitalnexus.io/play/smash-rocks-classic/" target="_blank" rel="noopener" class="icon-btn x-btn" title="Tweet Playable to X timeline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.smashrocks.nexus" target="_blank" rel="noopener" class="icon-btn play-btn" title="View on Google Play">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a2.007 2.007 0 0 1-.22-.916V2.73c0-.337.08-.654.219-.916zm11.603 11.605l2.457 2.456-11.836 6.833 9.379-9.289zm0-2.838L5.833 1.292l11.836 6.833-2.457 2.456zm1.414 1.419l3.864 2.231c.904.522.904 1.378 0 1.9l-3.864 2.23-2.148-2.147 2.148-2.214z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+        
+
+      <div class="arcade-card" data-cat="mecha">
+        <div class="card-media">
+          <img src="../icons/bopbolt.png" alt="Bop & Bolt" class="card-icon">
+          <div class="orient-pill">🖥️ Landscape</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">3D Mecha & Robots</div>
+          <h3 class="card-title">Bop & Bolt</h3>
+          <p class="card-desc">Design and assemble adorable animated robots with playful gears, bouncy springs, and magnetic parts.</p>
+        </div>
+        <div class="card-footer">
+          <a href="bop-and-bolt/" class="btn-play">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Play Now</span>
+          </a>
+          <div class="footer-actions">
+            <a href="https://twitter.com/intent/tweet?text=Assemble%20cute%20animated%20robots%20with%20bouncy%20gears%20and%20friendly%20bolts%20🤖🔩%20Play%20Bop%20&%20Bolt%20in%20your%20feed:%20https://digitalnexus.io/play/bop-and-bolt/" target="_blank" rel="noopener" class="icon-btn x-btn" title="Tweet Playable to X timeline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.bopbolt.nexus" target="_blank" rel="noopener" class="icon-btn play-btn" title="View on Google Play">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a2.007 2.007 0 0 1-.22-.916V2.73c0-.337.08-.654.219-.916zm11.603 11.605l2.457 2.456-11.836 6.833 9.379-9.289zm0-2.838L5.833 1.292l11.836 6.833-2.457 2.456zm1.414 1.419l3.864 2.231c.904.522.904 1.378 0 1.9l-3.864 2.23-2.148-2.147 2.148-2.214z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+        
+
+      <div class="arcade-card" data-cat="mecha">
+        <div class="card-media">
+          <img src="../icons/robotlab.png" alt="Robot Lab 3D" class="card-icon">
+          <div class="orient-pill">🖥️ Landscape</div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">3D Mecha & Robots</div>
+          <h3 class="card-title">Robot Lab 3D</h3>
+          <p class="card-desc">High-precision robotics laboratory sandbox. Assemble functional joints, hydraulic limbs, and autonomous mechs.</p>
+        </div>
+        <div class="card-footer">
+          <a href="assemble-robot-lab/" class="btn-play">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Play Now</span>
+          </a>
+          <div class="footer-actions">
+            <a href="https://twitter.com/intent/tweet?text=High-fidelity%203D%20mecha%20robotics%20lab.%20Assemble%20hydraulic%20limbs%20and%20test%20drive%20heavy%20robots%20🦾⚡%20Play%20Robot%20Lab%203D:%20https://digitalnexus.io/play/assemble-robot-lab/" target="_blank" rel="noopener" class="icon-btn x-btn" title="Tweet Playable to X timeline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.robotlab.nexus" target="_blank" rel="noopener" class="icon-btn play-btn" title="View on Google Play">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a2.007 2.007 0 0 1-.22-.916V2.73c0-.337.08-.654.219-.916zm11.603 11.605l2.457 2.456-11.836 6.833 9.379-9.289zm0-2.838L5.833 1.292l11.836 6.833-2.457 2.456zm1.414 1.419l3.864 2.231c.904.522.904 1.378 0 1.9l-3.864 2.23-2.148-2.147 2.148-2.214z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+        
+  </main>
+
+  <!-- Twitter Player Cards Explainer -->
+  <section class="twitter-explainer">
+    <div class="explainer-box">
+      <div class="explainer-content">
+        <h2>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DA1F2">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          Play Directly Inside Your X / Twitter Feed
+        </h2>
+        <p>
+          Every game in our arcade is equipped with Twitter Player Cards (<span class="explainer-code">twitter:card="player"</span>). When you tweet any game link, X unfolds an interactive 60 FPS playable canvas directly in your followers' timelines with zero app install required.
+        </p>
+      </div>
+      <div>
+        <a href="https://x.com/DigitalNexusHQ" target="_blank" rel="noopener" class="nav-cta" style="padding: 10px 18px; font-size: 13px;">Follow @DigitalNexusHQ &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 Digital Nexus Studio. All client-side playables engineered with zero external ad trackers. <a href="../">Back to Studio Home</a></p>
+  </footer>
+
+  <script>
+    function filterGames(cat, btn) {
+      var buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+
+      var cards = document.querySelectorAll('.arcade-card');
+      cards.forEach(function(card) {
+        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

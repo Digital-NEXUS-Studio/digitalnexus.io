@@ -1,0 +1,105 @@
+<!--
+  The tab icon: a robot's head against the sky, in the key art's frame.
+
+  One idea, because at 16px there is room for one: a white helmet with two
+  red eyes. Everything else here is there to hold that head up — the sky
+  behind it and the light-cyan frame around it are the game's cover art
+  reduced to its outline, and at favicon size they read as "a blue tile"
+  and nothing more, which is all they have to do.
+
+  The eyes are the only warm thing in the glyph, on purpose: one light
+  source, so the eye has somewhere to land. They are the red the machines'
+  own visors glow in the art, with a white-hot core, on a dark face plate —
+  red on white would be a smudge at 16px; red on near-black is a pair of
+  lamps at any size.
+
+  The sky stops at mid cyan rather than running down to the pale horizon,
+  and the sea starts under the chin.
+  A white head on the art's horizon haze is 1.1:1 and would vanish into its
+  own background below 24px; on azure-to-cyan it stands out, and the soft
+  navy shadow under it — the title shadow from the art — keeps its lower
+  edge from dissolving into the lighter half of the tile.
+
+  The fin is the art's head crest, and what stops the silhouette reading as
+  a plain box at 32px. Below that it merges into the helmet, harmlessly.
+
+  The outer radius on the first rect stays spelled exactly as it is: the
+  portal's square icon is made by rewriting the first occurrence of that
+  attribute to zero, so it must not appear anywhere above it — this comment
+  included.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="band" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#80dff1"/>
+      <stop offset="1" stop-color="#4bcbe4"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0776c5"/>
+      <stop offset=".45" stop-color="#0c8fcf"/>
+      <stop offset=".8" stop-color="#14b7df"/>
+      <stop offset="1" stop-color="#1ac2e3"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset=".35" stop-color="#ff2a2a" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#ff2a2a" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="window">
+      <rect x="3.5" y="3.5" width="57" height="57" rx="8.5"/>
+    </clipPath>
+  </defs>
+  <!-- The frame: the cyan band, the pale inner ring, then the sky window. -->
+  <rect width="64" height="64" rx="12" fill="url(#band)"/>
+  <rect x="2.5" y="2.5" width="59" height="59" rx="9.5" fill="#aef8fe"/>
+  <rect x="3.5" y="3.5" width="57" height="57" rx="8.5" fill="url(#sky)"/>
+  <!-- The world under the head, so the tile reads as the art's at 64px and
+       up: the sea far below with a thin band of horizon haze, a voxel island
+       on it at the left, a voxel cloud at the right, and a high cloud in the
+       corner. All of it sits under the chin or clear of the helmet, where it
+       cannot touch the silhouette the 16px icon depends on. -->
+  <g clip-path="url(#window)">
+    <path d="M0 50.5h64V64H0z" fill="#5bc7e7"/>
+    <path d="M0 50.5h64v1.6H0z" fill="#a6eef2"/>
+    <path d="M0 55h64v9H0z" fill="#32a4cc" opacity=".45"/>
+    <path d="M3 57.5h19v2H3z" fill="#89e1ef"/>
+    <path d="M4 56.4h17v1.6H4z" fill="#d8e2d5"/>
+    <path d="M5 53.2h15v3.4H5zM8 51.6h8v1.8H8z" fill="#83bd93"/>
+    <path d="M5 55.6h15v1.4H5zM8 52.9h8v.8H8z" fill="#659f81"/>
+    <path d="M6 52.4h2v1.4H6zM17 52.6h2v1.3H17z" fill="#48847f"/>
+    <path d="M40 61v-5h5v-3h9v3h9v5z" fill="#e0f6f7"/>
+    <path d="M40 58.5h23V61H40z" fill="#b2e3ed"/>
+    <path d="M40 60.4h23V61H40z" fill="#7dc5e3"/>
+    <path d="M44 9h14v2.6H44zM48 6.8h7v2.3h-7z" fill="#6db2d9"/>
+    <path d="M44 10.6h14v1H44z" fill="#4799d0"/>
+  </g>
+  <!-- The title's soft navy shadow, as the head's own silhouette dropped. -->
+  <g fill="#0a2e4d" opacity=".38">
+    <path d="M25 19v-5h4v-3h4V8h5.5v11z"/>
+    <rect x="12" y="17" width="40" height="35" rx="3"/>
+    <rect x="7" y="28" width="7" height="14"/>
+    <rect x="50" y="28" width="7" height="14"/>
+  </g>
+  <!-- Fin: the art's crest, stepped up and back. -->
+  <path d="M25 16.5v-5h4V8.5h4V5.5h5.5v11z" fill="#f2efea"/>
+  <path d="M35 16.5v-11h3.5v11z" fill="#c9c9cc"/>
+  <!-- Ears, the far one in shade. -->
+  <rect x="7" y="25.5" width="7" height="14" fill="#c9c9cc"/>
+  <rect x="50" y="25.5" width="7" height="14" fill="#85828a"/>
+  <!-- Helmet: a lit top, a white front, a grey side — three flat voxel tones. -->
+  <rect x="12" y="14.5" width="40" height="35" rx="3" fill="#f2efea"/>
+  <rect x="44" y="14.5" width="8" height="35" rx="2" fill="#c9c9cc"/>
+  <rect x="12" y="14.5" width="40" height="4" rx="2" fill="#ffffff"/>
+  <!-- Face plate. -->
+  <rect x="15.5" y="24" width="33" height="14" rx="2" fill="#211e28"/>
+  <!-- The eyes: a glow, the lamp, and a white-hot core. -->
+  <ellipse cx="24" cy="31" rx="7" ry="5.5" fill="url(#glow)"/>
+  <ellipse cx="40" cy="31" rx="7" ry="5.5" fill="url(#glow)"/>
+  <rect x="19.5" y="28" width="9" height="6" rx="1" fill="#ff2a2a"/>
+  <rect x="35.5" y="28" width="9" height="6" rx="1" fill="#ff2a2a"/>
+  <rect x="22" y="29.5" width="4" height="3" fill="#ffe3dc"/>
+  <rect x="38" y="29.5" width="4" height="3" fill="#ffe3dc"/>
+  <!-- Jaw vents: a dark notch reads as a mouth where a light block reads as a
+       second visor. -->
+  <rect x="22" y="41.5" width="20" height="4" rx="1" fill="#85828a"/>
+  <rect x="25" y="42.5" width="14" height="2" fill="#3c394c"/>
+</svg>

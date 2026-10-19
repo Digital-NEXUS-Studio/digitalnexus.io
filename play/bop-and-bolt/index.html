@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Bop & Bolt — Digital Nexus Instant Play</title>
+  <meta name="description" content="Design and assemble adorable animated robots with playful gears, bouncy springs, and magnetic parts.">
+  <meta name="theme-color" content="#060911">
+
+  <!-- OpenGraph / Social Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Digital Nexus Arcade">
+  <meta property="og:title" content="Bop & Bolt — Instant Playable 3D">
+  <meta property="og:description" content="Design and assemble adorable animated robots with playful gears, bouncy springs, and magnetic parts.">
+  <meta property="og:url" content="https://digitalnexus.io/play/bop-and-bolt/">
+  <meta property="og:image" content="https://digitalnexus.io/icons/bopbolt.png">
+
+  <!-- Twitter / X Player Card Meta Tags (Plays In-Timeline) -->
+  <meta name="twitter:card" content="player">
+  <meta name="twitter:site" content="@DigitalNexusHQ">
+  <meta name="twitter:creator" content="@DigitalNexusHQ">
+  <meta name="twitter:title" content="Bop & Bolt">
+  <meta name="twitter:description" content="Design and assemble adorable animated robots with playful gears, bouncy springs, and magnetic parts.">
+  <meta name="twitter:image" content="https://digitalnexus.io/icons/bopbolt.png">
+  <meta name="twitter:player" content="https://digitalnexus.io/play/bop-and-bolt/embed.html">
+  <meta name="twitter:player:width" content="1280">
+  <meta name="twitter:player:height" content="720">
+
+  <link rel="icon" type="image/png" href="../../icons/bopbolt.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #060911;
+      --card-bg: #0c1220;
+      --border: rgba(255, 255, 255, 0.08);
+      --cyan: #00F0FF;
+      --amber: #FFB300;
+      --text: #F8FAFC;
+      --muted: #94A3B8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Studio Header */
+    .studio-bar {
+      height: 56px;
+      background: rgba(10, 16, 28, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      z-index: 100;
+      flex-shrink: 0;
+    }
+    .bar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .back-btn {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover {
+      color: var(--text);
+      border-color: var(--cyan);
+      background: rgba(0, 240, 255, 0.08);
+    }
+    .game-emblem {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    .game-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .game-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFF;
+      line-height: 1.2;
+    }
+    .game-cat {
+      font-size: 11px;
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .action-btn {
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+    .action-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-share {
+      border-color: rgba(29, 161, 242, 0.4);
+      background: rgba(29, 161, 242, 0.1);
+      color: #70c4ff;
+    }
+    .btn-share:hover {
+      background: rgba(29, 161, 242, 0.25);
+      color: #fff;
+      border-color: #1DA1F2;
+    }
+    .btn-playstore {
+      border-color: rgba(0, 240, 255, 0.4);
+      background: rgba(0, 240, 255, 0.12);
+      color: var(--cyan);
+    }
+    .btn-playstore:hover {
+      background: var(--cyan);
+      color: #000;
+      border-color: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.4);
+    }
+
+    /* Main Viewport Runner */
+    .game-viewport {
+      flex: 1;
+      position: relative;
+      background: #000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .game-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .studio-bar {
+        padding: 0 12px;
+      }
+      .back-text {
+        display: none;
+      }
+      .btn-playstore span {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Studio Control Bar -->
+  <header class="studio-bar">
+    <div class="bar-left">
+      <a href="../" class="back-btn" title="Back to Instant Play Arcade">
+        <span>&larr;</span>
+        <span class="back-text">Arcade Hub</span>
+      </a>
+      <img src="../../icons/bopbolt.png" alt="Bop & Bolt" class="game-emblem">
+      <div class="game-info">
+        <span class="game-title">Bop & Bolt</span>
+        <span class="game-cat">3D Mecha & Robots &bull; Landscape</span>
+      </div>
+    </div>
+
+    <div class="bar-actions">
+      <a href="https://twitter.com/intent/tweet?text=Assemble%20cute%20animated%20robots%20with%20bouncy%20gears%20and%20friendly%20bolts%20🤖🔩%20Play%20Bop%20&%20Bolt%20in%20your%20feed:%20https://digitalnexus.io/play/bop-and-bolt/" target="_blank" rel="noopener" class="action-btn btn-share" title="Share playable to X timeline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 24.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        <span>Tweet Playable</span>
+      </a>
+
+      <button class="action-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="Fullscreen Mode">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
+      </button>
+
+      <a href="https://play.google.com/store/apps/details?id=com.bopbolt.nexus" target="_blank" rel="noopener" class="action-btn btn-playstore">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3.609 1.814L13.792 12 3.61 22.186a2.007 2.007 0 0 1-.22-.916V2.73c0-.337.08-.654.219-.916zm11.603 11.605l2.457 2.456-11.836 6.833 9.379-9.289zm0-2.838L5.833 1.292l11.836 6.833-2.457 2.456zm1.414 1.419l3.864 2.231c.904.522.904 1.378 0 1.9l-3.864 2.23-2.148-2.147 2.148-2.214z"/>
+        </svg>
+        <span>Google Play</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Interactive Play Area -->
+  <main class="game-viewport" id="gameViewport">
+    <iframe id="gameFrame"
+            class="game-frame"
+            src="game.html"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; focus-without-user-activation *"
+            allowfullscreen></iframe>
+  </main>
+
+  <script>
+    function toggleFullscreen() {
+      var elem = document.getElementById("gameViewport");
+      if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Auto-focus frame on click
+    window.addEventListener('click', function() {
+      var f = document.getElementById('gameFrame');
+      if (f && f.contentWindow) f.contentWindow.focus();
+    });
+  </script>
+</body>
+</html>

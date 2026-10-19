@@ -1,0 +1,141 @@
+{
+  "license": "CC0 1.0 Universal",
+  "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved": "2026-09-21",
+  "source": "https://3dassets.dev",
+  "assets": [
+    {
+      "id": "scout-torso",
+      "file": "scout-torso.glb",
+      "title": "Scout Torso (Mech Robots and Battle Hangar)",
+      "slug": "mech-hangar-and-battle-frames-scout-torso-bd3da726",
+      "source": "https://3dassets.dev/assets/mech-hangar-and-battle-frames-scout-torso-bd3da726",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/26789/v1/model.glb",
+      "license": {
+        "slug": "cc0-1.0",
+        "name": "CC0 1.0 Universal",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attributionRequired": false
+      },
+      "sha256": "e9f34116f47cb289c686e20e608ec4d76a366bc583e7e5ebeff64eab6e76e7f9",
+      "bytes": 13736,
+      "triangles": 208,
+      "description": "Light scout-frame torso: slim angled chest, sensor visor strip, narrow yoke with rear-swept fins. Dimensions 2.35 by 1.62 by 0.79 m (X by Y by Z). Origin at the ground centre; metres, +Y up, +Z forward. Weight class light: 0.4 m socket pads. Connectors: shoulder-left (socket-arm) at -0.80, 0.95, 0.00 facing 0, -1, 0; shoulder-right (socket-arm) at 0.80, 0.95, 0.00 facing 0, -1, 0; hip (socket-legs) at 0.00, 0.00, 0.00 facing 0, -1, 0; head (socket-head) at 0.00, 1.25, 0.00 facing 0, 1, 0; back (socket-back) at 0.00, 0.65, -0.40 facing 0, 0, -1. Frame palette: gunmetal, olive and orange accent, flat shaded. Static geometry; no rig, collision or navigation data. Original design.",
+      "modified": "Source GLB preserved unchanged. Game copy retains mesh geometry, separates rigid puzzle parts at source pivots, and uses the Robot Lab palette. Scout shoulder/head/hip sockets follow the source description. Playground motion uses the source deck and rocker pivots."
+    },
+    {
+      "id": "scout-legs",
+      "file": "scout-legs.glb",
+      "title": "Scout Legs (Mech Robots and Battle Hangar)",
+      "slug": "mech-hangar-and-battle-frames-scout-legs-febf189c",
+      "source": "https://3dassets.dev/assets/mech-hangar-and-battle-frames-scout-legs-febf189c",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/26810/v1/model.glb",
+      "license": {
+        "slug": "cc0-1.0",
+        "name": "CC0 1.0 Universal",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attributionRequired": false
+      },
+      "sha256": "32887d29bba19fed1eb2a584281a36842b7ab0471fe01443d1b8db9d3ec6ab23",
+      "bytes": 21588,
+      "triangles": 384,
+      "description": "Light digitigrade legs: forward thigh, backward shin, spur heel and long toe pad; hip socket at 1.50 m. Dimensions 0.90 by 1.50 by 0.79 m (X by Y by Z). Origin at the ground centre; metres, +Y up, +Z forward. Weight class light: 0.4 m socket pads. Connectors: hip (socket-legs) at 0.00, 1.50, 0.00 facing 0, 1, 0. Frame palette: gunmetal, olive and orange accent, flat shaded. Static geometry; no rig, collision or navigation data. Original design.",
+      "modified": "Source GLB preserved unchanged. Game copy retains mesh geometry, separates rigid puzzle parts at source pivots, and uses the Robot Lab palette. Scout shoulder/head/hip sockets follow the source description. Playground motion uses the source deck and rocker pivots."
+    },
+    {
+      "id": "scout-arm",
+      "file": "scout-arm.glb",
+      "title": "Scout Arm (Mech Robots and Battle Hangar)",
+      "slug": "mech-hangar-and-battle-frames-scout-arm-66989826",
+      "source": "https://3dassets.dev/assets/mech-hangar-and-battle-frames-scout-arm-66989826",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/26839/v1/model.glb",
+      "license": {
+        "slug": "cc0-1.0",
+        "name": "CC0 1.0 Universal",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attributionRequired": false
+      },
+      "sha256": "133d16c1ded68d847b5d63c22eab500a6b80fe8f8da96bcdae0bb17a84f142f7",
+      "bytes": 10728,
+      "triangles": 160,
+      "description": "Light manipulator arm with a wrist sensor and two-finger gripper. Dimensions 0.42 by 1.20 by 0.40 m (X by Y by Z). Origin at the ground centre; metres, +Y up, +Z forward. Weight class light: 0.4 m socket pads. Named pivots: elbow. Connectors: mount (socket-arm) at 0.00, 1.20, 0.00 facing 0, 1, 0. Frame palette: gunmetal, olive and orange accent, flat shaded. Static geometry; no rig, collision or navigation data. Original design.",
+      "modified": "Source GLB preserved unchanged. Game copy retains mesh geometry, separates rigid puzzle parts at source pivots, and uses the Robot Lab palette. Scout shoulder/head/hip sockets follow the source description. Playground motion uses the source deck and rocker pivots."
+    },
+    {
+      "id": "twin-optic-head",
+      "file": "twin-optic-head.glb",
+      "title": "Twin Optic Head (Mech Robots and Battle Hangar)",
+      "slug": "mech-hangar-and-battle-frames-twin-optic-head-dc21fbfc",
+      "source": "https://3dassets.dev/assets/mech-hangar-and-battle-frames-twin-optic-head-dc21fbfc",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/26877/v1/model.glb",
+      "license": {
+        "slug": "cc0-1.0",
+        "name": "CC0 1.0 Universal",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attributionRequired": false
+      },
+      "sha256": "768b107c4816e143a3550907d980655221cec1759a8de0cc0a3e3317b1094039",
+      "bytes": 9692,
+      "triangles": 120,
+      "description": "Medium head with paired square optics and twin whip antennae. Dimensions 0.64 by 0.91 by 0.58 m (X by Y by Z). Origin at the ground centre; metres, +Y up, +Z forward. Weight class medium: 0.5 m socket pads. Connectors: neck (socket-head) at 0.00, 0.00, 0.00 facing 0, -1, 0. Frame palette: gunmetal, olive and orange accent, flat shaded. Static geometry; no rig, collision or navigation data. Original design.",
+      "modified": "Source GLB preserved unchanged. Game copy retains mesh geometry, separates rigid puzzle parts at source pivots, and uses the Robot Lab palette. Scout shoulder/head/hip sockets follow the source description. Playground motion uses the source deck and rocker pivots."
+    },
+    {
+      "id": "rover",
+      "file": "rover.glb",
+      "title": "Rover 4wd (Robots and Drones Kit)",
+      "slug": "robots-and-drones-kit-rover-4wd-b67eeba7",
+      "source": "https://3dassets.dev/assets/robots-and-drones-kit-rover-4wd-b67eeba7",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/38988/v1/model.glb",
+      "license": {
+        "slug": "cc0-1.0",
+        "name": "CC0 1.0 Universal",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attributionRequired": false
+      },
+      "sha256": "8683cc9314b29bc116e341e849858f8f31ce5129c2d4bfbd572282852fb8baad",
+      "bytes": 22736,
+      "triangles": 676,
+      "description": "Four wheel drive field rover with rocker suspension arms, a solar deck and a nodding sensor mast. Dimensions 0.77 by 1.14 by 1.01 m (X by Y by Z). Origin at the footprint centre, resting on y = 0; metres, +Y up, +Z forward. Named pivots: wheel-lr at (-0.32, 0.16, -0.35); wheel-lf at (-0.32, 0.16, 0.35); wheel-rr at (0.32, 0.16, -0.35); wheel-rf at (0.32, 0.16, 0.35); sensor-mast at (-0.15, 1.02, -0.3). Rigid node-transform clips: wheel-roll and tilt. No skinning. No collision or navigation data. Wheels roll and the sensor head nods. Suspension arms are static. Original design for the robots and drones kit.",
+      "modified": "Source GLB preserved unchanged. Game copy retains mesh geometry, separates rigid puzzle parts at source pivots, and uses the Robot Lab palette. Scout shoulder/head/hip sockets follow the source description. Playground motion uses the source deck and rocker pivots."
+    },
+    {
+      "id": "duck",
+      "file": "duck.glb",
+      "title": "Duck Spring Rocker (City Park and Playground)",
+      "slug": "city-park-and-playground-spring-rocker-duck-4c0dbedf",
+      "source": "https://3dassets.dev/assets/city-park-and-playground-spring-rocker-duck-4c0dbedf",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33657/v1/model.glb",
+      "license": {
+        "slug": "cc0-1.0",
+        "name": "CC0 1.0 Universal",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attributionRequired": false
+      },
+      "sha256": "69d68d26f90189a9e8d0164727c5c902ec35a06712f170377c2467a407a32ad8",
+      "bytes": 40296,
+      "triangles": 736,
+      "description": "The same spring and plate carrying a yellow duck body with a flat bill and a stub tail, for a second animal on the same play area. The spring coil is modelled solid and does not deform; the rocking is the body node above it. Overall 0.600 x 1.120 x 1.270 m (X x Y x Z), metre units, +Y up, +Z forward, resting on y=0. Named nodes on their own pivots: rocker. Functional variant of spring-rocker. City Park and Playground / citypark-lp-v1: faceted turf and paving, timber, galvanised steel and three playground accents, with embedded procedural concrete and timber maps and no custom shaders. Rigid node-transform clips: rock. No skinning. No collision or navigation data.",
+      "modified": "Source GLB preserved unchanged. Game copy retains mesh geometry, separates rigid puzzle parts at source pivots, and uses the Robot Lab palette. Scout shoulder/head/hip sockets follow the source description. Playground motion uses the source deck and rocker pivots."
+    },
+    {
+      "id": "roundabout",
+      "file": "roundabout.glb",
+      "title": "Playground Roundabout (City Park and Playground)",
+      "slug": "city-park-and-playground-roundabout-bffbd08e",
+      "source": "https://3dassets.dev/assets/city-park-and-playground-roundabout-bffbd08e",
+      "cdnUrl": "https://cdn.3dassets.dev/assets/33659/v1/model.glb",
+      "license": {
+        "slug": "cc0-1.0",
+        "name": "CC0 1.0 Universal",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "attributionRequired": false
+      },
+      "sha256": "30f435aebe7e9d2d41511deed9a4332cb6ddd99423e925bc9e7712d0311d19ea",
+      "bytes": 29784,
+      "triangles": 520,
+      "description": "A 3.0 m roundabout on a cast hub: a six sector painted deck at 410 mm and four grab rails arching over the centre. The deck and its rails are one node on the hub axis. Overall 3.000 x 0.886 x 3.000 m (X x Y x Z), metre units, +Y up, +Z forward, resting on y=0. Named nodes on their own pivots: deck. City Park and Playground / citypark-lp-v1: faceted turf and paving, timber, galvanised steel and three playground accents, with embedded procedural concrete and timber maps and no custom shaders. Rigid node-transform clips: spin. No skinning. No collision or navigation data.",
+      "modified": "Source GLB preserved unchanged. Game copy retains mesh geometry, separates rigid puzzle parts at source pivots, and uses the Robot Lab palette. Scout shoulder/head/hip sockets follow the source description. Playground motion uses the source deck and rocker pivots."
+    }
+  ]
+}

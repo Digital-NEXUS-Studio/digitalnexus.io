@@ -1,0 +1,12 @@
+# Bop & Bolt — asset register
+
+Private review candidate. No marketplace-sourced character or environment model is shipped in this release.
+
+| Asset group | Provenance | Commercial release status |
+| --- | --- | --- |
+| Original character geometry, play systems, palettes, UI and sound synthesis | Created specifically for this project with AI-assisted development and iterative owner direction | Retain generation/project records; no sampled commercial music is bundled |
+| Seven CC0 source models | Original files and license/source records in public/models/cc0 | CC0 records retained; included geometry adapted to the game's fixed joints |
+| Game icon | Original image generated specifically for Bop & Bolt | Master PNG and project prompt record retained with this release |
+| React, Three.js, Lucide, Radix and other bundled packages | See package lock and third-party license notices generated with the submission bundle | Retain license notices |
+
+No third-party hit songs are included. Local music selection is disabled in portal builds. Ten previously supplied marketplace GLBs, their previews and the unverified corridor GLB are excluded from source, runtime and exports.

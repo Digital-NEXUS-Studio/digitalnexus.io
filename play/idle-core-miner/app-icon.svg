@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#141e38"/>
+      <stop offset="60%" stop-color="#090d1a"/>
+      <stop offset="100%" stop-color="#05070f"/>
+    </radialGradient>
+
+    <!-- Planetary Core Molten Plasma Gradient -->
+    <radialGradient id="corePlasma" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="15%" stop-color="#67e8f9"/>
+      <stop offset="35%" stop-color="#06b6d4"/>
+      <stop offset="65%" stop-color="#3b0764"/>
+      <stop offset="95%" stop-color="#0f172a"/>
+    </radialGradient>
+
+    <!-- Corona Glow Filter -->
+    <filter id="cyanGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="24" result="blur1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="48" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="purpleGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark Cosmic Backdrop with Rounded Squircle Shape -->
+  <rect width="1024" height="1024" rx="228" fill="url(#bgGlow)"/>
+
+  <!-- Subtle Cybernetic Tech Grid -->
+  <g stroke="#00f0ff" stroke-width="1.5" opacity="0.12">
+    <line x1="128" y1="0" x2="128" y2="1024"/>
+    <line x1="256" y1="0" x2="256" y2="1024"/>
+    <line x1="384" y1="0" x2="384" y2="1024"/>
+    <line x1="512" y1="0" x2="512" y2="1024"/>
+    <line x1="640" y1="0" x2="640" y2="1024"/>
+    <line x1="768" y1="0" x2="768" y2="1024"/>
+    <line x1="896" y1="0" x2="896" y2="1024"/>
+
+    <line x1="0" y1="128" x2="1024" y2="128"/>
+    <line x1="0" y1="256" x2="1024" y2="256"/>
+    <line x1="0" y1="384" x2="1024" y2="384"/>
+    <line x1="0" y1="512" x2="1024" y2="512"/>
+    <line x1="0" y1="640" x2="1024" y2="640"/>
+    <line x1="0" y1="768" x2="1024" y2="768"/>
+    <line x1="0" y1="896" x2="1024" y2="896"/>
+  </g>
+
+  <!-- Ambient Corona Aura -->
+  <circle cx="512" cy="512" r="320" fill="#a855f7" opacity="0.25" filter="url(#purpleGlow)"/>
+  <circle cx="512" cy="512" r="260" fill="#00f0ff" opacity="0.35" filter="url(#cyanGlow)"/>
+
+  <!-- Orbital Cybernetic Ring 1 (Dashed Outer) -->
+  <circle cx="512" cy="512" r="380" fill="none" stroke="#00f0ff" stroke-width="6" stroke-dasharray="24 16" opacity="0.45"/>
+
+  <!-- Orbital Cybernetic Ring 2 (Tech Bracket Nodes) -->
+  <circle cx="512" cy="512" r="330" fill="none" stroke="#a855f7" stroke-width="8" opacity="0.65"/>
+  <circle cx="512" cy="182" r="14" fill="#00f0ff" filter="url(#cyanGlow)"/>
+  <circle cx="512" cy="842" r="14" fill="#00f0ff" filter="url(#cyanGlow)"/>
+  <circle cx="182" cy="512" r="14" fill="#a855f7" filter="url(#purpleGlow)"/>
+  <circle cx="842" cy="512" r="14" fill="#a855f7" filter="url(#purpleGlow)"/>
+
+  <!-- The Planetary Core Sphere -->
+  <circle cx="512" cy="512" r="240" fill="url(#corePlasma)" filter="drop-shadow(0 0 45px rgba(0,240,255,0.7))"/>
+
+  <!-- Tectonic Magma Fissures -->
+  <path d="M 360 380 Q 450 460 520 480 T 660 620" fill="none" stroke="#cffafe" stroke-width="10" stroke-linecap="round" filter="url(#cyanGlow)"/>
+  <path d="M 440 330 Q 520 420 540 540 T 580 700" fill="none" stroke="#fbcfe8" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+  <path d="M 330 540 Q 420 520 490 580 T 680 500" fill="none" stroke="#38bdf8" stroke-width="7" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- Central Molten Singularity Core -->
+  <circle cx="512" cy="512" r="85" fill="#ffffff" filter="url(#cyanGlow)"/>
+  <circle cx="512" cy="512" r="50" fill="#a5f3fc"/>
+
+  <!-- Concentrated Mining Laser Blast from Top -->
+  <polygon points="512,120 480,360 544,360" fill="#00f0ff" opacity="0.4" filter="url(#cyanGlow)"/>
+  <line x1="512" y1="60" x2="512" y2="480" stroke="#ffffff" stroke-width="12" stroke-linecap="round" filter="url(#cyanGlow)"/>
+
+  <!-- Sleek Mining Reticle Brackets -->
+  <path d="M 280 280 L 340 280 M 280 280 L 280 340" stroke="#00f0ff" stroke-width="12" stroke-linecap="round"/>
+  <path d="M 744 280 L 684 280 M 744 280 L 744 340" stroke="#00f0ff" stroke-width="12" stroke-linecap="round"/>
+  <path d="M 280 744 L 340 744 M 280 744 L 280 684" stroke="#00f0ff" stroke-width="12" stroke-linecap="round"/>
+  <path d="M 744 744 L 684 744 M 744 744 L 744 684" stroke="#00f0ff" stroke-width="12" stroke-linecap="round"/>
+</svg>

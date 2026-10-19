@@ -1,0 +1,1870 @@
+<!doctype html>
+<html lang="en">
+  <head>
+<script>
+// Digital Nexus Platform Stub: enables instantaneous offline / web execution
+window.__GAME_PLATFORM__ = "web";
+window.CrazyGames = {
+  SDK: {
+    init: function() { return Promise.resolve(); },
+    game: {
+      loadingStop: function() {},
+      gameplayStart: function() {},
+      gameplayStop: function() {},
+      happyTime: function() {}
+    },
+    ad: {
+      requestAd: function() { return Promise.resolve(); }
+    },
+    banner: {
+      requestBanner: function() { return Promise.resolve(); }
+    }
+  }
+};
+</script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- The browser's own bar in the sky's top colour, so on a phone the page
+         runs up into the toolbar rather than stopping under a grey strip. -->
+    <meta name="theme-color" content="#0776c5" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <title>Kitbot — build a robot, watch it fold into a machine</title>
+    <!--
+      The title face, asked for before the stylesheet that uses it.
+
+      The boot screen's name is the first thing painted, and it is set in
+      this. Left to be discovered when the rule is matched, the font arrives
+      a beat after the first frame and the word visibly jumps from the system
+      face into this one — on the one screen whose whole job is to look
+      finished. Relative, and crossorigin because fonts are always fetched in
+      CORS mode and a preload without it is a second, wasted download.
+    -->
+    <link rel="preload" href="./fonts/montserrat-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <!--
+      Fonts, self-hosted.
+
+      They were fetched from fonts.googleapis.com, which is a request to
+      somebody else's server before this page can draw its own chrome. A game
+      portal serves a build from its own origin and expects it to be
+      self-contained: an external fetch is a thing that can be slow, blocked,
+      or a reason to bounce a submission, and it hands the player's IP to a
+      third party nobody asked about.
+
+      Montserrat 700 and 800 is the title face: the key art's wordmark is a
+      heavy geometric sans with round bowls and square terminals, and this is
+      the face it was measured to be. Barlow stays for the running text, where
+      a narrow humanist face reads better at 12px than a wide geometric one.
+      Five latin faces, about 105 kB, cached with the build. Both are under
+      the SIL Open Font License: public/fonts/OFL.txt (Barlow) and
+      public/fonts/OFL-Montserrat.txt.
+    -->
+    <style>
+      @font-face {
+        font-family: 'Barlow';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(./fonts/7cHpv4kjgoGqM7E_DMs5.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Barlow';
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url(./fonts/7cHqv4kjgoGqM7E3_-gs51os.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Barlow';
+        font-style: normal;
+        font-weight: 600;
+        font-display: swap;
+        src: url(./fonts/7cHqv4kjgoGqM7E30-8s51os.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url(./fonts/montserrat-latin-700-normal.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 800;
+        font-display: swap;
+        src: url(./fonts/montserrat-latin-800-normal.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    </style>
+    <style>
+      /*
+       * ── The sky deck ──────────────────────────────────────────────────────
+       *
+       * Taken from the key art, not invented: a bright daytime sky, white
+       * cards in a rounded light-cyan frame, navy ink, a heavy white title with
+       * a soft navy shadow, and red — the robot's eyes — as the one colour that
+       * means "look here". The dark hangar this replaces made the chrome a
+       * dark translucent slate so the machine could be the brightest thing on
+       * screen; under a daylight sky the same slate reads as a hole in it, so
+       * the chrome turns inside out: white surfaces, dark type, and the sky
+       * itself as the ground.
+       *
+       * Two rules keep it legible, because the scene behind it is now bright
+       * and moving (clouds drift through the lower two-thirds):
+       *
+       *   - Nothing readable sits bare on the scene below the masthead. Every
+       *     small readout is on a glass pill (`--glass`) in `--ink`. Only the
+       *     title is white-on-sky, because it sits on the zenith band, where
+       *     white measures 4.77:1 before its shadow is counted.
+       *   - Red is the attention colour and nothing else is. It marks the lit
+       *     slot, the drop ring, the part the rail is showing when it is the
+       *     one wanted, the current step of the build and the credit coin.
+       *     A refusal is not red any more — it is ink, so it can never be
+       *     mistaken for the slot it is refusing.
+       *
+       * The sky stops are the art's own, sampled from it by elevation; the
+       * scene paints the same values in WebGL, so the page ground, the boot
+       * screen and the garage agree with the room.
+       */
+      :root {
+        --sky-zenith:  #0776c5;   --sky-high: #0c8fcf;   --sky-mid: #1ac2e3;
+        --sky-aqua:    #78f1e8;   --sky-horizon: #dafbed;
+        --ink:         #0a2e4d;   /* text on light surfaces: 13.9:1 on white */
+        --ink-soft:    #3d5a78;   /* secondary text: 7.2:1 on --card, 6.8:1 on --card-tint */
+        --card:        #ffffff;
+        --card-tint:   #eefbfd;
+        --glass:       rgba(255,255,255,.90);   /* pills and plates floating over the scene */
+        --frame:       #80dff1;   --frame-deep: #4bcbe4;   --frame-inner: #aef8fe;
+        --azure:       #0668b0;   /* primary buttons, white label 5.8:1 */
+        --azure-hi:    #0776c5;
+        --hot:         #ef3a3a;   /* THE attention colour */
+        --hot-ink:     #c62828;   /* red text on white, 5.6:1 */
+        --hot-fill:    #df3132;   /* red fill carrying a white label, 4.54:1 */
+        --ok:          #15803d;   --ok-fill: #22c55e;
+        --amber-ink:   #b45309;   --ember-ink: #c2410c;
+        --shadow-navy: rgba(0,22,48,.5);
+        --display:     'Montserrat', 'Segoe UI', system-ui, sans-serif;   /* 700/800, self-hosted */
+        --body:        'Barlow', system-ui, sans-serif;
+        --mono:        ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+        /*
+         * Composites, written once. The title shadow is the art's measured
+         * one, in em so it scales with whatever it is on. The block edge is
+         * the hard 3px underside that makes a button read as a voxel rather
+         * than as a flat rectangle; the lift is the soft navy drop under a
+         * card. The frame band is the art's own outer border gradient.
+         */
+        --title-shadow: 0 0.03em 0.08em var(--shadow-navy), 0 0.05em 0.4em rgba(0,22,48,.22);
+        --edge: 0 3px 0 rgba(0,40,80,.35);
+        --edge-soft: 0 2px 0 rgba(0,40,80,.22);
+        --lift: 0 14px 30px -10px rgba(0,22,48,.42);
+        --frame-band: linear-gradient(180deg, var(--frame), var(--frame-deep));
+        --line: #c6e7f0;
+        --line-soft: #dff2f6;
+        /*
+         * The sky as a ground, zenith to horizon — the art's stops from its
+         * top edge to its horizon line, stretched over the full height of
+         * whatever it is behind. Used where the page shows sky of its own:
+         * behind the canvas, on the boot screen and under the garage.
+         */
+        --sky: linear-gradient(180deg, var(--sky-zenith) 0%, var(--sky-high) 31%, #14b7df 47%, var(--sky-mid) 52%, #2adae9 62%, var(--sky-aqua) 78%, #b9f8e5 94%, var(--sky-horizon) 100%);
+        /*
+         * A picture's window of sky: the high-to-horizon gradient and a
+         * voxel cloud — three steps at the upper left, a smaller slab lower
+         * at the right — in the art's three flat cloud tones, up in the blue
+         * where white reads, and at the edges where the machine is not.
+         * Every layer is a flat rectangle, sized and placed in percent so it
+         * scales with the picture. (A percent position places the layer's
+         * own point at the box's same point, hence the odd-looking numbers:
+         * top 30% on a 7%-tall slab is 30 / 93 = 32.26%.)
+         */
+        --pic-sky:
+          linear-gradient(#e0f6f7, #e0f6f7) 0% 30.49% / 38% 1.6% no-repeat,
+          linear-gradient(#7dc5e3, #7dc5e3) 0% 36.11% / 38% 1.4% no-repeat,
+          linear-gradient(#b2e3ed, #b2e3ed) 0% 32.26% / 38% 7% no-repeat,
+          linear-gradient(#e0f6f7, #e0f6f7) 6.41% 26.42% / 22% 1.6% no-repeat,
+          linear-gradient(#b2e3ed, #b2e3ed) 6.41% 27.08% / 22% 4% no-repeat,
+          linear-gradient(#e0f6f7, #e0f6f7) 11.11% 23.37% / 10% 1.6% no-repeat,
+          linear-gradient(#b2e3ed, #b2e3ed) 11.11% 23.71% / 10% 3% no-repeat,
+          linear-gradient(#e0f6f7, #e0f6f7) 100% 46.75% / 34% 1.6% no-repeat,
+          linear-gradient(#7dc5e3, #7dc5e3) 100% 50.4% / 34% 1.2% no-repeat,
+          linear-gradient(#b2e3ed, #b2e3ed) 100% 48.42% / 34% 5% no-repeat,
+          linear-gradient(#e0f6f7, #e0f6f7) 90.24% 43.61% / 18% 1.4% no-repeat,
+          linear-gradient(#b2e3ed, #b2e3ed) 90.24% 44.33% / 18% 3% no-repeat,
+          linear-gradient(180deg, var(--sky-high) 0%, #14b7df 34%, #2adae9 52%, var(--sky-aqua) 70%, var(--sky-horizon) 100%);
+
+        /*
+         * The old names, still answered.
+         *
+         * The Deploy mode's own stylesheet and the Kaiju page are written
+         * against these, and a name that stops resolving falls back silently
+         * to whatever its caller wrote as a default — the dark hangar's
+         * values, in most of them. So each one points at the sky token that
+         * now does its job. New rules should use the names above.
+         */
+        --text: var(--ink);
+        --muted: var(--ink-soft);
+        --accent: var(--azure);
+        --accent-dim: var(--frame-deep);
+        --warn: var(--hot-ink);
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        /* Sky, not a colour: this is what shows before the canvas has drawn
+           and while the boot screen fades, so it must not dip through dark. */
+        background: var(--sky-horizon) var(--sky);
+        color: var(--ink);
+        font-family: var(--body);
+        overflow: hidden;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /*
+       * The 3D stage fills the screen and the chrome floats over it.
+       *
+       * It used to be a grid row with a solid dock beneath, which spent a fifth
+       * of a phone screen on two buttons. The deck is the subject; the controls
+       * are an overlay on it.
+       */
+      .app { position: relative; height: 100%; }
+      #stage { position: absolute; inset: 0; }
+      #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+
+      .overlay {
+        position: absolute; inset: 0; z-index: 2;
+        display: flex; flex-direction: column;
+        /* Pointers belong to the canvas unless a control asks for them. */
+        pointer-events: none;
+      }
+      .overlay button { pointer-events: auto; }
+
+      /* ── Top bar ──────────────────────────────────────────────────────── */
+      /*
+       * A band of the zenith's own blue, fading out, behind the masthead.
+       *
+       * On the sky deck it is invisible: it is the colour the sky already is
+       * up there. It is for everywhere else. The skyway's ceiling is white
+       * hull, and a white title on white hull is 1.1:1 whatever its shadow
+       * does; with this band behind it the same title is back near 4:1. The
+       * art does the same thing — its title sits on the deepest blue in the
+       * picture — so this reads as more sky rather than as a scrim.
+       *
+       * The middle column is `minmax(0, 1fr)`, not `1fr`: a plain 1fr will
+       * not shrink below its content, and a vehicle name wider than the gap
+       * between the two buttons used to widen the grid and push the credit
+       * chip off the right edge of a phone.
+       */
+      .topbar {
+        padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 12px;
+        display: grid; grid-template-columns: 44px minmax(0, 1fr) minmax(44px, auto); align-items: start; gap: 8px;
+        background: linear-gradient(180deg, rgba(7,118,197,.9) 0%, rgba(7,118,197,.6) 58%, rgba(7,118,197,0) 100%);
+      }
+
+      /* The back control is a bare chevron in the reference — no disc. */
+      button.bare {
+        width: 44px; height: 44px; border: 0; background: none; color: var(--ink);
+        display: grid; place-items: center; cursor: pointer; padding: 0;
+      }
+      button.bare svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.2; }
+
+      /*
+       * The garage control carries its name.
+       *
+       * It was a bare chevron, which in a game with one screen means "back to
+       * what?" — and behind it sat every machine the player does not yet own.
+       * Four of the five builds were unreachable in practice because the only
+       * door to them was an unlabelled arrow. The word costs nine pixels of
+       * height and is the difference between a catalogue and a dead end.
+       *
+       * On a glass tile now, because it floats over the sky: a navy glyph on
+       * bare azure is 2.9:1 and on a passing cloud nothing at all.
+       *
+       * The tile is held at the 36px the bare glyph-and-word stood in, and
+       * its frame is drawn outside that box as a spread shadow rather than as
+       * a border. On the screens where the masthead is only the title — the
+       * first-run fold, the test drive — this button is the tallest thing in
+       * the bar, so its height is the bar's height, and the camera is framed
+       * from that (chromeInset, puzzle.ts). A real border and padding made it
+       * 47px and walked the machine 11px down those screens.
+       */
+      button.bare.shelf {
+        height: 36px; gap: 1px; align-content: start; padding: 3px 0 0;
+        background: var(--glass); border-radius: 10px;
+        box-shadow: 0 0 0 2px var(--frame), inset 0 0 0 1px var(--frame-inner), 0 3px 0 2px rgba(0,40,80,.35);
+      }
+      button.bare.shelf:hover { background: var(--card); }
+      button.bare.shelf svg { width: 19px; height: 19px; stroke-width: 2; }
+      button.bare.shelf span {
+        font-family: var(--body); font-size: 9px; font-weight: 600; line-height: 11px;
+        letter-spacing: .06em; text-transform: uppercase; color: var(--ink);
+      }
+
+      /*
+       * The balance, always on screen, so earning it means something.
+       *
+       * A pill, with a red block for a coin: the credit count is one of the
+       * things the attention colour is for, and a coloured number would be
+       * one more red word competing with the slot's. The block is drawn, not
+       * typed, so the chip's text is still exactly "N CR".
+       */
+      .credit-chip {
+        justify-self: end; margin-top: 7px;
+        display: flex; align-items: center; gap: 5px;
+        font-family: var(--display); font-size: 12px; font-weight: 800; line-height: 14px;
+        letter-spacing: .04em; color: var(--ink);
+        background: var(--glass); border: 2px solid var(--frame); border-radius: 999px;
+        padding: 4px 9px 4px 7px; box-shadow: var(--edge-soft);
+        white-space: nowrap;
+      }
+      .credit-chip::before {
+        content: ''; flex: none; width: 9px; height: 9px; border-radius: 2px;
+        background: var(--hot); box-shadow: inset 0 -2px 0 rgba(90,0,0,.28);
+      }
+
+      .masthead { text-align: center; padding-top: 4px; min-width: 0; }
+      /*
+       * The key art's wordmark: Montserrat at its heaviest, white, widely
+       * tracked, with the art's soft navy shadow under it.
+       *
+       * The glyphs are bigger than the line they sit in, on purpose. The line
+       * box is held at 27px — the height this bar had in Barlow — because the
+       * camera is framed from the bar's height (chromeInset, puzzle.ts), and a
+       * masthead that grew with its font would reframe the machine. Montserrat's
+       * caps are 0.7em, so at 32px they are 22px tall and sit inside the 27px
+       * box with a pixel or two to spare either side.
+       */
+      #machine-name {
+        font-family: var(--display); font-weight: 800; font-size: 32px; line-height: 27px;
+        letter-spacing: .14em; text-transform: uppercase; color: #fff;
+        text-shadow: var(--title-shadow);
+        /* Letter-spacing adds a trailing gap; the indent pulls the run back so
+           it reads centred rather than a third of a space left of it. */
+        text-indent: .14em;
+        /* One line, always. "BEAST MODE" is two letters longer than the word
+           this was sized for and wrapped onto the progress bar. */
+        white-space: nowrap;
+      }
+      /*
+       * The long names — the vehicle a machine folds into, up to "Hydrofoil
+       * Gunboat" — at a size that follows the width of the screen, because a
+       * geometric face at a fixed size either fits a phone and is lost on a
+       * monitor or fits the monitor and runs off the phone. The line box stays
+       * the 21px it always was for this step, so the bar is the same height
+       * after a fold as it was in Barlow.
+       */
+      #machine-name.long { font-size: clamp(14px, 4.4vw, 22px); line-height: 21px; letter-spacing: .05em; text-indent: .05em; }
+      /*
+       * The test drive writes its own ten-letter title straight into the
+       * masthead, without the long step, and at the full size "TEST DRIVE"
+       * is wider than the gap between the two buttons on a phone. Sized to
+       * the screen instead, and tracked a little tighter; KITBOT keeps the
+       * full size everywhere else.
+       */
+      #stage[data-mode='workshop'] ~ .overlay #machine-name:not(.long) { font-size: min(32px, 6.8vw); letter-spacing: .1em; text-indent: .1em; }
+
+      /*
+       * The progress bar is one segment per part.
+       *
+       * A continuous bar says "about two thirds". Segments say "nineteen of
+       * thirty-one", which is the number the player is actually counting — and
+       * on a twelve-part build you can see how many are left without reading
+       * the label at all.
+       *
+       * Blocks rather than rounded dashes, to match the voxel world: white
+       * for done, glass for to-do, and red for the one being worked on now —
+       * the first unlit block, found with a sibling selector, so the build
+       * code still only toggles "on".
+       */
+      #progress-track {
+        margin: 13px auto 0; display: flex; gap: 5px; justify-content: center;
+        max-width: min(72vw, 360px); flex-wrap: nowrap;
+      }
+      /* `display: flex` beats the browser's own rule for [hidden], and the
+         first run needs both halves of the readout gone. */
+      #progress-track[hidden] { display: none; }
+      .seg {
+        flex: 1 1 0; min-width: 3px; height: 6px; border-radius: 1.5px;
+        background: rgba(255,255,255,.42); box-shadow: inset 0 0 0 1px rgba(0,40,80,.3);
+        transition: background .18s ease, box-shadow .18s ease;
+      }
+      .seg.on { background: #fff; box-shadow: 0 2px 0 rgba(0,40,80,.38); }
+      .seg:first-child:not(.on),
+      .seg.on + .seg:not(.on) { background: var(--hot); box-shadow: 0 2px 0 rgba(110,10,10,.4); }
+
+      /*
+       * The part count, on glass. The pill's padding is paid for out of its
+       * margins, so the line takes the same 28px of the bar it always did.
+       */
+      #progress {
+        width: fit-content; max-width: 100%; margin: 8px auto -2px; padding: 2px 11px;
+        font-size: 15px; line-height: 18px; letter-spacing: .01em; color: var(--ink-soft);
+        white-space: nowrap;
+        background: var(--glass); border-radius: 999px;
+        box-shadow: 0 0 0 2px var(--frame), var(--edge-soft);
+      }
+      #progress b { color: var(--ink); font-weight: 600; }
+
+      /*
+       * The run of clean seats, shown only once it is worth showing.
+       *
+       * Under four it is noise — everybody gets three in a row — and a counter
+       * that is always on screen saying "1" reads as a thing you are failing
+       * at. It appears at four and grows, which makes its appearance the
+       * event rather than its value.
+       *
+       * ── Why it is on the progress line and not under it ──
+       *
+       * It had its own row, and appearing made the top bar 23px taller. The
+       * camera is fitted to what is left of the frame after the page's own
+       * chrome, so a taller bar reframes the machine — which meant the view
+       * jumped the moment a player got four in a row, and left the inspector
+       * measuring its camera against a page that had since changed shape.
+       * Inline, it cannot change the height of anything.
+       */
+      #streak {
+        margin-left: 10px; font-family: var(--mono); font-size: 11px;
+        letter-spacing: .2em; text-transform: uppercase; color: var(--azure);
+        /* inline-block so the bump can scale it; held to the line so showing
+           it cannot grow .topbar, which chromeInset() frames the camera from */
+        display: inline-block; line-height: 1; vertical-align: top;
+      }
+      #streak[hidden] { display: none; }
+      #streak b { font-size: 13px; font-weight: 700; color: var(--hot-ink); }
+      #streak.bump { animation: streak-bump .34s ease; }
+      @keyframes streak-bump {
+        0% { transform: scale(1); }
+        38% { transform: scale(1.22); }
+        100% { transform: scale(1); }
+      }
+
+      /*
+       * A limb finished, said over the machine rather than in the message bar.
+       *
+       * The message bar is where refusals and fitted-confirmations go, so it
+       * is the most ignored strip on the screen by the twentieth piece. This
+       * is deliberately somewhere else, bigger, and timed to the limb's own
+       * fold playing behind it.
+       *
+       * A framed plate with a red tag under it: it lands in the middle of the
+       * sky, where white type measures 1.4:1, so it brings its own ground.
+       */
+      #lockup {
+        position: fixed; left: 50%; top: 30%; transform: translate(-50%, -50%);
+        text-align: center; pointer-events: none; z-index: 6; opacity: 0;
+      }
+      #lockup[hidden] { display: none; }
+      #lockup .lock-what {
+        display: inline-block; white-space: nowrap;
+        font-family: var(--display); font-weight: 800; font-size: 22px; line-height: 26px;
+        letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
+        padding: 8px 18px 8px calc(18px + .08em); border-radius: 14px;
+        background: var(--card); border: 3px solid var(--frame);
+        box-shadow: inset 0 0 0 1.5px var(--frame-inner), var(--lift);
+      }
+      #lockup .lock-sub {
+        display: table; margin: 8px auto 0; padding: 3px 10px 3px calc(10px + .16em);
+        font-family: var(--display); font-weight: 800; font-size: 11px; line-height: 14px;
+        letter-spacing: .16em; text-transform: uppercase; color: #fff;
+        background: var(--hot-fill); border-radius: 999px; box-shadow: 0 2px 0 rgba(110,10,10,.4);
+      }
+      #lockup.show { animation: lockup 1.9s ease forwards; }
+      @keyframes lockup {
+        0% { opacity: 0; transform: translate(-50%, -34%); }
+        14% { opacity: 1; transform: translate(-50%, -50%); }
+        74% { opacity: 1; }
+        100% { opacity: 0; transform: translate(-50%, -58%); }
+      }
+
+      .spacer { flex: 1; min-height: 0; }
+
+      /* ── The lit slot, named ──────────────────────────────────────────── */
+      /*
+       * The most important label on the screen, and it floats over the lower
+       * sky — cloud, sea or horizon haze, whichever the turntable brings round
+       * — so it is a pill: glass, red type, and a red block beside the name
+       * that is the lit slot's own colour. Same trick as the part count for
+       * the height: the padding comes out of negative margins, so the bar is
+       * still 26px and the camera is framed exactly as it was.
+       */
+      .slotbar { display: flex; justify-content: center; padding: 0 16px 6px; }
+      #slot {
+        display: flex; align-items: center; gap: 7px;
+        margin: -3px 0; padding: 3px 13px 3px 10px; line-height: 20px;
+        font-family: var(--display); font-weight: 800; font-size: 15px;
+        letter-spacing: .06em; text-transform: uppercase; color: var(--hot-ink);
+        white-space: nowrap;
+        background: var(--glass); border-radius: 999px;
+        box-shadow: 0 0 0 2px var(--frame), var(--edge);
+      }
+      #slot::before {
+        content: ''; flex: none; width: 9px; height: 9px; border-radius: 2px;
+        background: var(--hot); box-shadow: 0 0 0 2px rgba(239,58,58,.22);
+      }
+      #slot:empty { display: none; }
+
+      /* ── Bottom hint ──────────────────────────────────────────────────── */
+      /*
+       * No scrim: the dark gradient that used to lift this off the floor
+       * would be a smear of night along the bottom of a daytime sky. The line
+       * is on a glass pill instead, and the hand glyph is pulled inside the
+       * pill's left end by a negative margin — so the bar's box, which the
+       * camera framing measures, is the same 50px it was.
+       */
+      .hintbar {
+        padding: 10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+      }
+      .hintbar svg {
+        position: relative; z-index: 1; flex: none; margin: 0 -40px 0 8px;
+        width: 22px; height: 22px; fill: none; stroke: var(--ink); stroke-width: 1.7;
+      }
+      .hintbar[hidden] { display: none; }
+      /* ── The bays ───────────────────────────────────────────────────── */
+      .bays { margin: 0 auto 14px; max-width: 1120px; }
+      .bays[hidden] { display: none; }
+      .bays-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+      .bay {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 12px; border: 2px solid var(--frame); border-radius: 14px;
+        background: var(--card); box-shadow: var(--edge-soft);
+      }
+      .bay-text { flex: 1; min-width: 0; }
+      .bay-name { font-family: var(--display); font-weight: 800; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+      .bay-sub { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+      .bay-sub b { color: var(--azure); }
+      .bay .action { padding: 7px 14px; font-size: 12px; }
+      .bay-drop {
+        border: 0; background: none; color: var(--ink-soft); font-size: 18px; line-height: 1;
+        padding: 6px 4px; cursor: pointer;
+      }
+      .bay-drop:hover { color: var(--hot-ink); }
+      /* ── The first run ──────────────────────────────────────────────── */
+      /*
+       * A card at the bottom, over a thin haze of the horizon's own colour,
+       * with the key art in miniature across its top.
+       *
+       * The haze is there to quieten what is behind the card — the side
+       * dock, the hint — without darkening the sky the fold is being watched
+       * against. It is kept low and light: at the 72% it once had, it hid
+       * the sea and the islands under the deck, and those are half of what
+       * says where this machine is.
+       */
+      .intro {
+        position: absolute; inset: 0; z-index: 40;
+        display: flex; align-items: flex-end; justify-content: center;
+        /* Clear down to the card's shoulders so the fold and the world under
+           it are watched; hazed only behind the card itself. */
+        background: linear-gradient(to bottom, rgba(218,251,237,0) 62%, rgba(218,251,237,.42) 82%, rgba(218,251,237,.72));
+        opacity: 1; transition: opacity .45s ease;
+        /* Only the panel takes taps: the machine behind it still turns. */
+        pointer-events: none;
+      }
+      .intro[hidden] { display: none; }
+      .intro.going { opacity: 0; }
+      .intro-body {
+        pointer-events: auto; position: relative; overflow: hidden;
+        width: calc(100% - 32px); max-width: 420px;
+        margin: 0 16px calc(16px + env(safe-area-inset-bottom, 0px));
+        /* The top padding clears the sky strip down to the kicker's middle,
+           so the red tag sits on the horizon line like a sign on the sea. */
+        padding: 36px 18px 18px;
+        display: flex; flex-direction: column; gap: 8px; text-align: center;
+        border: 4px solid transparent; border-radius: 20px;
+        background: linear-gradient(var(--card), var(--card)) padding-box, var(--frame-band) border-box;
+        box-shadow: inset 0 0 0 2px var(--frame-inner), var(--lift);
+      }
+      /*
+       * The art in a strip: sky from zenith to haze, a high cloud, white
+       * voxel clouds stacked at the right, the sea, and a voxel island with
+       * its tower on it. Drawn inline, so the card is complete on the frame
+       * it first appears. It is cropped from the middle on a phone and shown
+       * whole on a wider card.
+       */
+      .intro-sky {
+        position: absolute; left: 0; top: 0; width: 100%; height: 42px; display: block;
+        border-bottom: 2px solid var(--frame-inner);
+      }
+      .intro-kicker {
+        position: relative;
+        align-self: center; padding: 3px 10px 3px calc(10px + .16em); border-radius: 999px;
+        font-family: var(--display); font-weight: 800; font-size: 10px; line-height: 13px;
+        letter-spacing: .16em; color: #fff; background: var(--hot-fill); text-transform: uppercase;
+        box-shadow: 0 2px 0 rgba(110,10,10,.4);
+      }
+      .intro-name {
+        font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.1;
+        letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
+      }
+      .intro-line { font-size: 15px; color: var(--ink-soft); margin-bottom: 6px; }
+      .intro-go { width: 100%; }
+      .hint {
+        font-size: 15px; line-height: 18px; color: var(--ink); letter-spacing: .01em;
+        padding: 4px 16px 4px 40px; border-radius: 999px;
+        background: var(--glass); box-shadow: 0 0 0 2px var(--frame), var(--edge-soft);
+      }
+
+      /* ── The finish ───────────────────────────────────────────────────── */
+      /* Wraps, so the next card takes a row of its own above the buttons
+         rather than being squeezed into a third column beside them. */
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 0 16px 8px; }
+      /*
+       * Chunky and blocky, like everything in the art: a white block with a
+       * frame-cyan border and a hard navy underside, which presses down when
+       * it is pressed. The line is fixed at 17px and the border's extra pixel
+       * comes out of the padding, so the row is the 53px it was in Barlow.
+       */
+      button.action {
+        font-family: var(--display); font-weight: 800; letter-spacing: .08em; font-size: 13px; line-height: 17px;
+        text-transform: uppercase; padding: 12px 22px; border-radius: 12px;
+        border: 2px solid var(--frame); background: var(--card); color: var(--ink); cursor: pointer;
+        box-shadow: var(--edge);
+      }
+      button.action:hover { background: var(--card-tint); }
+      button.action:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,40,80,.35); }
+      button.action:disabled { cursor: default; }
+      button.action:disabled:active { transform: none; box-shadow: var(--edge); }
+      /*
+       * The primary: azure, white label. One per screen — the thing the
+       * screen is for — so the eye does not have to choose.
+       */
+      #btn-transform, #intro-go, #btn-next, #btn-forge, .today .action {
+        border-color: #05599a; color: #fff; background: var(--azure);
+      }
+      #btn-transform:hover, #intro-go:hover, #btn-next:hover, #btn-forge:hover, .today .action:hover { background: var(--azure-hi); }
+      #btn-transform:disabled { opacity: .45; cursor: default; }
+      #btn-transform[hidden] { display: none; }
+
+      /* ── Messages ─────────────────────────────────────────────────────── */
+      /*
+       * A white card with a tone badge rather than a tinted one. The badge is
+       * drawn by the stylesheet, so the message's text is still exactly what
+       * the game wrote. A refusal is ink with a cross — never red, which is
+       * the lit slot's colour, and a refusal that looked like the slot would
+       * read as "yes, here".
+       */
+      #message {
+        position: fixed; left: 50%; top: 24%; transform: translateX(-50%);
+        display: flex; align-items: center; gap: 9px;
+        padding: 8px 16px 8px 10px; border-radius: 14px; font-size: 14px; line-height: 18px; letter-spacing: .02em;
+        /* One line when it fits, wrapped inside the screen when it does not:
+           a mode's opening line can run to eighty characters, and on one
+           line a white card is cut off at both edges of a phone. */
+        width: max-content; max-width: min(calc(100vw - 24px), 560px);
+        opacity: 0; pointer-events: none; z-index: 5;
+        color: var(--ink); background: var(--card); border: 2px solid var(--frame);
+        box-shadow: var(--lift);
+      }
+      #message:empty { padding: 0; border: 0; }
+      #message[data-tone]::before {
+        content: ''; flex: none; width: 20px; height: 20px; border-radius: 6px;
+        display: grid; place-items: center;
+        font-family: var(--display); font-weight: 800; font-size: 15px; line-height: 1; color: #fff;
+      }
+      #message[data-tone='no'] { border-color: var(--ink); }
+      #message[data-tone='no']::before { content: '\00d7'; background: var(--ink); }
+      #message[data-tone='ok']::before { background: var(--ok); }
+      /* The tick is drawn as two borders of a rotated box, so it needs no glyph. */
+      #message[data-tone='ok']::after {
+        content: ''; position: absolute; left: 17px; top: 50%; width: 5px; height: 10px;
+        margin-top: -7px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg);
+      }
+      #message.show { animation: flash 1.9s ease forwards; }
+      @keyframes flash { 0% { opacity: 0; } 12% { opacity: 1; } 72% { opacity: 1; } 100% { opacity: 0; } }
+
+      /* ── The boot screen ──────────────────────────────────────────────── */
+      /*
+       * The key art, in markup: the sky, a framed tile of it, the wordmark,
+       * a few voxel clouds and the robot's head. Nothing here is fetched —
+       * the clouds and the head are inline SVG and the rest is CSS — so it is
+       * all on the first frame the browser paints.
+       */
+      #boot {
+        position: fixed; inset: 0; z-index: 40;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        background: var(--sky-horizon) var(--sky); color: #fff;
+        /* Its own fallback: if the page never takes it down, it goes anyway. */
+        animation: boot-give-up 0s linear 14s forwards;
+      }
+      #boot.gone { opacity: 0; pointer-events: none; transition: opacity .45s ease; }
+      @keyframes boot-give-up { to { opacity: 0; pointer-events: none; } }
+      /*
+       * The tile: the art's frame, measured off it — an outer band graded
+       * from light to deeper cyan, a pale inner ring, and a thin dark line
+       * where the picture starts. The ring and the line are an overlay above
+       * the clouds, as they are in the art, rather than under them.
+       */
+      .boot-card {
+        position: relative; overflow: hidden;
+        width: min(84vw, 58vh, 440px); aspect-ratio: 1;
+        display: flex; flex-direction: column; align-items: center;
+        border: 7px solid transparent; border-radius: 28px;
+        background:
+          linear-gradient(180deg, var(--sky-zenith) 0%, #0780c7 12%, var(--sky-high) 20%, #14b7df 30%, var(--sky-mid) 33%, #2adae9 40%, var(--sky-aqua) 50%, #b9f8e5 60%, var(--sky-horizon) 64%, #a6eef2 65%, #89e1ef 72%, #67d1ea 80%) padding-box,
+          var(--frame-band) border-box;
+        box-shadow: 0 20px 44px -14px rgba(0,22,48,.5);
+      }
+      .boot-card::after {
+        content: ''; position: absolute; inset: 0; border-radius: 21px; pointer-events: none;
+        box-shadow: inset 0 0 0 2px var(--frame-inner), inset 0 0 0 3px rgba(0,40,80,.35);
+      }
+      .boot-sky { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .boot-sky .drift-a { animation: boot-drift 14s ease-in-out infinite alternate; }
+      .boot-sky .drift-b { animation: boot-drift 19s ease-in-out -6s infinite alternate-reverse; }
+      .boot-sky .bob { animation: boot-bob 2.6s ease-in-out infinite; }
+      @keyframes boot-drift { from { transform: translateX(-3px); } to { transform: translateX(3px); } }
+      @keyframes boot-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.2px); } }
+      .boot-name {
+        position: relative; margin-top: 11%;
+        font-family: var(--display); font-weight: 800; font-size: min(9.4vw, 6.4vh, 50px); line-height: 1;
+        letter-spacing: .14em; text-transform: uppercase; padding-left: .14em;
+        color: #fff; text-shadow: var(--title-shadow);
+      }
+      .boot-bar {
+        position: relative; margin-top: 5.5%;
+        width: 46%; height: 6px; border-radius: 1.5px;
+        background: rgba(255,255,255,.28); overflow: hidden;
+        box-shadow: inset 0 0 0 1px rgba(0,40,80,.28);
+      }
+      .boot-bar i {
+        display: block; width: 34%; height: 100%; border-radius: 1.5px;
+        background: #fff; box-shadow: 0 0 0 1px rgba(0,40,80,.18);
+        animation: boot-sweep 1.15s ease-in-out infinite;
+      }
+      @keyframes boot-sweep {
+        0% { transform: translateX(-110%); }
+        100% { transform: translateX(310%); }
+      }
+      .boot-note {
+        position: absolute; bottom: 6.5%; left: 50%; transform: translateX(-50%);
+        white-space: nowrap; padding: 4px 12px 4px calc(12px + .2em); border-radius: 999px;
+        font-family: var(--mono); font-size: 11px; line-height: 14px; letter-spacing: .2em;
+        text-transform: uppercase; color: var(--ink);
+        background: var(--glass); box-shadow: 0 0 0 2px var(--frame), var(--edge-soft);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .boot-bar i { animation: none; width: 100%; }
+        .boot-sky .drift-a, .boot-sky .drift-b, .boot-sky .bob { animation: none; }
+      }
+
+      /*
+       * The marker over the lit slot.
+       *
+       * Red, like the slot, and ringed in white both sides: the ring crosses
+       * azure sky, cyan sky, white cloud and the machine's own white and red
+       * panels in one turn of the turntable, and white-and-red is the pair
+       * that separates from every one of those. A glow did this job on the
+       * dark floor; on a bright sky a glow is just a smudge.
+       */
+      #ring {
+        position: fixed; left: 0; top: 0; width: 92px; height: 92px; margin: -46px 0 0 -46px;
+        border: 3px solid var(--hot); border-radius: 50%; pointer-events: none; z-index: 4;
+        box-shadow: 0 0 0 2px rgba(255,255,255,.9), inset 0 0 0 2px rgba(255,255,255,.75), 0 3px 10px rgba(0,22,48,.25);
+        animation: pulse 1.6s ease-in-out infinite;
+      }
+      @keyframes pulse { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+      /*
+       * Within reach of the slot the ring stops breathing and goes solid. The
+       * change of state is the promise that a release here will be accepted —
+       * a marker that keeps pulsing says "look here", one that locks says
+       * "let go".
+       */
+      #ring.near {
+        animation: none; opacity: 1;
+        border-width: 5px;
+        background: rgba(239,58,58,.14);
+        box-shadow: 0 0 0 2.5px #fff, inset 0 0 0 2px rgba(255,255,255,.85), 0 3px 12px rgba(0,22,48,.3);
+      }
+
+      /* ── Inspecting a part ────────────────────────────────────────────── */
+      /* ── Garage ────────────────────────────────────────────────────────── */
+      /*
+       * The sky as the sheet, and the machines on white framed cards on it.
+       *
+       * Still solid, not a scrim. At 97% the title and the hint bar behind it
+       * were still legible through the sheet, which made the garage read as a
+       * dialog over the build rather than as somewhere else. The gradient is
+       * pinned to the sheet rather than to its contents, so it stays put and
+       * the cards scroll over it; its top 72px are flat zenith, which is what
+       * lets the sticky head below be a solid colour and still match.
+       */
+      #garage {
+        position: absolute; inset: 0; z-index: 6; pointer-events: auto;
+        background: var(--sky-horizon) linear-gradient(180deg, var(--sky-zenith) 0, var(--sky-zenith) 72px, var(--sky-high) 22%, #14b7df 40%, var(--sky-mid) 46%, #2adae9 58%, var(--sky-aqua) 74%, #b9f8e5 90%, var(--sky-horizon) 100%);
+        display: flex; flex-direction: column; gap: 14px;
+        padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(16px + env(safe-area-inset-bottom, 0px));
+        overflow-y: auto; touch-action: pan-y;
+      }
+      #garage[hidden] { display: none; }
+      /*
+       * Fixed, so it stays at the foot of the screen while the cards scroll
+       * over it, and at z-index -1 inside the sheet's own stacking context:
+       * above the sheet's sky, under everything in the sheet. Out of the
+       * flex flow, so it takes no gap and moves nothing.
+       */
+      .garage-sky {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: -1;
+        width: 100%; height: min(34vh, 300px); display: block; pointer-events: none;
+      }
+      /*
+       * Pinned to the top of the sheet, not scrolled away with it.
+       *
+       * The garage scrolls, and the head was an ordinary first child of it, so
+       * at twelve machines on a desktop the title, the credit count and the
+       * passkey all left the screen before the second shelf arrived. The two
+       * things in this bar are the two that have to stay reachable: what you
+       * can afford, and the switch that opens the catalogue.
+       */
+      .garage-head {
+        display: flex; align-items: center; justify-content: space-between; gap: 10px;
+        position: sticky; top: 0; z-index: 2;
+        /* Opaque, or the cards scroll visibly through the title — and the
+           zenith, so it is the same blue as the sheet it sits on. */
+        background: var(--sky-zenith);
+        padding: 2px 0 10px;
+        border-bottom: 1px solid rgba(174,248,254,.35);
+        /*
+         * It sticks inside the sheet's top padding, not at the very top of
+         * the screen, so a strip of scrolled cards used to show above it.
+         * The first shadow is the head's own blue raised by exactly that
+         * padding, which closes the strip without moving anything; the
+         * second is a soft edge under the head for the cards to go under.
+         */
+        box-shadow: 0 calc(-16px - env(safe-area-inset-top, 0px)) 0 var(--sky-zenith), 0 12px 14px -12px rgba(0,22,48,.45);
+      }
+      /* Wraps: on a phone the two switches and the balance are wider than
+         the head, and the balance is the one that must not be cut off. */
+      .garage-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+      /*
+       * Deliberately not styled as one of the game's own controls.
+       *
+       * Small caps on a plain pill, in a style nothing else uses for an
+       * action — so it reads as a switch on the workbench rather than as
+       * something the game is offering you. The passkey only ever exists
+       * while the dev server is running, and it should look like it. The
+       * sound switch shares the pill because it is the same kind of thing: a
+       * setting, not a move in the game.
+       */
+      .passkey {
+        font-family: var(--mono); font-size: 10px; line-height: 13px; letter-spacing: .1em;
+        text-transform: uppercase; color: var(--ink);
+        background: var(--glass); border: 1px solid var(--frame); border-radius: 999px;
+        padding: 5px 9px; cursor: pointer; white-space: nowrap;
+      }
+      .passkey:hover { background: var(--card); border-color: var(--frame-deep); }
+      .passkey[hidden] { display: none; }
+      .garage-title {
+        font-family: var(--display); font-weight: 800; font-size: 22px; line-height: 1.1;
+        letter-spacing: .12em; text-transform: uppercase; color: #fff;
+        text-shadow: var(--title-shadow);
+      }
+      #credits {
+        display: flex; align-items: center; gap: 6px;
+        font-family: var(--display); font-weight: 800; font-size: 12px; line-height: 15px; color: var(--ink);
+        background: var(--glass); border: 2px solid var(--frame); border-radius: 999px; padding: 2px 9px 2px 7px;
+      }
+      #credits::before {
+        content: ''; flex: none; width: 9px; height: 9px; border-radius: 2px;
+        background: var(--hot); box-shadow: inset 0 -2px 0 rgba(90,0,0,.28);
+      }
+      /*
+       * A gallery, not a list.
+       *
+       * Seven full-width rows on a desktop spend two thousand pixels of width
+       * to say a sentence each, and the machine — the thing being chosen —
+       * gets a thumbnail the size of a favicon. Laid out as cards, the width
+       * goes to the pictures instead, and the same rule gives two columns on a
+       * phone and six on a monitor without a breakpoint between them.
+       */
+      #garage-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+        gap: 12px;
+        align-items: stretch;
+        /*
+         * Capped and centred. Left to fill a monitor the row makes nine
+         * columns for five machines and the catalogue reads as mostly empty
+         * shelf; worse, each card shrinks to the minimum and the picture with
+         * it. A ceiling keeps the cards at a size worth looking at and lets
+         * the page breathe either side of them.
+         */
+        /*
+         * `width` as well as `max-width`, because the sheet is a column flex
+         * container and an auto side margin on a flex item cancels the stretch
+         * that would otherwise have given this its width. Without it the grid
+         * had no width to resolve against, sized itself to its content, and
+         * laid six columns across a phone — five of them off the screen.
+         */
+        width: 100%;
+        max-width: 1120px;
+        margin: 0 auto;
+      }
+
+      /*
+       * A shelf label. Quiet, because it divides the list rather than competing
+       * with the names on it — but on a glass tag, because the sheet under it
+       * runs from zenith blue to horizon haze and no single ink reads on both.
+       */
+      .shelf-head {
+        grid-column: 1 / -1; justify-self: start; width: fit-content;
+        font-family: var(--body); font-size: 11px; font-weight: 700; line-height: 14px;
+        letter-spacing: .22em; text-transform: uppercase; color: var(--ink);
+        margin: 10px 2px 0; padding: 3px 10px 3px calc(10px + .22em); border-radius: 999px;
+        background: var(--glass); box-shadow: 0 0 0 1.5px var(--frame);
+      }
+      .shelf-head:first-child { margin-top: 0; }
+      /*
+       * The card: white, the frame's band as its border with the pale ring
+       * inside it, a soft navy drop under it. The art's frame at the size of
+       * a card is the whole of the key art's chrome, repeated.
+       */
+      .rig {
+        display: flex; flex-direction: column; gap: 8px;
+        border: 3px solid transparent; border-radius: 16px;
+        background: linear-gradient(var(--card), var(--card)) padding-box, var(--frame-band) border-box;
+        box-shadow: inset 0 0 0 1.5px var(--frame-inner), var(--lift);
+        padding: 9px;
+      }
+      /* The one you are building shows it, so the garage never leaves you
+         wondering which machine the build behind it belongs to. Red, because
+         it is the one: the same colour as the lit slot it is waiting with. */
+      .rig[data-state='current'] {
+        background: linear-gradient(var(--card-tint), var(--card-tint)) padding-box, linear-gradient(var(--hot), var(--hot)) border-box;
+        box-shadow: inset 0 0 0 1.5px rgba(239,58,58,.18), var(--lift);
+      }
+      /*
+       * The machine itself, rendered by `scripts/thumbs.mjs`.
+       *
+       * A catalogue of seven names told you nothing a name could not: a hauler
+       * and a harness are both a word and a part count until you see one. The
+       * picture is what is being chosen, so it takes the whole width of the
+       * card and sets its own height — square, because the renderer frames
+       * every machine into a square and a card that matched each machine's
+       * shape would leave the row ragged.
+       *
+       * Transparent PNGs, so the card's own background shows through and the
+       * gallery survives a change of palette without re-rendering. Here that
+       * background is a window of sky with a voxel cloud in it (--pic-sky),
+       * so every card is a small copy of the key art: a machine, in the blue.
+       */
+      .rig-pic {
+        width: 100%; aspect-ratio: 1; display: block;
+        /* Contain, not cover: a wide jet and a narrow bike are different
+           shapes and cropping them to a common box would hide exactly the
+           difference the picture is here to show. */
+        object-fit: contain;
+        border-radius: 10px;
+        background: var(--pic-sky);
+        box-shadow: inset 0 0 0 1px rgba(0,40,80,.18);
+      }
+      /* A machine with no picture yet leaves a gap rather than a broken-image
+         glyph; the rest of the card still reads. */
+      .rig-pic:not([src]) { visibility: hidden; }
+      .rig-name {
+        font-family: var(--display); font-weight: 800; font-size: 15px;
+        letter-spacing: .04em; text-transform: uppercase; color: var(--ink);
+        line-height: 1.15;
+      }
+      /*
+       * How long the build is, as a word beside the name.
+       *
+       * Outlined rather than filled, and never in the primary blue: blue on
+       * this screen means "you can buy this", and a tier badge competing with
+       * the price for the same colour would make a long build look like a
+       * bargain. Green, amber, red, darkening as the build gets longer, so
+       * the order reads without reading the words; each is a text-safe shade.
+       */
+      /*
+       * On its own line, always.
+       *
+       * Sitting it beside the name let it ride up alongside the short ones and
+       * drop below the long ones, so a row of cards had its badges at two
+       * different heights and looked misaligned rather than varied. A card is
+       * read down its left edge; the badge belongs on that column.
+       */
+      .rig-tier {
+        align-self: flex-start;
+        font-family: var(--body); font-size: 9px; font-weight: 700;
+        letter-spacing: .12em; text-transform: uppercase;
+        padding: 2px 6px; border-radius: 999px;
+        border: 1.5px solid currentColor; color: var(--ok);
+        white-space: nowrap; flex: none; margin-top: -2px;
+      }
+      .rig-tier[data-tier='Intermediate'] { color: var(--amber-ink); }
+      .rig-tier[data-tier='Advanced'] { color: var(--hot-ink); }
+      /*
+       * Clamped to three lines. The blurbs run to two sentences, and in a
+       * narrow column that is the difference between a card and a paragraph —
+       * which would leave every row as tall as its wordiest machine.
+       */
+      .rig-sub {
+        font-size: 12px; color: var(--ink-soft); line-height: 1.35;
+        display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+        overflow: hidden;
+      }
+      /* Pinned to the bottom, so the buttons line up across a row whatever
+         the blurbs above them did. */
+      .rig-act { margin-top: auto; }
+      .rig-act button {
+        width: 100%;
+        font-family: var(--display); font-weight: 800; font-size: 12px; line-height: 15px;
+        letter-spacing: .06em; text-transform: uppercase;
+        border: 2px solid var(--frame); border-radius: 10px; padding: 8px 10px;
+        background: var(--card); color: var(--ink); cursor: pointer; white-space: nowrap;
+        box-shadow: var(--edge-soft);
+      }
+      .rig-act button:hover { background: var(--card-tint); }
+      .rig-act button.buy { border-color: #05599a; background: var(--azure); color: #fff; }
+      .rig-act button.buy:hover { background: var(--azure-hi); }
+      /* Out of reach, not broken: the price stays readable, the block goes flat. */
+      .rig-act button:disabled,
+      .rig-act button.buy:disabled {
+        cursor: default; box-shadow: none;
+        background: var(--card-tint); border-color: var(--line); color: var(--ink-soft);
+      }
+      .rig-act .owned {
+        display: block; text-align: center; padding: 9px 0;
+        font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+        text-transform: uppercase; color: var(--ink-soft);
+      }
+
+      /* ── The daily ────────────────────────────────────────────────────── */
+      /* The featured card: the same frame as the machines', with a red tag
+         for a heading so it reads as today's and not as one more machine. */
+      .today {
+        display: grid; grid-template-columns: 72px 1fr auto; align-items: center; gap: 12px;
+        border: 3px solid transparent; border-radius: 16px;
+        background: linear-gradient(var(--card), var(--card)) padding-box, var(--frame-band) border-box;
+        box-shadow: inset 0 0 0 1.5px var(--frame-inner), var(--lift);
+        padding: 9px 11px;
+        margin: 4px auto 12px; max-width: 1120px;
+      }
+      .today-pic { width: 72px; height: 72px; object-fit: contain; border-radius: 10px; background: var(--pic-sky); }
+      .today .shelf-head {
+        margin: 0 0 3px; padding: 2px 8px 2px calc(8px + .2em); font-size: 10px; line-height: 13px; letter-spacing: .2em;
+        color: #fff; background: var(--hot-fill); box-shadow: none;
+      }
+      .today-name { font-family: var(--display); font-weight: 800; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+      .today-sub { font-size: 12px; color: var(--ink-soft); line-height: 1.35; }
+      .today-sub b { color: var(--ink); }
+      @media (max-width: 480px) { .today { grid-template-columns: 56px 1fr; } .today .action { grid-column: 1 / -1; } .today-pic { width: 56px; height: 56px; } }
+      /* The daily's clock, under the part count and on the same glass. The
+         padding comes out of the margins, as the part count's does. */
+      #clock {
+        width: fit-content; margin: 1px auto -1px; padding: 1px 9px; border-radius: 999px;
+        font-family: var(--mono); font-size: 12px; letter-spacing: .12em; color: var(--ink-soft);
+        background: var(--glass); box-shadow: 0 0 0 2px var(--frame);
+      }
+      #clock[data-tone='ahead'] { color: var(--ok); }
+      #clock[data-tone='behind'] { color: var(--ember-ink); }
+      #clock[hidden] { display: none; }
+      .daily-line { font-size: 14px; color: var(--ink-soft); }
+      .daily-line b { color: var(--azure); font-family: var(--mono); font-size: 16px; }
+      .daily-line small { color: var(--ink-soft); }
+
+      /* ── Stars and the tier pill ──────────────────────────────────────── */
+      .rig-stars { font-size: 13px; letter-spacing: .18em; color: var(--amber-ink); margin-top: -4px; }
+      .tier-pill { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+        border: 1.5px solid var(--line); border-radius: 999px; padding: 2px; background: var(--card-tint); }
+      .tier-cell {
+        font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+        border: 0; border-radius: 999px; padding: 6px 0; background: none; color: var(--ink-soft); cursor: pointer;
+      }
+      .tier-cell[aria-checked='true'] { background: var(--azure); color: #fff; font-weight: 700; }
+      .tier-cell:disabled { opacity: .45; cursor: default; }
+
+      /* ── Lights out ───────────────────────────────────────────────────── */
+      /* The slot bar becomes a button once a hint can be bought from it. */
+      /* The chrome lets touches through to the canvas; a bar that sells a
+         hint has to take its own — and says so with a tag at the end of the
+         pill, drawn by the stylesheet so the slot's text stays the part name.
+         The bar grows by the 3px the old dashed underline and its gap took,
+         so a hint going on sale frames the camera exactly as it always has. */
+      #slot.hintable { cursor: pointer; pointer-events: auto; margin-bottom: 0; }
+      #slot.hintable::after {
+        content: '?'; flex: none; width: 17px; height: 17px; margin-right: -5px; border-radius: 50%;
+        display: grid; place-items: center;
+        font-family: var(--display); font-weight: 800; font-size: 11px; line-height: 1; letter-spacing: 0;
+        color: #fff; background: var(--azure);
+      }
+      /* Amber for the middle third, ember for the last: the bar and the
+         progress track say which aids are still on without a word. */
+      body[data-phase='2'] #slot { color: var(--amber-ink); }
+      body[data-phase='2'] #slot::before { background: #f59e0b; box-shadow: 0 0 0 2px rgba(245,158,11,.25); }
+      body[data-phase='3'] #slot { color: var(--ember-ink); }
+      body[data-phase='3'] #slot::before { background: #f97316; box-shadow: 0 0 0 2px rgba(249,115,22,.25); }
+      body[data-phase='2'] .seg.on { background: #ffc233; }
+      body[data-phase='3'] .seg.on { background: #ff8a4c; }
+
+      /* ── The next card ────────────────────────────────────────────────── */
+      .next-card {
+        flex: 1 1 100%;
+        display: flex; flex-direction: column; gap: 8px; align-items: center;
+        /* Clear of the side dock on a phone, which sits over the right edge. */
+        max-width: min(420px, calc(100vw - 104px)); margin: 0 auto 2px;
+        background: var(--card); border: 2px solid var(--frame); border-radius: 14px;
+        box-shadow: inset 0 0 0 1px var(--frame-inner), var(--lift);
+        /* One pixel of padding each side for the border's second pixel, so
+           the card is as tall as it was and the row with it. */
+        padding: 9px 13px; font-size: 13px; color: var(--ink-soft); line-height: 1.35; text-align: center;
+      }
+      .next-card[hidden] { display: none; }
+      .next-card b { color: var(--ink); }
+      .next-card .action { width: 100%; }
+
+      /* ── Modes ────────────────────────────────────────────────────────── */
+      .mode-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+      .mode-row[hidden] { display: none; }
+      .garage-modes { margin: 0 auto 12px; max-width: 1120px; justify-content: flex-start; }
+      /* Four across a phone, two to a row, as they were in the narrower face. */
+      .garage-modes button.action { padding: 10px 13px; font-size: 12px; letter-spacing: .04em; }
+      button.action.mode { color: var(--azure); }
+      #mode-dock {
+        position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; pointer-events: none;
+        display: flex; flex-direction: column; align-items: center; gap: 8px;
+        padding: 0 16px calc(148px + env(safe-area-inset-bottom, 0px));
+      }
+      #mode-dock[hidden] { display: none; }
+      #mode-dock > * { pointer-events: auto; }
+      .mode-readout {
+        font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+        color: var(--ink); background: var(--glass); border: 2px solid var(--frame);
+        border-radius: 999px; padding: 5px 13px;
+      }
+      .mode-readout b { color: var(--azure); }
+
+      /* ── The forge ────────────────────────────────────────────────────── */
+      .forge {
+        display: flex; flex-direction: column; gap: 10px;
+        border: 3px solid transparent; border-radius: 16px;
+        background: linear-gradient(var(--card), var(--card)) padding-box, var(--frame-band) border-box;
+        box-shadow: inset 0 0 0 1.5px var(--frame-inner), var(--lift);
+        padding: 9px 11px 11px;
+        margin: 4px 0 12px; max-width: 1120px; margin-left: auto; margin-right: auto;
+      }
+      /* `display: flex` above beats the browser's own rule for [hidden], and a
+         build with no donors has to lose the panel and its heading outright. */
+      .forge[hidden] { display: none; }
+      .forge .shelf-head { margin: 0; padding: 0; background: none; box-shadow: none; }
+      .forge-blurb { font-size: 12px; color: var(--ink-soft); line-height: 1.35; margin-top: -4px; }
+      /* Shut: one line about what would open it, and nothing to press. */
+      .forge[data-state='shut'] { opacity: .8; }
+      .forge-rows[hidden], .forge-foot[hidden] { display: none; }
+      .forge-rows { display: grid; gap: 6px; }
+      /* Label, back, picture, name, forward: a row reads left to right as
+         "the head is ... the Templar's". The picture is the argument. */
+      .forge-row {
+        display: grid; grid-template-columns: 76px 36px 44px 1fr 36px; align-items: center; gap: 8px;
+        border: 1.5px solid var(--line); border-radius: 12px; padding: 4px 6px; background: var(--card-tint);
+      }
+      .forge-row[data-state='locked'] { border-style: dashed; background: var(--card); }
+      .forge-row[data-state='locked'] .forge-donor { color: var(--ink-soft); }
+      .forge-label {
+        font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+      .forge-pic {
+        width: 44px; height: 44px; object-fit: contain; border-radius: 8px;
+        background: var(--pic-sky);
+      }
+      .forge-donor {
+        font-family: var(--display); font-weight: 800; font-size: 13px;
+        letter-spacing: .04em; text-transform: uppercase; color: var(--ink);
+      }
+      .forge-donor small { font-family: var(--mono); font-weight: 400; font-size: 10px; letter-spacing: .1em; color: var(--azure); }
+      .forge-step {
+        width: 36px; height: 36px; border: 2px solid var(--frame); border-radius: 10px;
+        background: var(--card); color: var(--ink); font-size: 22px; line-height: 1; cursor: pointer;
+        box-shadow: var(--edge-soft);
+      }
+      .forge-step:hover { background: var(--card-tint); }
+      .forge-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 2px; }
+      .forge-title { display: flex; flex-direction: column; min-width: 0; }
+      #forge-name {
+        font-family: var(--display); font-weight: 800; font-size: 18px;
+        letter-spacing: .06em; text-transform: uppercase; color: var(--azure);
+      }
+      #forge-donors { font-size: 11px; color: var(--ink-soft); }
+      #btn-forge { flex: none; }
+      #btn-forge:disabled { opacity: .45; cursor: default; }
+
+      /* ── The scrapyard switch ─────────────────────────────────────────── */
+      .scrap-switch {
+        display: flex; align-items: flex-start; gap: 10px;
+        border: 2px solid var(--frame); border-radius: 14px;
+        background: var(--card); padding: 10px 12px; box-shadow: var(--edge-soft);
+        margin: 0 auto 12px; max-width: 1120px;
+        font-size: 12px; color: var(--ink-soft); line-height: 1.35; cursor: pointer;
+      }
+      .scrap-switch b { color: var(--ink); letter-spacing: .06em; text-transform: uppercase; font-size: 11px; }
+      .scrap-switch input { margin-top: 2px; accent-color: var(--azure); width: 18px; height: 18px; flex: none; }
+
+      /*
+       * Holding a part up to look at it.
+       *
+       * The scene is washed toward navy at the edges rather than darkened
+       * all over: a dark vignette on a daytime sky reads as the lights going
+       * out, where a soft edge reads as the eye closing in on the part. The
+       * words are on glass, as everything over the scene is.
+       */
+      #inspect {
+        position: absolute; inset: 0; z-index: 4; pointer-events: auto;
+        display: flex; flex-direction: column; justify-content: flex-end;
+        align-items: center; gap: 14px; padding-bottom: 16%;
+        background: radial-gradient(60% 40% at 50% 46%, rgba(10,46,77,0) 0%, rgba(10,46,77,.12) 55%, rgba(10,46,77,.4) 100%);
+        touch-action: none;
+      }
+      #inspect[hidden] { display: none; }
+      #inspect-name {
+        font-family: var(--display); font-weight: 800; font-size: 18px; line-height: 22px;
+        letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
+        padding: 7px 16px 7px calc(16px + .08em); border-radius: 12px;
+        background: var(--card); border: 2px solid var(--frame); box-shadow: var(--lift);
+      }
+      #inspect-name:empty { display: none; }
+      #inspect-hint {
+        font-size: 14px; color: var(--ink); padding: 3px 12px; border-radius: 999px;
+        background: var(--glass); box-shadow: 0 0 0 2px var(--frame);
+      }
+      #inspect-square {
+        font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .12em;
+        text-transform: uppercase; color: #fff; background: var(--ok);
+        padding: 4px 11px; border-radius: 999px; box-shadow: 0 2px 0 rgba(0,50,20,.35);
+      }
+      #inspect-square[hidden] { display: none; }
+      /*
+        Carrying a piece that has been pulled out of the inspector. The overlay
+        holds the pointer capture for the whole gesture, so it cannot be hidden
+        — it goes see-through and keeps feeding the carry instead.
+      */
+      #inspect.pulling { background: none; }
+      #inspect.pulling #inspect-name, #inspect.pulling #inspect-hint { opacity: 0; }
+
+      /* ── The wheel's own controls, beside the wheel ───────────────────── */
+      /*
+       * Below the wheel rather than on it. Centred vertically the buttons land
+       * squarely on two of the five cells, and a control you have to reach
+       * through is worse than one a little further away.
+       *
+       * One glass plate for both lines, and its padding is a spread shadow
+       * rather than padding: the plate's box is the same size it was, so the
+       * inspector's tap tests, which treat this box as a blocker, see the same
+       * rectangle they always did.
+       */
+      #pager {
+        position: absolute; left: 14px; bottom: 19%;
+        display: flex; align-items: center; gap: 10px; z-index: 3;
+        background: var(--glass); border-radius: 6px;
+        box-shadow: 0 0 0 6px var(--glass), 0 0 0 8px var(--frame), 0 8px 16px 4px rgba(0,22,48,.16);
+        transition: box-shadow .18s ease;
+      }
+      #pager[hidden] { display: none; }
+      #pager { flex-direction: column; align-items: flex-start; gap: 3px; }
+      #page { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
+      #front-name {
+        font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em;
+        text-transform: uppercase; color: var(--ink); white-space: nowrap;
+        transition: color .18s ease;
+      }
+      /* The one it is asking for. Same red the lit slot and the drop ring use,
+         so "this is the one" is the same colour everywhere it is said — on
+         the name, and on the plate's ring. */
+      #front-name.wanted { color: var(--hot-ink); }
+      #pager:has(#front-name.wanted) { box-shadow: 0 0 0 6px var(--glass), 0 0 0 9px var(--hot), 0 8px 16px 4px rgba(0,22,48,.16); }
+
+      /* ── Which room you are in ────────────────────────────────────────── */
+      /*
+       * The right gutter, on the pager's line.
+       *
+       * The camera carries a 12% bias that stands the machine right of centre
+       * but well short of the edge, so this strip is the one part of the frame
+       * nothing else wants: the rail has the left, the machine has the middle,
+       * and the button row at the bottom grows a second button the moment the
+       * build lands — three across 390px do not fit, and a view control that
+       * has to budge for the reward is a view control in the wrong place.
+       *
+       * Absolutely positioned like the pager rather than added to the overlay
+       * column, so it never enters `chromeInset()` and the machine loses no
+       * framing height to it.
+       */
+      #sidedock {
+        position: absolute; right: 14px; bottom: 19%;
+        display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+        z-index: 3;
+        /* Outside .overlay, so the rule that hands pointers back to the canvas
+           does not reach here and has to be written out. */
+        pointer-events: none;
+      }
+      /*
+       * Out of the way while the first-run card is up. The dock stacks above
+       * the overlay the card lives in, and on a phone its lower pill lands on
+       * the card's top corner — locked and faded, but still a grey blot on
+       * the one panel the first minute is about. Hidden, not removed, so
+       * nothing the dock measures or holds changes.
+       */
+      .app:has(#intro:not([hidden])) #sidedock { visibility: hidden; }
+      #rooms {
+        display: flex; flex-direction: column; align-items: flex-end; gap: 7px;
+        position: relative;
+      }
+      #rooms[hidden] { display: none; }
+      #apart-dock[hidden] { display: none; }
+      /*
+       * The Garage cell and the Pull-apart toggle: the two controls left on
+       * `#sidedock` that are not the scene picker. `#sidedock` itself hands
+       * pointers back to the canvas (see above), so — like `#scene-current` —
+       * each needs its own `pointer-events: auto` or a tap on either falls
+       * through to the machine underneath.
+       */
+      .switch {
+        display: flex; flex-direction: column;
+        border: 2px solid var(--frame); border-radius: 23px;
+        background: var(--glass);
+        box-shadow: var(--edge-soft);
+        overflow: hidden;
+      }
+      button.room {
+        pointer-events: auto; position: relative;
+        width: 42px; height: 42px; padding: 0;
+        border: 0; background: none; color: var(--ink);
+        display: grid; place-items: center; cursor: pointer;
+      }
+      button.room svg {
+        width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2;
+      }
+      button.room:hover { background: var(--card-tint); }
+      button.room:disabled { opacity: .35; cursor: default; }
+      /* Pull-apart is a toggle, and reads pressed the same way a scene cell does. */
+      button.room[aria-pressed='true'] {
+        color: #fff;
+        background: var(--azure);
+        transition: background .18s ease, color .18s ease;
+      }
+      button.room[aria-pressed='true']:hover { background: var(--azure-hi); color: #fff; }
+      /*
+       * The current scene, as one pill: a small thumbnail of the place and its
+       * name. Tapping it opens the chooser rather than cycling rooms blind —
+       * with six scenes and more likely later, a picker with a preview reads
+       * better than a row of glyphs ever could.
+       */
+      #scene-current {
+        pointer-events: auto; display: flex; align-items: center; gap: 7px;
+        border: 2px solid var(--frame); border-radius: 999px;
+        background: var(--glass); box-shadow: var(--edge-soft);
+        padding: 4px 12px 4px 4px; cursor: pointer; color: var(--ink);
+        font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+        white-space: nowrap;
+      }
+      #scene-current:hover { background: #fff; }
+      .scene-thumb {
+        width: 30px; height: 30px; border-radius: 50%; flex: none;
+        background-size: cover; background-position: center;
+        box-shadow: 0 0 0 1.5px var(--frame-inner) inset;
+        background-color: var(--card-tint);
+      }
+      /*
+       * The chooser: a card of every scene on the switch, each with its own
+       * small preview, popped over the dock rather than pushed into the layout
+       * — so opening it never reflows the chrome `chromeInset()` measures.
+       */
+      #scene-picker {
+        pointer-events: auto; position: absolute; top: calc(100% + 8px); right: 0;
+        width: min(78vw, 300px); max-height: 60vh; overflow-y: auto;
+        background: var(--card); border: 2px solid var(--frame); border-radius: 16px;
+        box-shadow: var(--edge-soft); padding: 8px; z-index: 5;
+      }
+      #scene-picker[hidden] { display: none; }
+      #scene-grid {
+        display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px;
+      }
+      button.scene-cell {
+        position: relative; display: flex; flex-direction: column; gap: 4px;
+        border: 1.5px solid var(--frame); border-radius: 11px; background: var(--card-tint);
+        padding: 4px; cursor: pointer; color: var(--ink); text-align: left;
+      }
+      button.scene-cell:hover { background: #fff; }
+      button.scene-cell[aria-pressed='true'] {
+        border-color: var(--azure); box-shadow: 0 0 0 1.5px var(--azure) inset;
+      }
+      .scene-cell-thumb {
+        width: 100%; aspect-ratio: 4 / 3; border-radius: 8px;
+        background-size: cover; background-position: center; background-color: var(--card-tint);
+      }
+      .scene-cell-name { font-family: var(--mono); font-size: 10px; text-transform: uppercase; padding: 0 2px 2px; }
+      /*
+       * The skyway is 5.4MB, which on a phone is seconds rather than a frame.
+       *
+       * A determinate arc, because the byte count is known — the same argument
+       * the progress bar makes for counting parts rather than drawing a bar.
+       * Drawn on the cell itself, so the wait is attached to the thing that
+       * caused it, and the cell stays live throughout: a second tap
+       * calls the trip off.
+       */
+      .arc {
+        position: absolute; inset: 0; border-radius: 8px;
+        pointer-events: none; opacity: 0; transition: opacity .18s ease;
+        background: conic-gradient(var(--azure) calc(var(--load, 0) * 360deg), transparent 0);
+        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+        mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+      }
+      button.scene-cell[aria-busy='true'] { color: var(--azure); }
+      button.scene-cell[aria-busy='true'] .arc { opacity: 1; }
+      /* Before the first byte lands there is no fraction to draw, so the ring
+         sweeps rather than sitting at zero looking broken. */
+      button.scene-cell[aria-busy='true'][data-load='pending'] .arc {
+        background: conic-gradient(var(--azure) 84deg, transparent 0);
+        animation: sweep 1s linear infinite;
+      }
+      @keyframes sweep { to { transform: rotate(1turn); } }
+
+      @media (prefers-reduced-motion: reduce) {
+        #ring, #message.show { animation: none; opacity: 1; }
+        /* The arc still fills — that is information, not decoration. Only the
+           indeterminate sweep stops. */
+        button.scene-cell[aria-busy='true'][data-load='pending'] .arc { animation: none; }
+        #streak.bump { animation: none; }
+        button.action:active { transform: none; }
+      }
+    </style>
+    
+    <script>
+      window.addEventListener('load', function() {
+        if (window.CrazyGames && window.CrazyGames.SDK) {
+          window.CrazyGames.SDK.init().then(function() {
+            console.log('[CrazyGames] SDK Initialized in Kitbot');
+            if (window.CrazyGames.SDK.game) {
+              window.CrazyGames.SDK.game.loadingStop();
+              window.CrazyGames.SDK.game.gameplayStart();
+            }
+          }).catch(function(e) { console.warn(e); });
+        }
+      });
+    </script>
+    <script type="module" crossorigin src="./assets/main-C8iHfTiZ.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/three-vendor-CuvZfx6h.js">
+    <link rel="modulepreload" crossorigin href="./assets/sound-pZfq9lul.js">
+  </head>
+  <body>
+    <!--
+      The first thing on screen, and the only thing that does not wait for a
+      script to run. A portal's reviewer opens the game and starts counting;
+      two and a bit seconds of empty page while the bundle parses and the
+      sky deck loads reads as broken, and reads that way before anything has
+      had a chance to say otherwise. This is markup and a keyframe, so it is
+      painted on the first frame the browser draws.
+
+      It is taken down by the page once the machine is actually on screen,
+      and by the keyframe itself if that never happens — a boot screen that
+      outlives its own game hides the error underneath it.
+    -->
+    <div id="boot">
+      <div class="boot-card">
+        <!--
+          The art's sky furniture, in the art's own flat tones: two high
+          clouds tinted by the azure, two white mid clouds, the sea and a
+          voxel island far below, the low bank on the horizon, and the
+          robot's head from the tab icon flying over them.
+          One inline drawing, so none of it is a request.
+        -->
+        <svg class="boot-sky" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <g class="drift-b">
+            <path fill="#4799d0" d="M-4 13H32V16.5H-4zM4 10H24V13H4zM10 7.5H17V10H10z"/><path fill="#6db2d9" d="M-4 13H32V14.3H-4zM4 10H24V11.3H4zM10 7.5H17V8.8H10z"/>
+            <path fill="#4799d0" d="M70 27H104V30.5H70zM77 24H98V27H77zM84 21.5H93V24H84z"/><path fill="#6db2d9" d="M70 27H104V28.3H70zM77 24H98V25.3H77zM84 21.5H93V22.8H84z"/>
+          </g>
+          <g class="drift-a">
+            <path fill="#b2e3ed" d="M60 50H104V55.5H60zM66 46H99V50H66zM73 42.5H92V46H73zM79 39.5H87V42.5H79z"/><path fill="#e0f6f7" d="M60 50H104V51.8H60zM66 46H99V47.8H66zM73 42.5H92V44.3H73zM79 39.5H87V41.3H79z"/><path fill="#7dc5e3" d="M60 53.3H104V55.5H60z"/>
+            <path fill="#b2e3ed" d="M-4 58H28V62.5H-4zM-4 54.5H19V58H-4zM1 51.5H12V54.5H1z"/><path fill="#e0f6f7" d="M-4 58H28V59.7H-4zM-4 54.5H19V56.2H-4zM1 51.5H12V53.2H1z"/><path fill="#7dc5e3" d="M-4 60.5H28V62.5H-4z"/>
+          </g>
+          <!-- The island on the sea below, far enough down that its voxels are
+               a fraction of a cloud block: that is what reads as "high up".
+               Shallows, sand, two stepped tiers of hazed grass with cliff
+               faces, a few trees, and the art's white tower. -->
+          <path fill="#a6eef2" d="M2 77.5H48V80.5H2z"/>
+          <path fill="#d8e2d5" d="M4 76.3H46V78.4H4z"/>
+          <path fill="#83bd93" d="M6 72.8H43V75.2H6zM11 70H32V72.8H11zM15 68H24V70H15z"/>
+          <path fill="#659f81" d="M6 75.2H43V77.2H6zM11 72.3H32V73.4H11zM15 69.6H24V70.4H15z"/>
+          <path fill="#48847f" d="M8 71.4H10.4V73.4H8zM35 71.3H37.4V73.2H35zM38.6 71.9H40.6V73.4H38.6zM12.5 68.8H14.6V70.6H12.5zM25.4 68.9H27.4V70.6H25.4z"/>
+          <path fill="#e9eff4" d="M28.2 64.6H30.2V71H28.2zM20 70.4H25V72.6H20z"/><path fill="#c9d6e3" d="M29.4 64.6H30.2V71H29.4zM20 71.8H25V72.6H20z"/><path fill="#d6afa6" d="M20 69.9H25V70.6H20z"/><path fill="#85828a" d="M29 62.6H29.5V64.6H29z"/>
+          <!-- The low bank: a stack at the lower right, as in the art, and a
+               sheet along the bottom the note sits on. -->
+          <path fill="#c4ecee" d="M-4 85H104V104H-4zM-4 82.5H18V85H-4z"/><path fill="#eefdf5" d="M-4 85H104V86.8H-4zM-4 82.5H18V84.2H-4z"/><path fill="#89cfe5" d="M-4 90H104V91H-4z"/>
+          <path fill="#c4ecee" d="M50 81H104V85H50zM60 77H104V81H60zM70 73H104V77H70zM81 69.5H104V73H81z"/><path fill="#eefdf5" d="M50 81H104V82.8H50zM60 77H104V78.8H60zM70 73H104V74.8H70zM81 69.5H104V71.3H81z"/><path fill="#89cfe5" d="M50 84H60V85H50zM60 80H70V81H60zM70 76H81V77H70z"/>
+          <!-- The head, at the icon's own proportions (its 64-unit grid, scaled). -->
+          <g class="bob">
+            <g transform="translate(30.2 34.6) scale(.62)">
+              <g fill="#0a2e4d" opacity=".32">
+                <path d="M25 19v-5h4v-3h4V8h5.5v11z"/>
+                <rect x="12" y="17" width="40" height="35" rx="3"/>
+                <rect x="7" y="28" width="7" height="14"/>
+                <rect x="50" y="28" width="7" height="14"/>
+              </g>
+              <path d="M25 16.5v-5h4V8.5h4V5.5h5.5v11z" fill="#f2efea"/>
+              <path d="M35 16.5v-11h3.5v11z" fill="#c9c9cc"/>
+              <rect x="7" y="25.5" width="7" height="14" fill="#c9c9cc"/>
+              <rect x="50" y="25.5" width="7" height="14" fill="#85828a"/>
+              <rect x="12" y="14.5" width="40" height="35" rx="3" fill="#f2efea"/>
+              <rect x="44" y="14.5" width="8" height="35" rx="2" fill="#c9c9cc"/>
+              <rect x="12" y="14.5" width="40" height="4" rx="2" fill="#ffffff"/>
+              <rect x="15.5" y="24" width="33" height="14" rx="2" fill="#211e28"/>
+              <rect x="18" y="26.5" width="12" height="9" rx="2" fill="#ff2a2a" opacity=".35"/>
+              <rect x="34" y="26.5" width="12" height="9" rx="2" fill="#ff2a2a" opacity=".35"/>
+              <rect x="19.5" y="28" width="9" height="6" rx="1" fill="#ff2a2a"/>
+              <rect x="35.5" y="28" width="9" height="6" rx="1" fill="#ff2a2a"/>
+              <rect x="22" y="29.5" width="4" height="3" fill="#ffe3dc"/>
+              <rect x="38" y="29.5" width="4" height="3" fill="#ffe3dc"/>
+              <rect x="22" y="41.5" width="20" height="4" rx="1" fill="#85828a"/>
+              <rect x="25" y="42.5" width="14" height="2" fill="#3c394c"/>
+            </g>
+          </g>
+        </svg>
+        <!-- Kept in step with GAME_NAME in src/brand.ts by hand: this is
+             painted before any script runs, so it cannot import it. -->
+        <div class="boot-name">Kitbot</div>
+        <div class="boot-bar"><i></i></div>
+        <div class="boot-note">Climbing to the sky deck</div>
+      </div>
+    </div>
+    <div class="app">
+      <div id="stage"></div>
+
+      <div class="overlay">
+        <div class="topbar">
+          <button id="btn-back" class="bare shelf" type="button" aria-label="Garage">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3.5" width="7.5" height="7.5" rx="1.4" />
+              <rect x="13.5" y="3.5" width="7.5" height="7.5" rx="1.4" />
+              <rect x="3" y="13" width="7.5" height="7.5" rx="1.4" />
+              <rect x="13.5" y="13" width="7.5" height="7.5" rx="1.4" />
+            </svg>
+            <span>Garage</span>
+          </button>
+          <div class="masthead">
+            <div id="machine-name">Kitbot</div>
+            <div id="progress-track" aria-hidden="true"></div>
+            <!-- The run of clean seats rides on this line rather than under
+                 it: see #streak below for why it must not change the height
+                 of this bar. -->
+            <div id="progress">0 / 0 parts<span id="streak" hidden></span></div>
+            <!-- The daily's clock; hidden on any other build. -->
+            <div id="clock" hidden></div>
+          </div>
+          <!--
+            The pause button stood here. It held the turntable still while the
+            player studied a slot; the turntable now moves only when a finger
+            moves it, so the button's whole job was done by letting go.
+
+            The balance took the empty slot. A currency the player only sees
+            after opening the screen that spends it is a currency they never
+            learn they have: the first build pays 184 CR and, with the number
+            hidden, that reward landed as a line of text that scrolled away.
+          -->
+          <div id="credits-top" class="credit-chip" title="Credits">0 CR</div>
+        </div>
+
+        <div class="spacer"></div>
+
+        <div class="slotbar"><div id="slot"></div></div>
+        <!--
+          Where a mode puts what it owns while it is in: a readout, a control,
+          a countdown. Empty and hidden the rest of the time. See modes.ts.
+        -->
+        <div id="mode-dock" hidden></div>
+        <div class="actions">
+          <!-- What the build earned and what it buys next. See paintNextCard. -->
+          <div id="next-card" class="next-card" hidden>
+            <div id="daily-line" class="daily-line" hidden></div>
+            <div id="next-line"></div>
+            <button id="btn-next" class="action" type="button">Next</button>
+            <button id="btn-share" class="action" type="button" hidden>Share the challenge</button>
+          </div>
+          <div id="mode-actions" class="mode-row" hidden></div>
+          <button id="btn-transform" class="action" type="button" hidden>Transform</button>
+          <button id="btn-reset" class="action" type="button">Clear bench</button>
+        </div>
+        <!--
+          The first ten seconds: the promise delivered, not described. The
+          machine is whole and folding behind this; the panel sits low so it
+          covers the turntable rather than the machine. See src/puzzle/intro.ts.
+        -->
+        <div id="intro" class="intro" hidden>
+          <div class="intro-body">
+            <svg class="intro-sky" viewBox="0 0 420 42" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+              <defs>
+                <linearGradient id="intro-sky-air" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#0776c5"/><stop offset=".3" stop-color="#0c8fcf"/><stop offset=".55" stop-color="#1ac2e3"/>
+                  <stop offset=".75" stop-color="#78f1e8"/><stop offset="1" stop-color="#dafbed"/>
+                </linearGradient>
+                <linearGradient id="intro-sky-sea" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#a6eef2"/><stop offset=".5" stop-color="#67d1ea"/><stop offset="1" stop-color="#32a4cc"/>
+                </linearGradient>
+              </defs>
+              <rect width="420" height="30" fill="url(#intro-sky-air)"/>
+              <rect y="30" width="420" height="12" fill="url(#intro-sky-sea)"/>
+              <path fill="#4799d0" d="M18 11h40v3H18zM26 8h22v3H26z"/><path fill="#6db2d9" d="M18 11h40v1.2H18zM26 8h22v1.2H26z"/>
+              <path fill="#4799d0" d="M236 7h30v2.6h-30zM242 5h16v2h-16z"/><path fill="#6db2d9" d="M236 7h30v1h-30zM242 5h16v1h-16z"/>
+              <!-- The island, at the left of the tag. -->
+              <path fill="#89e1ef" d="M40 36.6h82v3H40z"/>
+              <path fill="#d8e2d5" d="M44 35h74v2.2H44z"/>
+              <path fill="#83bd93" d="M47 31.4h68v3.8H47zM58 28.4h36v3H58zM66 26.2h14v2.2H66z"/>
+              <path fill="#659f81" d="M47 34h68v1.6H47zM58 30.6h36v1.2H58zM66 27.8h14v.9H66z"/>
+              <path fill="#48847f" d="M50 30h4v2.4h-4zM103 29.8h4v2.2h-4zM109 30.6h3v1.6h-3zM61 27.2h3v1.8h-3z"/>
+              <path fill="#e9eff4" d="M84 21.6h3.4v7.6H84zM70 28.8h8v2.8h-8z"/><path fill="#c9d6e3" d="M86.2 21.6h1.2v7.6h-1.2zM70 30.8h8v.8h-8z"/><path fill="#d6afa6" d="M70 28.2h8v1h-8z"/><path fill="#85828a" d="M85.4 18.6h.7v3h-.7z"/>
+              <!-- White voxel clouds stacked at the right, as in the art. -->
+              <path fill="#b2e3ed" d="M300 30h124v12H300zM322 24h102v6H322zM344 18h80v6h-80zM368 12.5h56V18h-56z"/><path fill="#e0f6f7" d="M300 30h124v2.2H300zM322 24h102v2.2H322zM344 18h80v2.2h-80zM368 12.5h56v2.2h-56z"/><path fill="#7dc5e3" d="M300 40h124v2H300z"/>
+              <path fill="#b2e3ed" d="M-4 38h40v4H-4zM-4 35h22v3H-4z"/><path fill="#e0f6f7" d="M-4 38h40v1.6H-4zM-4 35h22v1.6H-4z"/>
+            </svg>
+            <div class="intro-kicker">Your first machine</div>
+            <div id="intro-name" class="intro-name">Mordred</div>
+            <div id="intro-line" class="intro-line"></div>
+            <button id="intro-go" class="action intro-go" type="button">Start building</button>
+          </div>
+        </div>
+        <div class="hintbar" id="hintbar">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 11V6.5a1.5 1.5 0 0 1 3 0V11" />
+            <path d="M12 11V5.5a1.5 1.5 0 0 1 3 0V11" />
+            <path d="M15 11V7.5a1.5 1.5 0 0 1 3 0V13c0 4-2.5 7-6 7s-6-2.5-6-6v-3.5a1.5 1.5 0 0 1 3 0V13" />
+          </svg>
+          <!--
+            All three verbs, because the rail no longer has buttons and a
+            gesture nobody is told about is a gesture nobody finds — which this
+            screen has already proved twice, once with the garage and once with
+            the rail itself.
+
+            The hold is third because it is the only optional one: the first
+            two are how the game is played and the third is how it is made
+            easier.
+
+            Terse because it has to be. The bar gives about 330px at the 390px
+            this is laid out for, and every phrasing that kept "the rail" and
+            named the hold ran to two lines — measured, not guessed. "Swipe"
+            alone is unambiguous in a game where the rail is the only thing
+            that swipes.
+          -->
+          <div class="hint">Swipe &middot; drag a part in &middot; hold to preview</div>
+        </div>
+      </div>
+
+      <!--
+        The garage: what you own, what you have earned, and what the rest cost.
+        A full-screen sheet rather than a row of cards over the render, because
+        it is the one place in the game you are not looking at the machine.
+      -->
+      <div id="garage" hidden>
+        <div class="garage-head">
+          <div class="garage-title">Garage</div>
+          <div class="garage-tools">
+            <!--
+              A key to the whole catalogue, for whoever is building the game
+              rather than playing it. Hidden unless `vite` is serving — see
+              `paintPasskey` in puzzle.ts, where the branch around it is
+              dropped from a production bundle outright.
+            -->
+            <button id="btn-passkey" class="passkey" type="button" hidden></button>
+            <button id="btn-mute" class="passkey" type="button" aria-pressed="false">Sound on</button>
+            <div id="credits">0 CR</div>
+          </div>
+        </div>
+        <!-- Today's build: one machine, one seed, everyone, a clock. See daily.ts. -->
+        <div id="today" class="today"></div>
+        <!-- Modes that start from the garage rather than from a finished build. -->
+        <div id="mode-garage" class="mode-row garage-modes" hidden></div>
+        <!--
+          The bays: machines this player cut themselves. Hidden until there
+          is one. See src/puzzle/bays.ts.
+        -->
+        <div id="bays" class="bays" hidden>
+          <!--
+            "Yours" rather than "Your machines": the catalogue below it now has
+            a shelf called Machines, and two headings a thumb apart reading
+            "Your machines" and "Machines" is a puzzle nobody asked for.
+          -->
+          <div class="shelf-head">Yours</div>
+          <div id="bays-list" class="bays-list"></div>
+        </div>
+        <div id="garage-list"></div>
+        <!--
+          The scrapyard: other machines' parts mixed onto the rail. Same names,
+          same lit label, different shapes — the shape becomes the question.
+        -->
+        <label class="scrap-switch">
+          <input id="scrap-switch" type="checkbox" />
+          <span><b>Scrapyard</b> — parts from other machines are dealt onto the rail with the same names. Tell them from this machine's by shape.</span>
+        </label>
+        <!--
+          The forge: a chimera cut from the machines you own.
+
+          Every imported machine is banded the same way, so a limb from one
+          fits the slot on another. Six rows, one per region, cycling through
+          every machine — the unowned ones too, priced, because the row that
+          shows the Templar's legs on your Mordred is the row that sells the
+          Templar. The name is made of the head and the torso.
+
+          Last in the garage, and shut until two machines are owned: with one
+          it can only cut a copy of that machine, and it was standing between
+          a new player and the catalogue — the one thing in here they need.
+        -->
+        <div id="forge" class="forge">
+          <div class="shelf-head">Forge</div>
+          <div id="forge-blurb" class="forge-blurb">Cut a chimera from the machines you own. Every limb keeps its own colours and its own fold.</div>
+          <div id="forge-rows" class="forge-rows"></div>
+          <div class="forge-foot">
+            <div class="forge-title">
+              <div id="forge-name">—</div>
+              <small id="forge-donors"></small>
+            </div>
+            <button id="btn-forge" class="action" type="button">Build</button>
+          </div>
+        </div>
+        <button id="btn-close-garage" class="action" type="button">Back to the build</button>
+        <!--
+          The world under the sheet: the sea at the foot of it with a voxel
+          island, a bank of low cloud in front of it and cloud stacked up both
+          sides — the key art's lower half, drawn once, pinned to the screen
+          while the cards scroll over it. Last in the sheet so nothing that
+          counts the sheet's children or styles its first child sees it.
+        -->
+        <svg class="garage-sky" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="garage-sky-haze" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#dafbed" stop-opacity="0"/><stop offset="1" stop-color="#dafbed"/>
+            </linearGradient>
+            <linearGradient id="garage-sky-sea" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#a6eef2"/><stop offset=".3" stop-color="#89e1ef"/><stop offset=".6" stop-color="#5bc7e7"/><stop offset="1" stop-color="#32a4cc"/>
+            </linearGradient>
+          </defs>
+          <rect y="70" width="1200" height="110" fill="url(#garage-sky-haze)"/>
+          <rect y="180" width="1200" height="120" fill="url(#garage-sky-sea)"/>
+          <!-- The island, a little left of the middle. -->
+          <path fill="#89e1ef" d="M388 214h330v14H388z"/>
+          <path fill="#d8e2d5" d="M398 207h310v10H398z"/>
+          <path fill="#83bd93" d="M410 188h286v20H410zM452 172h170v16H452zM486 160h70v12h-70z"/>
+          <path fill="#659f81" d="M410 201h286v8H410zM452 183h170v6H452zM486 168h70v5h-70z"/>
+          <path fill="#48847f" d="M420 181h16v12h-16zM440 185h12v8h-12zM640 180h16v12h-16zM660 184h14v9h-14zM500 153h14v10h-14zM590 165h14v10h-14z"/>
+          <path fill="#e9eff4" d="M566 120h14v56h-14zM528 158h34v18h-34zM606 168h28v12h-28z"/><path fill="#c9d6e3" d="M575 120h5v56h-5zM528 170h34v6h-34zM606 176h28v4h-28z"/><path fill="#d6afa6" d="M528 154h34v5h-34zM606 165h28v4h-28z"/><path fill="#85828a" d="M571 104h3v16h-3z"/>
+          <!-- Low bank along the foot, broken in the middle so the island shows. -->
+          <path fill="#c4ecee" d="M-10 262H1210V310H-10zM-10 244H330V262H-10zM-10 228H200V244H-10zM780 240H1210V262H780zM900 222H1210V240H900z"/>
+          <path fill="#eefdf5" d="M-10 262H1210V268H-10zM-10 244H330V250H-10zM-10 228H200V234H-10zM780 240H1210V246H780zM900 222H1210V228H900z"/>
+          <path fill="#89cfe5" d="M-10 292H1210V300H-10zM200 238H330V244H200zM780 256H900V262H780z"/>
+          <!-- Stacks up both sides, seen only where the sheet is wider than a phone. -->
+          <path fill="#b2e3ed" d="M-10 150H300V200H-10zM-10 110H230V150H-10zM-10 80H150V110H-10zM940 140H1210V200H940zM1010 100H1210V140H1010zM1080 64H1210V100H1080z"/>
+          <path fill="#e0f6f7" d="M-10 150H300V158H-10zM-10 110H230V118H-10zM-10 80H150V88H-10zM940 140H1210V148H940zM1010 100H1210V108H1010zM1080 64H1210V72H1080z"/>
+          <path fill="#7dc5e3" d="M-10 192H300V200H-10zM150 104H230V110H150zM940 192H1210V200H940zM1010 134H1080V140H1010z"/>
+        </svg>
+      </div>
+
+      <div id="inspect" hidden>
+        <div id="inspect-name"></div>
+        <div id="inspect-hint">drag to turn it &middot; pull it out to fit it</div>
+        <!--
+          Whether this piece is square to the lit slot. It says nothing about
+          whether it is the RIGHT piece — any piece can be turned to any bearing
+          — so it closes the loop on the turning without answering the question
+          the puzzle is actually asking.
+        -->
+        <div id="inspect-square" hidden>square to the slot</div>
+      </div>
+
+      <!--
+        The readout only. The up/down buttons that used to flank it are gone:
+        the rail is swiped now, and a pair of arrows for a gesture the rail
+        itself advertises is two controls for one job, in the corner of a phone
+        screen that has least room for them.
+      -->
+      <div id="pager" hidden>
+        <!--
+          The piece in the bracket, named.
+          The slot at the bottom of the screen says which part is wanted; the
+          rail showed three unnamed shapes out of thirty-one, so there was no
+          way to get from the name to the shape except by trying all of them.
+          This closes that loop: swipe until the name here matches the slot's,
+          and it lights when it does.
+        -->
+        <div id="front-name"></div>
+        <div id="page"></div>
+      </div>
+
+      <!--
+        The room switch.
+
+        Both rooms shown with one lit, for the reason the progress bar is
+        segmented: a single button cycling between them shows one name and
+        leaves the player to work out whether it is where they are or where
+        they would go.
+
+        The cells are found by id from the room keys (`room-<key>`), and only
+        the rooms the switch offers have one: the sky deck and the skyway. The
+        hangar is still a room the game can load, by URL and for the pages
+        that use it, but it is not one the player is offered, so it has no
+        cell. The player-facing words are the rooms' labels, set at the call.
+      -->
+      <!--
+        The side dock: the controls that change what you are looking at, all in
+        the corner the thumb already goes to for the room switch.
+
+        The garage is a cell on its own pill rather than a third room. It is
+        not a place the build happens, and a radio group whose third option
+        opens a sheet and then un-presses itself is a lie told in ARIA.
+      -->
+      <div id="sidedock">
+        <div class="switch">
+          <button id="room-garage" class="room" type="button" aria-label="Garage">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3.5" width="7.5" height="7.5" rx="1.4" />
+              <rect x="13.5" y="3.5" width="7.5" height="7.5" rx="1.4" />
+              <rect x="3" y="13" width="7.5" height="7.5" rx="1.4" />
+              <rect x="13.5" y="13" width="7.5" height="7.5" rx="1.4" />
+            </svg>
+          </button>
+        </div>
+
+      <!--
+        Apart, and back together.
+
+        On the same dock as the room switch because it belongs to the same
+        family — things that change how the build is being looked at rather
+        than what is in it — and on its own pill because it is a toggle, not
+        one of a set.
+      -->
+      <div id="apart-dock" hidden>
+        <div class="switch">
+          <button id="btn-apart" class="room" type="button" aria-pressed="false" aria-label="Pull apart">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="8.5" y="8.5" width="7" height="7" rx="1" />
+              <path d="M12 6.5V2.5M12 17.5v4M6.5 12h-4M17.5 12h4" />
+              <path d="M10 4.5 12 2.5l2 2M10 19.5l2 2 2-2M4.5 10l-2 2 2 2M19.5 10l2 2-2 2" />
+            </svg>
+            <span class="arc" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="rooms" hidden>
+        <!-- The current scene: its preview and its name. Opens the chooser. -->
+        <button id="scene-current" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="scene-picker" data-room="sky">
+          <span id="scene-thumb" class="scene-thumb" aria-hidden="true"></span>
+          <span id="room-name" aria-live="polite">Sky Deck</span>
+        </button>
+        <!-- The chooser: filled from the room registry, so a new scene is one
+             entry there and nothing repeated here. -->
+        <div id="scene-picker" role="group" aria-label="Scene" hidden>
+          <div id="scene-grid"></div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div id="message"></div>
+    <!-- A limb finished: named here while it plays its own fold behind. -->
+    <div id="lockup" hidden aria-live="polite"></div>
+    <div id="ring" hidden></div>
+  </body>
+</html>

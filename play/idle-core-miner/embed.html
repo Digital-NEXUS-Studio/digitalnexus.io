@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Idle Core Miner — Digital Nexus Player</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #060911;
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    #game-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+    }
+    #game-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    .nexus-badge {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(10, 16, 28, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      color: #F8FAFC;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      z-index: 9999;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0.8;
+    }
+    .nexus-badge:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+      border-color: #00F0FF;
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.3);
+    }
+    .nexus-badge .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #00F0FF;
+      box-shadow: 0 0 8px #00F0FF;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <iframe id="game-frame"
+            src="game.html"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; focus-without-user-activation *"
+            allowfullscreen></iframe>
+  </div>
+
+  <a href="https://digitalnexus.io/play/idle-core-miner/" target="_blank" rel="noopener" class="nexus-badge" title="Open full studio view">
+    <span class="pulse-dot"></span>
+    <span>⚡ Digital Nexus Arcade</span>
+  </a>
+
+  <script>
+    // Ensure iframe gets focus on touch or click so controls respond immediately
+    function ensureFocus() {
+      var frame = document.getElementById('game-frame');
+      if (frame && frame.contentWindow) {
+        frame.contentWindow.focus();
+      }
+    }
+    window.addEventListener('click', ensureFocus);
+    window.addEventListener('touchstart', ensureFocus, { passive: true });
+  </script>
+</body>
+</html>
