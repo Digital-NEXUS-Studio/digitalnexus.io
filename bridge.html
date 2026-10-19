@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Digital Nexus // Command Bridge</title>
+  
+  <!-- iOS PWA Web App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Nexus Bridge">
+  <meta name="theme-color" content="#030814">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" type="image/png" href="logo.png">
+  
+  <!-- Web App Manifest (Data URI for 1-Tap Home Screen Install) -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Digital%20Nexus%20Command%20Bridge%22%2C%22short_name%22%3A%22Nexus%20Bridge%22%2C%22start_url%22%3A%22%2Fbridge%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23020515%22%2C%22theme_color%22%3A%22%2300f0ff%22%7D">
+
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --hud-cyan: #00f0ff;
+      --hud-blue: #0077fe;
+      --hud-amber: #ffaa00;
+      --hud-green: #00ff66;
+      --hud-red: #ff3344;
+      --hud-purple: #c084fc;
+      --hud-bg-dark: #030814;
+      --hud-panel-bg: rgba(7, 16, 36, 0.88);
+      --hud-border: rgba(0, 240, 255, 0.22);
+      --sat: env(safe-area-inset-top);
+      --sab: env(safe-area-inset-bottom);
+      --sal: env(safe-area-inset-left);
+      --sar: env(safe-area-inset-right);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--hud-bg-dark);
+      color: #e2e8f0;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-orbitron { font-family: 'Orbitron', monospace; }
+    .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+
+    /* Custom Sci-Fi Scrollbars */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: rgba(0, 10, 25, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.35); border-radius: 2px; }
+
+    /* Glassmorphic Holo Panels */
+    .hud-panel {
+      background: var(--hud-panel-bg);
+      border: 1px solid var(--hud-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.03);
+      position: relative;
+    }
+
+    .hud-panel-corner::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px;
+      width: 10px; height: 10px;
+      border-top: 2px solid var(--hud-cyan);
+      border-left: 2px solid var(--hud-cyan);
+      pointer-events: none;
+    }
+    .hud-panel-corner::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; right: -1px;
+      width: 10px; height: 10px;
+      border-bottom: 2px solid var(--hud-cyan);
+      border-right: 2px solid var(--hud-cyan);
+      pointer-events: none;
+    }
+
+    /* Radar Pulse */
+    @keyframes radarSweep {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .radar-sweep {
+      animation: radarSweep 3.5s linear infinite;
+    }
+
+    /* Scanline Overlay */
+    .scanlines {
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 240, 255, 0.02) 50%,
+        rgba(0, 240, 255, 0.02)
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    /* Beacon Pulse */
+    @keyframes beaconBlink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.92); }
+    }
+    .beacon-pulse {
+      animation: beaconBlink 1.8s ease-in-out infinite;
+    }
+
+    /* iOS Safe Area Padding */
+    .safe-top {
+      padding-top: max(12px, env(safe-area-inset-top));
+    }
+    .safe-bottom {
+      padding-bottom: max(78px, calc(env(safe-area-inset-bottom) + 64px));
+    }
+    .dock-safe-bottom {
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
+
+    /* Keypad Touch Styling */
+    .keypad-btn {
+      transition: all 0.12s ease;
+      touch-action: manipulation;
+    }
+    .keypad-btn:active {
+      transform: scale(0.92);
+      background-color: rgba(0, 240, 255, 0.25);
+    }
+  </style>
+</head>
+<body class="min-h-screen relative flex flex-col justify-between">
+  <!-- Dynamic Starfield Background -->
+  <canvas id="starfield" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
+  <div class="fixed inset-0 scanlines z-10 pointer-events-none"></div>
+
+  <!-- ========================================================================= -->
+  <!-- 1. QUANTUM SECURITY GATE (PASSCODE & BIOMETRIC AUTH FOR SUPREME COMMANDER) -->
+  <!-- ========================================================================= -->
+  <div id="authGate" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl transition-all duration-300">
+    <div class="hud-panel hud-panel-corner rounded-2xl p-6 sm:p-8 max-w-sm w-full text-center relative border border-[var(--hud-cyan)] shadow-[0_0_50px_rgba(0,240,255,0.18)]">
+      
+      <!-- Studio Icon -->
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-cyan-950 to-slate-900 border border-[var(--hud-cyan)] p-2 shadow-[0_0_20px_rgba(0,240,255,0.35)] flex items-center justify-center mb-4">
+        <img src="logo.png" alt="Digital Nexus" class="w-full h-full object-contain" onerror="this.src='/icons/jobproof.png'">
+      </div>
+
+      <div class="mb-5">
+        <span class="px-2.5 py-0.5 rounded text-[10px] font-mono-code font-bold bg-cyan-950/80 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/40 tracking-wider">
+          CLASSIFIED // LEVEL 5 QUANTUM LINK
+        </span>
+        <h1 class="font-orbitron font-bold text-lg text-white mt-2 tracking-wide">DIGITAL NEXUS PRIME</h1>
+        <p class="text-xs text-slate-400 font-mono-code mt-0.5">SUPREME COMMANDER CLEARANCE REQUIRED</p>
+      </div>
+
+      <!-- PIN Input Dots -->
+      <div class="flex justify-center items-center gap-3.5 mb-6">
+        <div id="dot0" class="w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all"></div>
+        <div id="dot1" class="w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all"></div>
+        <div id="dot2" class="w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all"></div>
+        <div id="dot3" class="w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all"></div>
+      </div>
+
+      <!-- Keypad (Touch / Mobile Optimized) -->
+      <div class="grid grid-cols-3 gap-2.5 max-w-[260px] mx-auto mb-4 font-orbitron">
+        <button onclick="pressPin('1')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">1</button>
+        <button onclick="pressPin('2')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">2</button>
+        <button onclick="pressPin('3')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">3</button>
+        <button onclick="pressPin('4')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">4</button>
+        <button onclick="pressPin('5')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">5</button>
+        <button onclick="pressPin('6')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">6</button>
+        <button onclick="pressPin('7')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">7</button>
+        <button onclick="pressPin('8')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">8</button>
+        <button onclick="pressPin('9')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">9</button>
+        <button onclick="clearPin()" class="keypad-btn h-12 rounded-xl bg-slate-950 border border-red-900/50 text-red-400 text-xs font-mono-code font-bold">CLR</button>
+        <button onclick="pressPin('0')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">0</button>
+        <button onclick="backspacePin()" class="keypad-btn h-12 rounded-xl bg-slate-950 border border-slate-700 text-slate-300 text-sm font-mono-code font-bold flex items-center justify-center">⌫</button>
+      </div>
+
+      <!-- Remember device toggle -->
+      <div class="flex items-center justify-center gap-2 mb-3 text-xs font-mono-code text-slate-400">
+        <input type="checkbox" id="rememberDevice" checked class="rounded border-slate-700 text-[var(--hud-cyan)] focus:ring-0 bg-slate-900 cursor-pointer">
+        <label for="rememberDevice" class="cursor-pointer">Remember this iPhone</label>
+      </div>
+
+      <!-- Feedback / Error Text -->
+      <div id="authError" class="text-xs font-mono-code text-amber-400 min-h-[20px] transition-all">
+        Default Passcode: 2026
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN APP CONTAINER (SHOWN ONLY WHEN AUTHENTICATED) -->
+  <!-- ========================================================================= -->
+  <div id="appBridge" class="relative z-20 flex-1 flex flex-col justify-between hidden">
+    
+    <!-- TOP STATUS BAR (Safe Area Adapted for iPhone Notch & Dynamic Island) -->
+    <header class="safe-top border-b border-[var(--hud-border)] bg-[rgba(3,8,20,0.92)] backdrop-blur-md px-4 sm:px-6 pb-3 pt-2">
+      <div class="max-w-[1920px] mx-auto flex items-center justify-between gap-3">
+        
+        <!-- Left: Studio Identity -->
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl border border-[var(--hud-cyan)] flex items-center justify-center bg-[rgba(0,240,255,0.08)] shadow-[0_0_12px_rgba(0,240,255,0.25)] shrink-0">
+            <svg class="w-5 h-5 text-[var(--hud-cyan)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-orbitron font-bold text-sm sm:text-base tracking-wide text-white">NEXUS PRIME</span>
+              <span class="px-1.5 py-0.2 rounded text-[10px] font-mono-code font-bold bg-cyan-950 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/50">LIVE</span>
+            </div>
+            <p class="text-[11px] text-slate-400 font-mono-code leading-tight hidden xs:block">
+              COMMANDER: <span class="text-white font-semibold">OVERSEER</span> | AI CEO: <span class="text-[var(--hud-cyan)] font-semibold">ANTIGRAVITY</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Actions & Mission Time -->
+        <div class="flex items-center gap-2 sm:gap-4 font-mono-code text-xs">
+          <!-- Mission Clock -->
+          <div class="bg-[rgba(0,0,0,0.5)] px-2.5 py-1 rounded border border-slate-800 text-slate-300 hidden md:block">
+            <span class="text-slate-500">UTC:</span> <span id="missionTime" class="text-white font-bold text-xs">--:--:--</span>
+          </div>
+
+          <!-- DEFCON Alert Button -->
+          <button id="alertBtn" onclick="cycleAlertStatus()" class="flex items-center gap-1.5 px-2.5 py-1 rounded font-bold transition-all bg-emerald-950 text-emerald-400 border border-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)] text-[11px]">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 beacon-pulse"></span>
+            <span id="alertStatusText" class="hidden sm:inline">DEFCON 5</span>
+          </button>
+
+          <!-- Audio SFX Toggle -->
+          <button onclick="toggleAudio()" id="audioBtn" class="p-1.5 rounded border border-slate-700 hover:border-[var(--hud-cyan)] text-slate-300 hover:text-[var(--hud-cyan)] transition bg-slate-900/60" title="Toggle Sound">
+            <svg id="audioIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+          </button>
+
+          <!-- Lock Button -->
+          <button onclick="lockStation()" class="p-1.5 rounded border border-red-900/60 hover:border-red-500 text-red-400 transition bg-red-950/40" title="Lock Station">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- MAIN VIEWPORT CONTAINER (Safe Bottom for iPhone Home Bar) -->
+    <main class="flex-1 max-w-[1920px] mx-auto w-full p-4 sm:p-6 safe-bottom">
+      
+      <!-- ========================================== -->
+      <!-- VIEW 1: 🛰️ BRIDGE (OVERVIEW & LIVE RADAR) -->
+      <!-- ========================================== -->
+      <section id="viewBridge" class="space-y-6">
+        
+        <!-- Organization Account Status Banner -->
+        <div class="hud-panel hud-panel-corner rounded-xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-emerald-500/30">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-950 border border-emerald-400 text-emerald-400 flex items-center justify-center font-bold text-lg shadow-[0_0_12px_rgba(16,185,129,0.3)]">
+              ✓
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="font-orbitron font-bold text-sm text-white">ORGANIZATION ACCOUNT DEPLOYED</h2>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/50">100% EXEMPT</span>
+              </div>
+              <p class="text-xs text-slate-300 font-mono-code mt-0.5">Account ID: <code class="text-emerald-400 font-bold">Dr_wolf</code> | Zero 20-tester rules required. Direct Production track rollout active.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono-code text-slate-400">Review Shield:</span>
+            <span class="px-2.5 py-1 rounded bg-black/50 border border-emerald-500/40 text-emerald-400 font-mono-code font-bold text-xs">PROTECTED</span>
+          </div>
+        </div>
+
+        <!-- 4 Core Metric HUD Gauges -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          
+          <!-- Gauge 1: Flagship Videos Ready -->
+          <div class="hud-panel rounded-xl p-4 flex flex-col justify-between">
+            <div class="flex justify-between items-center text-[11px] font-mono-code text-slate-400 mb-1">
+              <span>60 FPS MASTERS</span>
+              <span class="text-[var(--hud-cyan)] font-bold">8 PRODUCED</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="font-orbitron font-bold text-2xl sm:text-3xl text-white">8</span>
+              <span class="text-xs font-mono-code text-slate-400">/ 16 Total</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+              <div class="bg-[var(--hud-cyan)] h-full w-[50%]"></div>
+            </div>
+            <span class="text-[10px] font-mono-code text-slate-400 mt-2">JobProof, FleetDVIR, LeakCheck, etc.</span>
+          </div>
+
+          <!-- Gauge 2: Quota Unlock Countdown -->
+          <div class="hud-panel rounded-xl p-4 flex flex-col justify-between border-amber-500/40">
+            <div class="flex justify-between items-center text-[11px] font-mono-code text-slate-400 mb-1">
+              <span>BATCH 2 UNLOCK</span>
+              <span class="text-amber-400 font-bold beacon-pulse">ARMED</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span id="quotaCountdown" class="font-orbitron font-bold text-lg sm:text-2xl text-amber-400">70h 21m</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+              <div class="bg-amber-400 h-full w-[42%]"></div>
+            </div>
+            <span class="text-[10px] font-mono-code text-slate-400 mt-2">Target: Oct 21 @ 11:37 AM</span>
+          </div>
+
+          <!-- Gauge 3: Organic Distribution Footprint -->
+          <div class="hud-panel rounded-xl p-4 flex flex-col justify-between">
+            <div class="flex justify-between items-center text-[11px] font-mono-code text-slate-400 mb-1">
+              <span>BRAND CHANNELS</span>
+              <span class="text-emerald-400 font-bold">5 ACTIVE</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="font-orbitron font-bold text-2xl sm:text-3xl text-emerald-400">100%</span>
+              <span class="text-xs font-mono-code text-slate-400">Anonymized</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+              <div class="bg-emerald-400 h-full w-[100%]"></div>
+            </div>
+            <span class="text-[10px] font-mono-code text-slate-400 mt-2">X, Reddit, LinkedIn, YouTube, TikTok</span>
+          </div>
+
+          <!-- Gauge 4: Net MRR Target -->
+          <div class="hud-panel rounded-xl p-4 flex flex-col justify-between">
+            <div class="flex justify-between items-center text-[11px] font-mono-code text-slate-400 mb-1">
+              <span>MRR TARGET</span>
+              <span class="text-purple-400 font-bold">$0 AD SPEND</span>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="font-orbitron font-bold text-xl sm:text-2xl text-purple-300">$500.00</span>
+              <span class="text-xs font-mono-code text-slate-400">/mo</span>
+            </div>
+            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+              <div class="bg-purple-400 h-full w-[15%]"></div>
+            </div>
+            <span class="text-[10px] font-mono-code text-slate-400 mt-2">Annual Anchor: $89.99–$129.99/yr</span>
+          </div>
+
+        </div>
+
+        <!-- Tactical Radar & Directives Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Tactical Fleet Radar Canvas (4 Cols on Desktop) -->
+          <div class="lg:col-span-4 hud-panel rounded-xl p-5 flex flex-col items-center justify-between">
+            <div class="w-full flex justify-between items-center pb-2 border-b border-slate-800 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-[var(--hud-cyan)] rounded-sm"></span>
+                <h3 class="font-orbitron font-bold text-xs tracking-wide text-white">ORBITAL FLEET RADAR</h3>
+              </div>
+              <span class="text-[10px] font-mono-code text-[var(--hud-cyan)]">RANGE: 360°</span>
+            </div>
+
+            <!-- Radar Display -->
+            <div class="relative w-56 h-56 my-2">
+              <canvas id="radarCanvas" width="224" height="224" class="rounded-full border border-[var(--hud-cyan)]/40 shadow-[0_0_20px_rgba(0,240,255,0.15)] bg-slate-950/80"></canvas>
+            </div>
+
+            <div class="w-full grid grid-cols-3 gap-2 text-center text-[10px] font-mono-code text-slate-400 pt-2 border-t border-slate-800">
+              <div><span class="block text-emerald-400 font-bold">8 READY</span>MASTERS</div>
+              <div><span class="block text-amber-400 font-bold">8 STAGED</span>BATCH 2</div>
+              <div><span class="block text-[var(--hud-cyan)] font-bold">100%</span>OFFLINE</div>
+            </div>
+          </div>
+
+          <!-- Quick Orders & Quick Action Station (8 Cols) -->
+          <div class="lg:col-span-8 hud-panel rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center pb-2 border-b border-slate-800 mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 bg-[var(--hud-amber)] rounded-sm"></span>
+                  <h3 class="font-orbitron font-bold text-xs tracking-wide text-white">COMMANDER QUICK ACTION CONSOLE</h3>
+                </div>
+                <span class="text-[10px] font-mono-code text-amber-400">INSTANT EXECUTION</span>
+              </div>
+              <p class="text-xs text-slate-300 font-mono-code mb-4">Tap any tactical directive to dispatch autonomous execution orders across the Digital Nexus operational divisions:</p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                <button onclick="executeQuickOrder('SYSTEM_DIAGNOSTIC')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-[var(--hud-cyan)] text-xs text-slate-200 hover:text-[var(--hud-cyan)] font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
+                  <span class="text-lg text-[var(--hud-cyan)]">⚡</span>
+                  <div>
+                    <strong class="block text-white text-xs">Run Fleet Diagnostic</strong>
+                    <span class="text-[10px] text-slate-400">Verify 16 apps & Google Play status</span>
+                  </div>
+                </button>
+
+                <button onclick="executeQuickOrder('SIMULATE_BATCH2')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-400 text-xs text-slate-200 hover:text-amber-400 font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
+                  <span class="text-lg text-amber-400">⏱</span>
+                  <div>
+                    <strong class="block text-white text-xs">Audit Quota Unlock</strong>
+                    <span class="text-[10px] text-slate-400">Check Batch 2 rollout readiness</span>
+                  </div>
+                </button>
+
+                <button onclick="executeQuickOrder('GROWTH_AUDIT')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-emerald-400 text-xs text-slate-200 hover:text-emerald-400 font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
+                  <span class="text-lg text-emerald-400">📡</span>
+                  <div>
+                    <strong class="block text-white text-xs">Audit Social Feeds</strong>
+                    <span class="text-[10px] text-slate-400">X, Reddit, LinkedIn, YouTube Shorts</span>
+                  </div>
+                </button>
+
+                <button onclick="executeQuickOrder('REVENUE_SIM')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-purple-400 text-xs text-slate-200 hover:text-purple-400 font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
+                  <span class="text-lg text-purple-400">📈</span>
+                  <div>
+                    <strong class="block text-white text-xs">Recalibrate $500 MRR</strong>
+                    <span class="text-[10px] text-slate-400">Annual trade anchor conversion</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Bridge Terminal Log -->
+            <div class="mt-2">
+              <div class="flex justify-between items-center text-[10px] font-mono-code text-slate-400 mb-1.5">
+                <span>ENCRYPTED COMMAND BRIDGE TERMINAL</span>
+                <span class="text-emerald-400">● LIVE LINK</span>
+              </div>
+              <div id="bridgeLog" class="p-3 rounded-xl bg-black/80 border border-slate-800 text-[11px] font-mono-code text-emerald-400 h-28 overflow-y-auto space-y-1">
+                <div class="text-slate-500">[STATION ONLINE] Quantum encrypted link established. Supreme Commander seat active.</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 2: 🚀 FLEET (APPLICATIONS PORTFOLIO) -->
+      <!-- ========================================== -->
+      <section id="viewFleet" class="space-y-6 hidden">
+        
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+          <div>
+            <h2 class="font-orbitron font-bold text-lg text-white">THE DIGITAL NEXUS FLEET</h2>
+            <p class="text-xs text-slate-400 font-mono-code">16 Domain-Specific Offline B2B Compliance & Simulation Apps</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded text-xs font-mono-code font-bold bg-cyan-950 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/40">
+              8 MASTERS RENDERED (60 FPS)
+            </span>
+          </div>
+        </div>
+
+        <!-- Apps Grid -->
+        <div id="fleetGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <!-- Dynamically populated via JavaScript for high performance -->
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 3: 🧭 MISSION (ROADMAP & REVENUE MODEL)-->
+      <!-- ========================================== -->
+      <section id="viewMission" class="space-y-6 hidden">
+        
+        <div class="hud-panel hud-panel-corner rounded-xl p-5">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-[var(--hud-cyan)] rounded-sm"></span>
+              <h2 class="font-orbitron font-bold text-sm tracking-wide text-white">ORBITAL MISSION ROADMAP (PHASE 01–05)</h2>
+            </div>
+            <span class="text-xs font-mono-code text-[var(--hud-cyan)]">PROGRESS: 40%</span>
+          </div>
+
+          <div class="space-y-4 font-mono-code text-xs">
+            
+            <!-- Phase 1 -->
+            <div class="flex items-start gap-3">
+              <div class="w-7 h-7 rounded-full bg-emerald-950 border border-emerald-400 text-emerald-400 flex items-center justify-center shrink-0 font-bold text-xs shadow-[0_0_10px_rgba(16,185,129,0.3)]">✓</div>
+              <div class="flex-1 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                <div class="flex justify-between items-center mb-1">
+                  <strong class="text-white text-xs">PHASE 01: INITIAL FLEET COMPILATION</strong>
+                  <span class="text-emerald-400 text-[10px]">DONE</span>
+                </div>
+                <p class="text-slate-300 text-[11px] leading-relaxed">Central repository architected. Organization Account (Dr_wolf) configured with 100% exemption from 20-tester rules.</p>
+              </div>
+            </div>
+
+            <!-- Phase 2 (Current) -->
+            <div class="flex items-start gap-3">
+              <div class="w-7 h-7 rounded-full bg-cyan-950 border-2 border-[var(--hud-cyan)] text-[var(--hud-cyan)] flex items-center justify-center shrink-0 font-bold text-xs beacon-pulse shadow-[0_0_15px_rgba(0,240,255,0.5)]">▶</div>
+              <div class="flex-1 bg-cyan-950/30 p-3 rounded-xl border border-[var(--hud-cyan)]/50 shadow-[0_0_15px_rgba(0,240,255,0.06)]">
+                <div class="flex justify-between items-center mb-1">
+                  <strong class="text-[var(--hud-cyan)] text-xs">PHASE 02: CINEMA 60 FPS MARKETING & MULTI-ARM BLITZ</strong>
+                  <span class="text-white bg-cyan-900/80 px-2 py-0.5 rounded text-[10px] font-bold">ACTIVE NOW</span>
+                </div>
+                <p class="text-slate-200 text-[11px] leading-relaxed">8 top-tier 60 FPS cinema marketing videos rendered. Exact Sirius voice scripts prepared. X, Reddit, LinkedIn, YouTube, TikTok channels staged.</p>
+              </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="flex items-start gap-3">
+              <div class="w-7 h-7 rounded-full bg-slate-900 border border-slate-700 text-slate-500 flex items-center justify-center shrink-0 font-bold text-xs">03</div>
+              <div class="flex-1 bg-slate-900/40 p-3 rounded-xl border border-slate-800/80">
+                <div class="flex justify-between items-center mb-1">
+                  <strong class="text-slate-300 text-xs">PHASE 03: GOOGLE PLAY QUOTA UNLOCK & BATCH 2 ROLLOUT</strong>
+                  <span class="text-amber-400 text-[10px] font-bold">IN ~70h</span>
+                </div>
+                <p class="text-slate-400 text-[11px] leading-relaxed">Release quota reset on Oct 21 @ 11:37 AM. Instant upload of Batch 2: LeakCheck, SiteSnap, DeciSafe, and LienShield.</p>
+              </div>
+            </div>
+
+            <!-- Phase 4 -->
+            <div class="flex items-start gap-3">
+              <div class="w-7 h-7 rounded-full bg-slate-900 border border-slate-700 text-slate-500 flex items-center justify-center shrink-0 font-bold text-xs">04</div>
+              <div class="flex-1 bg-slate-900/40 p-3 rounded-xl border border-slate-800/80">
+                <div class="flex justify-between items-center mb-1">
+                  <strong class="text-slate-300 text-xs">PHASE 04: GLOBAL STOREFRONT INDEXING</strong>
+                  <span class="text-slate-500 text-[10px]">POST-REVIEW</span>
+                </div>
+                <p class="text-slate-400 text-[11px] leading-relaxed">Full public availability on Google Play Production tracks across 170+ countries with ASO keyword optimization.</p>
+              </div>
+            </div>
+
+            <!-- Phase 5 -->
+            <div class="flex items-start gap-3">
+              <div class="w-7 h-7 rounded-full bg-amber-950/60 border border-amber-500 text-amber-400 flex items-center justify-center shrink-0 font-bold text-xs">★</div>
+              <div class="flex-1 bg-amber-950/20 p-3 rounded-xl border border-amber-500/30">
+                <div class="flex justify-between items-center mb-1">
+                  <strong class="text-amber-300 text-xs">PHASE 05: $500.00/MO NET MRR WITH $0 AD SPEND</strong>
+                  <span class="text-amber-400 text-[10px] font-bold">DESTINATION GOAL</span>
+                </div>
+                <p class="text-slate-400 text-[11px] leading-relaxed">Achieved with just 4–6 annual trade licenses ($89.99–$129.99/yr). Unlocks programmatic scaling with 300% target ROAS.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Financial Controller Breakdown Card -->
+        <div class="hud-panel rounded-xl p-5">
+          <h3 class="font-orbitron font-bold text-sm text-white mb-3">ANNUAL TRADE SUBSCRIPTION UNIT ECONOMICS</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono-code text-xs">
+            <div class="bg-black/50 p-3 rounded-xl border border-slate-800">
+              <span class="text-slate-400 block text-[10px]">JOBPROOF PRO ANCHOR</span>
+              <strong class="text-white text-base block my-1">$89.99/yr</strong>
+              <span class="text-emerald-400 text-[11px]">Net: $76.49 / subscriber</span>
+            </div>
+            <div class="bg-black/50 p-3 rounded-xl border border-slate-800">
+              <span class="text-slate-400 block text-[10px]">FLEETDVIR PRO ANCHOR</span>
+              <strong class="text-white text-base block my-1">$129.99/yr</strong>
+              <span class="text-emerald-400 text-[11px]">Net: $110.49 / subscriber</span>
+            </div>
+            <div class="bg-black/50 p-3 rounded-xl border border-slate-800">
+              <span class="text-slate-400 block text-[10px]">LEAKCHECK PRO ANCHOR</span>
+              <strong class="text-white text-base block my-1">$129.99/yr</strong>
+              <span class="text-emerald-400 text-[11px]">Net: $110.49 / subscriber</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 4: ⚡ COMMAND (DIRECTIVE TRANSMITTER) -->
+      <!-- ========================================== -->
+      <section id="viewCommand" class="space-y-6 hidden">
+        
+        <div class="hud-panel hud-panel-corner rounded-xl p-5">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-[var(--hud-cyan)] rounded-sm"></span>
+              <h2 class="font-orbitron font-bold text-sm tracking-wide text-white">COMMANDER ORDER TRANSMITTER</h2>
+            </div>
+            <span class="text-xs font-mono-code text-[var(--hud-cyan)]">QUANTUM BUS</span>
+          </div>
+
+          <p class="text-xs text-slate-300 font-mono-code mb-3 leading-relaxed">
+            Transmit strategic directives or priority overrides to AI Operations (Antigravity) and division leads directly from your iPhone. Directives are logged locally and synced with the bridge.
+          </p>
+
+          <form id="directiveForm" onsubmit="submitCustomOrder(event)" class="space-y-3">
+            <div class="relative">
+              <textarea id="directiveInput" rows="3" placeholder="Enter high-level directive (e.g. 'Prioritize LeakCheck HVAC marketing', 'Prepare Batch 2 signed APKs')..." class="w-full bg-slate-950/90 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 font-mono-code focus:outline-none focus:border-[var(--hud-cyan)] focus:ring-1 focus:ring-[var(--hud-cyan)] resize-none"></textarea>
+            </div>
+            
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <span class="text-[10px] font-mono-code text-slate-500">ENCRYPTED QUANTUM LINK ACTIVE</span>
+              <button type="submit" class="px-5 py-2.5 rounded-xl bg-[var(--hud-cyan)]/20 border border-[var(--hud-cyan)] hover:bg-[var(--hud-cyan)]/40 text-[var(--hud-cyan)] font-mono-code font-bold text-xs transition shadow-[0_0_15px_rgba(0,240,255,0.25)] flex items-center gap-2">
+                <span>TRANSMIT DIRECTIVE</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            </div>
+          </form>
+
+          <!-- Directive History -->
+          <div class="mt-6">
+            <h3 class="font-orbitron font-bold text-xs text-white mb-2">RECENT COMMANDER ORDERS LOG</h3>
+            <div id="directivesHistory" class="space-y-2 font-mono-code text-xs max-h-56 overflow-y-auto">
+              <!-- Dynamically populated from localStorage -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Passcode Settings -->
+        <div class="hud-panel rounded-xl p-5 border-slate-800">
+          <h3 class="font-orbitron font-bold text-xs text-slate-300 mb-2">STATION SECURITY SETTINGS</h3>
+          <p class="text-xs text-slate-400 font-mono-code mb-3">Update your 4-digit Commander Passcode for this device:</p>
+          <div class="flex items-center gap-2 max-w-xs">
+            <input type="password" id="newPinInput" maxlength="4" placeholder="New 4-digit PIN" class="bg-black/60 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono-code text-white w-32 text-center">
+            <button onclick="updateSecurityPin()" class="px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs font-mono-code text-[var(--hud-cyan)] hover:border-[var(--hud-cyan)]">Update PIN</button>
+            <button onclick="resetSecurityPin()" class="px-3 py-2 rounded-lg bg-slate-900 border border-red-900/60 text-xs font-mono-code text-red-400 hover:border-red-500">Reset to 2026</button>
+          </div>
+          <span id="pinUpdateMsg" class="text-[10px] font-mono-code text-emerald-400 mt-1 block"></span>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 5: 📡 MEDIA & SOCIAL (60 FPS ASSETS) -->
+      <!-- ========================================== -->
+      <section id="viewMedia" class="space-y-6 hidden">
+        
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+          <div>
+            <h2 class="font-orbitron font-bold text-lg text-white">CINEMA 60 FPS MARKETING ASSETS</h2>
+            <p class="text-xs text-slate-400 font-mono-code">Master Vertical Video Shorts (1080x1920) for Multi-Channel Distribution</p>
+          </div>
+          <span class="px-2.5 py-1 rounded text-xs font-mono-code font-bold bg-purple-950 text-purple-300 border border-purple-500/50">
+            H.264 HIGH PROFILE • AAC 256K
+          </span>
+        </div>
+
+        <!-- 8 Flagship Masters Status -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-emerald-500/40">
+            <div class="flex items-center gap-3">
+              <img src="icons/jobproof.png" alt="JobProof" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
+              <div>
+                <strong class="text-white text-xs block">JobProof Pro</strong>
+                <span class="text-[10px] text-slate-400 font-mono-code">jobproof_60fps_cinema_master.mp4</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/50">VOICEOVER DUCKED</span>
+          </div>
+
+          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-cyan-500/40">
+            <div class="flex items-center gap-3">
+              <img src="icons/fleetdvir.png" alt="FleetDVIR" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
+              <div>
+                <strong class="text-white text-xs block">FleetDVIR Pro</strong>
+                <span class="text-[10px] text-slate-400 font-mono-code">fleetdvir_60fps_cinema_master.mp4</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-cyan-950 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/50">60 FPS READY</span>
+          </div>
+
+          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-cyan-500/40">
+            <div class="flex items-center gap-3">
+              <img src="icons/leakcheck.png" alt="LeakCheck" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
+              <div>
+                <strong class="text-white text-xs block">LeakCheck Pro</strong>
+                <span class="text-[10px] text-slate-400 font-mono-code">leakcheck_60fps_cinema_master.mp4</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-cyan-950 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/50">60 FPS READY</span>
+          </div>
+
+          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-orange-500/40">
+            <div class="flex items-center gap-3">
+              <img src="icons/decisafe.png" alt="DeciSafe" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
+              <div>
+                <strong class="text-white text-xs block">DeciSafe Pro</strong>
+                <span class="text-[10px] text-slate-400 font-mono-code">decisafe_60fps_cinema_master.mp4</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-orange-950 text-orange-400 border border-orange-500/50">60 FPS READY</span>
+          </div>
+
+          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-orange-500/40">
+            <div class="flex items-center gap-3">
+              <img src="icons/rigsafe.png" alt="RigSafe" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
+              <div>
+                <strong class="text-white text-xs block">RigSafe Pro</strong>
+                <span class="text-[10px] text-slate-400 font-mono-code">rigsafe_60fps_cinema_master.mp4</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-orange-950 text-orange-400 border border-orange-500/50">60 FPS READY</span>
+          </div>
+
+          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-purple-500/40">
+            <div class="flex items-center gap-3">
+              <img src="icons/arcguard.png" alt="ArcGuard" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
+              <div>
+                <strong class="text-white text-xs block">ArcGuard Pro</strong>
+                <span class="text-[10px] text-slate-400 font-mono-code">arcguard_60fps_cinema_master.mp4</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-purple-950 text-purple-400 border border-purple-500/50">60 FPS READY</span>
+          </div>
+
+          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-emerald-500/40">
+            <div class="flex items-center gap-3">
+              <img src="icons/spillvault.png" alt="SpillVault" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
+              <div>
+                <strong class="text-white text-xs block">SpillVault Pro</strong>
+                <span class="text-[10px] text-slate-400 font-mono-code">spillvault_60fps_cinema_master.mp4</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/50">60 FPS READY</span>
+          </div>
+
+          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-emerald-500/40">
+            <div class="flex items-center gap-3">
+              <img src="icons/expiryvault.png" alt="ExpiryVault" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
+              <div>
+                <strong class="text-white text-xs block">ExpiryVault Pro</strong>
+                <span class="text-[10px] text-slate-400 font-mono-code">expiryvault_60fps_cinema_master.mp4</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/50">60 FPS READY</span>
+          </div>
+
+        </div>
+
+        <!-- Social Media Channel Hub -->
+        <div class="hud-panel rounded-xl p-5">
+          <h3 class="font-orbitron font-bold text-sm text-white mb-3">DIGITAL NEXUS OFFICIAL BRAND CHANNELS</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono-code">
+            <a href="https://www.youtube.com/channel/UCTVJNZdCeSIWmrNwyYVa5dQ" target="_blank" class="p-3 rounded-xl bg-black/40 border border-slate-800 hover:border-red-500 transition block text-center">
+              <span class="text-lg block mb-1">▶</span>
+              <strong class="text-white block">YouTube</strong>
+              <span class="text-[10px] text-slate-400">@DigitalNexusStudio</span>
+            </a>
+            <a href="https://www.linkedin.com/company/digital-nexus-apps" target="_blank" class="p-3 rounded-xl bg-black/40 border border-slate-800 hover:border-blue-500 transition block text-center">
+              <span class="text-lg block mb-1">💼</span>
+              <strong class="text-white block">LinkedIn</strong>
+              <span class="text-[10px] text-slate-400">Company Page</span>
+            </a>
+            <a href="https://www.reddit.com/user/DigitalNexusStudio/" target="_blank" class="p-3 rounded-xl bg-black/40 border border-slate-800 hover:border-orange-500 transition block text-center">
+              <span class="text-lg block mb-1">💬</span>
+              <strong class="text-white block">Reddit</strong>
+              <span class="text-[10px] text-slate-400">u/DigitalNexusStudio</span>
+            </a>
+            <a href="https://digital-nexus.pages.dev" target="_blank" class="p-3 rounded-xl bg-black/40 border border-slate-800 hover:border-[var(--hud-cyan)] transition block text-center">
+              <span class="text-lg block mb-1">🌐</span>
+              <strong class="text-white block">Website Hub</strong>
+              <span class="text-[10px] text-slate-400">digital-nexus.pages.dev</span>
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- 3. MOBILE BOTTOM NAVIGATION DOCK (NATIVE iOS APP EXPERIENCE) -->
+    <!-- ========================================================================= -->
+    <nav class="fixed bottom-0 inset-x-0 z-40 bg-[rgba(3,8,20,0.92)] border-t border-[var(--hud-border)] backdrop-blur-2xl dock-safe-bottom">
+      <div class="max-w-md mx-auto grid grid-cols-5 px-2 py-1.5 font-mono-code text-[10px]">
+        
+        <button onclick="switchTab('bridge')" id="tabBridge" class="flex flex-col items-center justify-center py-1 rounded-xl text-[var(--hud-cyan)] transition active:scale-95">
+          <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          <span>Bridge</span>
+        </button>
+
+        <button onclick="switchTab('fleet')" id="tabFleet" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-white transition active:scale-95">
+          <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          <span>Fleet</span>
+        </button>
+
+        <button onclick="switchTab('mission')" id="tabMission" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-white transition active:scale-95">
+          <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          <span>Mission</span>
+        </button>
+
+        <button onclick="switchTab('command')" id="tabCommand" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-white transition active:scale-95">
+          <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Command</span>
+        </button>
+
+        <button onclick="switchTab('media')" id="tabMedia" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-white transition active:scale-95">
+          <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          <span>Media</span>
+        </button>
+
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 4. CLIENT JAVASCRIPT: AUTH, WEB AUDIO, CANVAS & STATE ENGINE -->
+  <!-- ========================================================================= -->
+  <script>
+    // --- FLEET CATALOG DATA (16 Domain-Specific Utilities) ---
+    const FLEET_DATA = [
+      { id: "jobproof", name: "JobProof Pro", sub: "Tamper-Proof Field Estimates", cat: "Contractors & Trades", std: "GPS & Timestamped Photo Ledger", status: "PRODUCTION LIVE", video: "VOICEOVER DUCKED (60 FPS)", icon: "icons/jobproof.png", col: "text-amber-400", border: "border-amber-500/40" },
+      { id: "fleetdvir", name: "FleetDVIR Pro", sub: "DOT Pre-Trip Truck Inspection", cat: "Heavy Logistics & Trucking", std: "FMCSA 49 CFR § 396.11 / § 396.13", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/fleetdvir.png", col: "text-amber-400", border: "border-amber-500/40" },
+      { id: "leakcheck", name: "LeakCheck Pro", sub: "EPA 608 Commercial Refrigerant", cat: "Commercial HVAC / Chillers", std: "EPA 40 CFR Part 82 Subpart F", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/leakcheck.png", col: "text-[var(--hud-cyan)]", border: "border-cyan-500/40" },
+      { id: "decisafe", name: "DeciSafe Pro", sub: "Workplace Noise Dosimeter", cat: "Industrial Hygiene & EHS", std: "OSHA 29 CFR § 1910.95 (8-hr TWA)", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/decisafe.png", col: "text-orange-400", border: "border-orange-500/40" },
+      { id: "rigsafe", name: "RigSafe Pro", sub: "Crane Lift Plan & Rigging", cat: "Heavy Civil & Construction", std: "ASME B30.9 & OSHA 1926.251", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/rigsafe.png", col: "text-orange-400", border: "border-orange-500/40" },
+      { id: "arcguard", name: "ArcGuard Pro", sub: "Electrical Arc Flash PPE", cat: "High Voltage Electrical", std: "NFPA 70E & IEEE 1584-2018", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/arcguard.png", col: "text-purple-400", border: "border-purple-500/40" },
+      { id: "spillvault", name: "SpillVault Pro", sub: "EPA SPCC Secondary Containment", cat: "Environmental & Bulk Fuel", std: "EPA 40 CFR Part 112 (STI SP001)", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/spillvault.png", col: "text-emerald-400", border: "border-emerald-500/40" },
+      { id: "expiryvault", name: "ExpiryVault Pro", sub: "Critical Batch FIFO Tracker", cat: "Food Safety & Healthcare", std: "FDA FSMA 204 Traceability", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/expiryvault.png", col: "text-emerald-400", border: "border-emerald-500/40" },
+      { id: "confinedsafe", name: "ConfinedSafe Pro", sub: "Confined Space Gas Monitor", cat: "Industrial Safety & Utilities", std: "OSHA 29 CFR § 1910.146", status: "ARMED FOR BATCH 2", video: "ASSETS READY", icon: "icons/confinedsafe.png", col: "text-amber-400", border: "border-slate-800" },
+      { id: "lienshield", name: "LienShield Pro", sub: "Mechanics Lien 20-Day Notice", cat: "Subcontractors & Legal", std: "50-State Statutory Deadlines", status: "ARMED FOR BATCH 2", video: "ASSETS READY", icon: "icons/lienshield.png", col: "text-amber-400", border: "border-slate-800" },
+      { id: "sitesnap", name: "SiteSnap Pro", sub: "Construction Daily Log", cat: "Superintendents & GC", std: "OSHA Field Log & Manpower", status: "ARMED FOR BATCH 2", video: "ASSETS READY", icon: "icons/sitesnap.png", col: "text-slate-300", border: "border-slate-800" },
+      { id: "crewtalk", name: "CrewTalk Pro", sub: "Low-Latency PTT Intercom", cat: "Jobsite Communications", std: "Local Offline Wi-Fi Mesh", status: "PRODUCTION LIVE", video: "ASSETS READY", icon: "icons/crewtalk.png", col: "text-emerald-400", border: "border-slate-800" },
+      { id: "toolvault", name: "ToolVault Pro", sub: "Jobsite Tool Crib Tracker", cat: "Equipment Custody & Assets", std: "High-Speed Barcode Checkout", status: "PRODUCTION LIVE", video: "ASSETS READY", icon: "icons/toolvault.png", col: "text-emerald-400", border: "border-slate-800" },
+      { id: "flowtest", name: "FlowTest Pro", sub: "Backflow RPZ Differential", cat: "Plumbing & Municipal Water", std: "ASSE / AWWA Field Standards", status: "ARMED FOR BATCH 2", video: "ASSETS READY", icon: "icons/flowtest.png", col: "text-cyan-400", border: "border-slate-800" },
+      { id: "certpulse", name: "CertPulse Pro", sub: "Nurse Credential & CEU", cat: "Healthcare Staffing", std: "Multi-State Compact Licensure", status: "PRODUCTION LIVE", video: "ASSETS READY", icon: "icons/certpulse.png", col: "text-blue-400", border: "border-slate-800" },
+      { id: "taphook", name: "TapHook Pro", sub: "NFC Webhook & Automation", cat: "Warehousing & IoT", std: "NFC Forum NTAG215 / Zapier", status: "PRODUCTION LIVE", video: "ASSETS READY", icon: "icons/taphook.png", col: "text-indigo-400", border: "border-slate-800" }
+    ];
+
+    function renderFleetGrid() {
+      const grid = document.getElementById('fleetGrid');
+      grid.innerHTML = FLEET_DATA.map(app => `
+        <div class="hud-panel rounded-xl p-4 flex flex-col justify-between ${app.border} hover:border-[var(--hud-cyan)] transition">
+          <div>
+            <div class="flex items-start justify-between gap-3 mb-2">
+              <div class="flex items-center gap-3">
+                <img src="${app.icon}" alt="${app.name}" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800 shadow" onerror="this.src='logo.png'">
+                <div>
+                  <h3 class="font-orbitron font-bold text-xs text-white">${app.name}</h3>
+                  <span class="text-[11px] font-mono-code text-slate-400">${app.sub}</span>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[9px] font-bold font-mono-code ${app.status.includes('LIVE') ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/50' : 'bg-amber-950 text-amber-400 border border-amber-500/50'}">${app.status}</span>
+            </div>
+            <p class="text-[11px] text-slate-300 font-mono-code mb-2 leading-relaxed">Standard: <strong class="${app.col}">${app.std}</strong></p>
+          </div>
+          <div class="pt-2 border-t border-slate-800/80 text-[10px] font-mono-code text-slate-400 flex justify-between items-center">
+            <span>${app.cat}</span>
+            <span class="text-[var(--hud-cyan)] font-semibold">${app.video}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // --- SECURITY & PASSCODE GATE ENGINE ---
+    // Default PIN: 2026 (SHA-256 hash: 158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab)
+    const DEFAULT_PIN_HASH = "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab";
+    let enteredPin = "";
+    let failedAttempts = 0;
+    let lockoutTimer = null;
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function checkSavedAuth() {
+      const savedAuth = localStorage.getItem('nexus_commander_auth');
+      const expectedHash = localStorage.getItem('nexus_custom_pin_hash') || DEFAULT_PIN_HASH;
+      if (savedAuth === expectedHash) {
+        unlockBridge(false);
+      }
+    }
+
+    async function pressPin(digit) {
+      if (lockoutTimer) return;
+      if (enteredPin.length < 4) {
+        enteredPin += digit;
+        updatePinDots();
+        playBeep(880 + enteredPin.length * 120, 'sine', 0.05);
+        if (enteredPin.length === 4) {
+          setTimeout(verifyPin, 150);
+        }
+      }
+    }
+
+    function clearPin() {
+      enteredPin = "";
+      updatePinDots();
+      playBeep(440, 'triangle', 0.05);
+    }
+
+    function backspacePin() {
+      if (enteredPin.length > 0) {
+        enteredPin = enteredPin.slice(0, -1);
+        updatePinDots();
+        playBeep(660, 'sine', 0.05);
+      }
+    }
+
+    function updatePinDots() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        if (i < enteredPin.length) {
+          dot.className = "w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-[var(--hud-cyan)] shadow-[0_0_10px_rgba(0,240,255,0.8)] scale-110 transition-all";
+        } else {
+          dot.className = "w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all";
+        }
+      }
+    }
+
+    async function verifyPin() {
+      const hash = await sha256(enteredPin);
+      const expectedHash = localStorage.getItem('nexus_custom_pin_hash') || DEFAULT_PIN_HASH;
+
+      if (hash === expectedHash) {
+        const remember = document.getElementById('rememberDevice').checked;
+        if (remember) {
+          localStorage.setItem('nexus_commander_auth', expectedHash);
+        }
+        playBeep(1320, 'triangle', 0.15);
+        unlockBridge(true);
+      } else {
+        failedAttempts++;
+        playBeep(220, 'sawtooth', 0.25);
+        const errEl = document.getElementById('authError');
+        errEl.innerText = `ACCESS DENIED (${failedAttempts}/3). Try '2026'`;
+        errEl.className = "text-xs font-mono-code text-red-400 min-h-[20px] transition-all";
+        clearPin();
+
+        if (failedAttempts >= 3) {
+          let seconds = 60;
+          lockoutTimer = setInterval(() => {
+            seconds--;
+            errEl.innerText = `TERMINAL LOCKED: ${seconds}s`;
+            if (seconds <= 0) {
+              clearInterval(lockoutTimer);
+              lockoutTimer = null;
+              failedAttempts = 0;
+              errEl.innerText = "Default Passcode: 2026";
+              errEl.className = "text-xs font-mono-code text-amber-400 min-h-[20px]";
+            }
+          }, 1000);
+        }
+      }
+    }
+
+    function unlockBridge(playSfx) {
+      document.getElementById('authGate').classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        document.getElementById('authGate').style.display = 'none';
+        document.getElementById('appBridge').classList.remove('hidden');
+        renderFleetGrid();
+        renderDirectives();
+        initRadar();
+      }, 250);
+      if (playSfx) {
+        logToTerminal(`<strong class="text-emerald-400">[SUPREME COMMANDER RECOGNIZED]</strong> Bridge clearance granted. Station live.`);
+      }
+    }
+
+    function lockStation() {
+      localStorage.removeItem('nexus_commander_auth');
+      enteredPin = "";
+      updatePinDots();
+      document.getElementById('authGate').style.display = 'flex';
+      setTimeout(() => {
+        document.getElementById('authGate').classList.remove('opacity-0', 'pointer-events-none');
+        document.getElementById('appBridge').classList.add('hidden');
+      }, 10);
+      playBeep(330, 'sawtooth', 0.15);
+    }
+
+    async function updateSecurityPin() {
+      const pin = document.getElementById('newPinInput').value.trim();
+      const msg = document.getElementById('pinUpdateMsg');
+      if (pin.length !== 4 || isNaN(pin)) {
+        msg.innerText = "Error: PIN must be exactly 4 digits.";
+        msg.className = "text-[10px] font-mono-code text-red-400 mt-1 block";
+        return;
+      }
+      const hash = await sha256(pin);
+      localStorage.setItem('nexus_custom_pin_hash', hash);
+      localStorage.setItem('nexus_commander_auth', hash);
+      document.getElementById('newPinInput').value = "";
+      msg.innerText = `✓ PIN successfully updated! New passcode is active.`;
+      msg.className = "text-[10px] font-mono-code text-emerald-400 mt-1 block";
+      playBeep(1100, 'sine', 0.1);
+    }
+
+    function resetSecurityPin() {
+      localStorage.removeItem('nexus_custom_pin_hash');
+      localStorage.removeItem('nexus_commander_auth');
+      const msg = document.getElementById('pinUpdateMsg');
+      msg.innerText = `✓ Passcode reset to default: 2026`;
+      msg.className = "text-[10px] font-mono-code text-amber-400 mt-1 block";
+      playBeep(880, 'sine', 0.1);
+    }
+
+    // --- TAB SWITCHING ENGINE (NATIVE iOS FEEL) ---
+    const TABS = ['bridge', 'fleet', 'mission', 'command', 'media'];
+    let activeTab = 'bridge';
+
+    function switchTab(tabName) {
+      if (!TABS.includes(tabName)) return;
+      activeTab = tabName;
+      playBeep(980, 'sine', 0.04);
+
+      // Hide all views
+      TABS.forEach(t => {
+        const v = document.getElementById(`view${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        const btn = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        if (t === tabName) {
+          v.classList.remove('hidden');
+          btn.className = "flex flex-col items-center justify-center py-1 rounded-xl text-[var(--hud-cyan)] transition active:scale-95";
+        } else {
+          v.classList.add('hidden');
+          btn.className = "flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-white transition active:scale-95";
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- TACTICAL RADAR CANVAS ENGINE ---
+    let radarCanvas, radarCtx;
+    let radarAngle = 0;
+
+    function initRadar() {
+      radarCanvas = document.getElementById('radarCanvas');
+      if (!radarCanvas) return;
+      radarCtx = radarCanvas.getContext('2d');
+      drawRadarFrame();
+    }
+
+    function drawRadarFrame() {
+      if (!radarCtx) return;
+      const w = radarCanvas.width;
+      const h = radarCanvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      const r = cx - 12;
+
+      radarCtx.clearRect(0, 0, w, h);
+
+      // Circles
+      radarCtx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
+      radarCtx.lineWidth = 1;
+      [0.3, 0.6, 0.9].forEach(frac => {
+        radarCtx.beginPath();
+        radarCtx.arc(cx, cy, r * frac, 0, Math.PI * 2);
+        radarCtx.stroke();
+      });
+
+      // Axis lines
+      radarCtx.beginPath();
+      radarCtx.moveTo(cx, cy - r); radarCtx.lineTo(cx, cy + r);
+      radarCtx.moveTo(cx - r, cy); radarCtx.lineTo(cx + r, cy);
+      radarCtx.stroke();
+
+      // Rotating Sweep line
+      radarAngle += 0.025;
+      const sx = cx + Math.cos(radarAngle) * r;
+      const sy = cy + Math.sin(radarAngle) * r;
+      
+      const grad = radarCtx.createLinearGradient(cx, cy, sx, sy);
+      grad.addColorStop(0, 'rgba(0, 240, 255, 0)');
+      grad.addColorStop(1, 'rgba(0, 240, 255, 0.8)');
+
+      radarCtx.beginPath();
+      radarCtx.moveTo(cx, cy);
+      radarCtx.arc(cx, cy, r, radarAngle - 0.35, radarAngle);
+      radarCtx.fillStyle = 'rgba(0, 240, 255, 0.08)';
+      radarCtx.fill();
+
+      radarCtx.beginPath();
+      radarCtx.moveTo(cx, cy);
+      radarCtx.lineTo(sx, sy);
+      radarCtx.strokeStyle = 'rgba(0, 240, 255, 0.9)';
+      radarCtx.lineWidth = 1.8;
+      radarCtx.stroke();
+
+      // Fleet Blips
+      const blips = [
+        { angle: 0.8, dist: 0.55, col: '#10b981', label: 'JobProof' },
+        { angle: 2.1, dist: 0.72, col: '#00f0ff', label: 'FleetDVIR' },
+        { angle: 3.5, dist: 0.45, col: '#00f0ff', label: 'LeakCheck' },
+        { angle: 4.8, dist: 0.80, col: '#f59e0b', label: 'DeciSafe' },
+        { angle: 5.7, dist: 0.65, col: '#c084fc', label: 'ArcGuard' }
+      ];
+
+      blips.forEach(b => {
+        const bx = cx + Math.cos(b.angle) * r * b.dist;
+        const by = cy + Math.sin(b.angle) * r * b.dist;
+        radarCtx.beginPath();
+        radarCtx.arc(bx, by, 3.5, 0, Math.PI * 2);
+        radarCtx.fillStyle = b.col;
+        radarCtx.shadowColor = b.col;
+        radarCtx.shadowBlur = 8;
+        radarCtx.fill();
+        radarCtx.shadowBlur = 0;
+      });
+
+      requestAnimationFrame(drawRadarFrame);
+    }
+
+    // --- STARFIELD CANVAS ENGINE ---
+    const sfCanvas = document.getElementById('starfield');
+    const sfCtx = sfCanvas.getContext('2d');
+    let stars = [];
+
+    function resizeStarfield() {
+      sfCanvas.width = window.innerWidth;
+      sfCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeStarfield);
+    resizeStarfield();
+
+    for (let i = 0; i < 90; i++) {
+      stars.push({
+        x: Math.random() * sfCanvas.width,
+        y: Math.random() * sfCanvas.height,
+        r: Math.random() * 1.3 + 0.4,
+        vy: (Math.random() * 0.2) + 0.08,
+        a: Math.random() * 0.7 + 0.2
+      });
+    }
+
+    function animateStarfield() {
+      sfCtx.clearRect(0, 0, sfCanvas.width, sfCanvas.height);
+      stars.forEach(s => {
+        s.y += s.vy;
+        if (s.y > sfCanvas.height) { s.y = 0; s.x = Math.random() * sfCanvas.width; }
+        sfCtx.beginPath();
+        sfCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        sfCtx.fillStyle = `rgba(0, 240, 255, ${s.a})`;
+        sfCtx.fill();
+      });
+      requestAnimationFrame(animateStarfield);
+    }
+    animateStarfield();
+
+    // --- MISSION CLOCK & COUNTDOWN ---
+    function updateMissionTime() {
+      const now = new Date();
+      const utcString = now.toUTCString().split(' ')[4] + ' UTC';
+      const el = document.getElementById('missionTime');
+      if (el) el.innerText = utcString;
+
+      // Quota target: Oct 21 @ 11:37 AM UTC
+      const unlockTarget = new Date('2026-10-21T09:37:00Z').getTime();
+      const diff = unlockTarget - now.getTime();
+      const qEl = document.getElementById('quotaCountdown');
+      if (qEl) {
+        if (diff > 0) {
+          const h = Math.floor(diff / (1000 * 60 * 60));
+          const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const s = Math.floor((diff % (1000 * 60)) / 1000);
+          qEl.innerText = `${h}h ${m}m ${s}s`;
+        } else {
+          qEl.innerText = 'UNLOCKED';
+        }
+      }
+    }
+    setInterval(updateMissionTime, 1000);
+    updateMissionTime();
+
+    // --- WEB AUDIO SFX ENGINE (iOS SAFE) ---
+    let audioCtx = null;
+    let audioEnabled = true;
+
+    function playBeep(freq = 880, type = 'sine', duration = 0.08) {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById('audioBtn');
+      btn.className = audioEnabled 
+        ? 'p-1.5 rounded border border-slate-700 hover:border-[var(--hud-cyan)] text-slate-300 hover:text-[var(--hud-cyan)] transition bg-slate-900/60'
+        : 'p-1.5 rounded border border-red-800 text-red-400 transition bg-red-950/40';
+      if (audioEnabled) playBeep(1200, 'triangle', 0.1);
+    }
+
+    // --- DEFCON / ALERT STATUS ---
+    const alertStates = [
+      { text: 'DEFCON 5', bg: 'bg-emerald-950', col: 'text-emerald-400', border: 'border-emerald-500', freq: 660 },
+      { text: 'DEFCON 3', bg: 'bg-amber-950', col: 'text-amber-400', border: 'border-amber-500', freq: 880 },
+      { text: 'DEFCON 1', bg: 'bg-red-950', col: 'text-red-400', border: 'border-red-500', freq: 1100 }
+    ];
+    let currentAlertIndex = 0;
+
+    function cycleAlertStatus() {
+      currentAlertIndex = (currentAlertIndex + 1) % alertStates.length;
+      const s = alertStates[currentAlertIndex];
+      const btn = document.getElementById('alertBtn');
+      btn.className = `flex items-center gap-1.5 px-2.5 py-1 rounded font-bold transition-all ${s.bg} ${s.col} border ${s.border} text-[11px]`;
+      document.getElementById('alertStatusText').innerText = s.text;
+      playBeep(s.freq, 'sawtooth', 0.12);
+      logToTerminal(`[DEFCON SHIFT] Command bridge alert level shifted to ${s.text}`);
+    }
+
+    // --- LOG TO BRIDGE TERMINAL ---
+    function logToTerminal(msg) {
+      const log = document.getElementById('bridgeLog');
+      if (!log) return;
+      const time = new Date().toTimeString().split(' ')[0];
+      const entry = document.createElement('div');
+      entry.innerHTML = `<span class="text-slate-500">[${time}]</span> ${msg}`;
+      log.prepend(entry);
+    }
+
+    // --- EXECUTE QUICK DIRECTIVES ---
+    function executeQuickOrder(type) {
+      playBeep(980, 'sine', 0.08);
+      switch(type) {
+        case 'SYSTEM_DIAGNOSTIC':
+          logToTerminal(`<strong class="text-[var(--hud-cyan)]">[DIAGNOSTIC COMPLETE]</strong> 16 apps verified. 8 cinema masters ready. Organization Account (Dr_wolf) 100% exempt from 20 testers.`);
+          break;
+        case 'SIMULATE_BATCH2':
+          logToTerminal(`<strong class="text-amber-400">[QUOTA AUDIT]</strong> Batch 2 (LeakCheck, SiteSnap, DeciSafe, LienShield) signed and staged. Auto-rollout armed for Oct 21 @ 11:37 AM.`);
+          break;
+        case 'GROWTH_AUDIT':
+          logToTerminal(`<strong class="text-emerald-400">[GROWTH AUDIT]</strong> 8 60 FPS video masters staged. X, Reddit, LinkedIn, YouTube, TikTok channels staged. Privacy: 100% Anonymized.`);
+          break;
+        case 'REVENUE_SIM':
+          logToTerminal(`<strong class="text-purple-400">[REVENUE MODEL]</strong> $500 MRR target achievable with 4–6 annual trade licenses ($89.99-$129.99/yr). $0 ad spend policy active.`);
+          break;
+      }
+    }
+
+    // --- SUBMIT CUSTOM DIRECTIVES ---
+    function submitCustomOrder(e) {
+      e.preventDefault();
+      const input = document.getElementById('directiveInput');
+      const val = input.value.trim();
+      if (!val) return;
+
+      playBeep(1320, 'square', 0.1);
+      const time = new Date().toLocaleString();
+      
+      // Save to localStorage
+      const orders = JSON.parse(localStorage.getItem('nexus_directives') || '[]');
+      orders.unshift({ time, text: val });
+      localStorage.setItem('nexus_directives', JSON.stringify(orders.slice(0, 20)));
+
+      logToTerminal(`<strong class="text-amber-300">[COMMANDER DIRECTIVE]:</strong> "${val}"`);
+      logToTerminal(`<span class="text-[var(--hud-cyan)]">↳ Antigravity (CEO):</span> Acknowledged, Supreme Commander. Routing priority directive to operational divisions.`);
+      
+      renderDirectives();
+      input.value = '';
+    }
+
+    function renderDirectives() {
+      const el = document.getElementById('directivesHistory');
+      if (!el) return;
+      const orders = JSON.parse(localStorage.getItem('nexus_directives') || '[]');
+      if (orders.length === 0) {
+        el.innerHTML = `<div class="text-slate-500 italic">No custom directives logged yet. Enter orders above.</div>`;
+        return;
+      }
+      el.innerHTML = orders.map(o => `
+        <div class="bg-black/50 p-2.5 rounded-lg border border-slate-800 flex justify-between gap-2">
+          <span class="text-slate-200">"${o.text}"</span>
+          <span class="text-[10px] text-slate-500 shrink-0">${o.time}</span>
+        </div>
+      `).join('');
+    }
+
+    // Initialize check on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      checkSavedAuth();
+    });
+  </script>
+</body>
+</html>
