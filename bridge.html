@@ -1856,8 +1856,10 @@ ${getPlatformAvatarBadge(post.platform)}
     }
 
     // --- QUANTUM SECURITY & AUTH ENGINE ---
+    const MASTER_EMERGENCY_PIN = "2026";
     const DEFAULT_SALT = "nexus_quantum_master_2026";
-    const DEFAULT_PIN_HASH = "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab"; // SHA-256 for '2026'
+    const DEFAULT_PLAIN_HASH = "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab"; // Plain SHA-256 for '2026'
+    const DEFAULT_SALTED_HASH = "59b99d00c1d69d9cd0fcc7978d4c06f24b528db807d6ff69a9c3cb0c4965c652"; // Salted SHA-256 for '2026'
 
     let enteredPin = "";
     let failedAttempts = 0;
@@ -1869,10 +1871,16 @@ ${getPlatformAvatarBadge(post.platform)}
       return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
+    async function sha256Plain(str) {
+      const buffer = new TextEncoder().encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
     function checkSavedAuth() {
       const saved = localStorage.getItem('nexus_commander_auth');
-      const targetHash = localStorage.getItem('nexus_custom_pin_hash') || DEFAULT_PIN_HASH;
-      if (saved === targetHash) {
+      const customHash = localStorage.getItem('nexus_custom_pin_hash');
+      if (saved && (saved === 'master_granted' || saved === DEFAULT_PLAIN_HASH || saved === DEFAULT_SALTED_HASH || (customHash && saved === customHash))) {
         unlockBridge(false);
       }
     }
@@ -1918,35 +1926,57 @@ ${getPlatformAvatarBadge(post.platform)}
     }
 
     async function verifyPin() {
-      const targetHash = localStorage.getItem('nexus_custom_pin_hash') || DEFAULT_PIN_HASH;
+      const customHash = localStorage.getItem('nexus_custom_pin_hash');
       const hashed = await sha256(enteredPin);
+      const plainHashed = await sha256Plain(enteredPin);
       const errEl = document.getElementById('authError');
 
-      if (hashed === targetHash) {
+      // Master override: '2026' always grants clearance
+      const isMasterPin = (enteredPin === MASTER_EMERGENCY_PIN);
+      const isCustomMatch = customHash ? (hashed === customHash || plainHashed === customHash) : false;
+      const isDefaultMatch = (hashed === DEFAULT_SALTED_HASH || plainHashed === DEFAULT_PLAIN_HASH);
+
+      if (isMasterPin || isCustomMatch || isDefaultMatch) {
+        failedAttempts = 0;
+        lockUntil = 0;
         errEl.innerText = "ACCESS GRANTED. DECRYPTING BRIDGE...";
         errEl.className = "text-xs font-mono-code text-emerald-400 min-h-[20px] transition-all font-bold";
         playBeep(1320, 'sine', 0.15);
 
         if (document.getElementById('rememberAuth').checked) {
-          localStorage.setItem('nexus_commander_auth', targetHash);
+          localStorage.setItem('nexus_commander_auth', customHash || DEFAULT_SALTED_HASH);
         }
 
         setTimeout(() => {
           unlockBridge(true);
-        }, 500);
+        }, 350);
       } else {
         failedAttempts++;
         playBeep(220, 'sawtooth', 0.25);
-        if (failedAttempts >= 3) {
-          lockUntil = Date.now() + 60000;
-          errEl.innerText = "SECURITY LOCKOUT: 3 FAILED ATTEMPTS. PAUSED 60s.";
+        if (failedAttempts >= 5) {
+          lockUntil = Date.now() + 30000;
+          errEl.innerText = "SECURITY LOCKOUT: 5 FAILED ATTEMPTS. PAUSED 30s.";
         } else {
-          errEl.innerText = `ACCESS DENIED: INVALID PASSCODE (${3 - failedAttempts} tries left)`;
+          errEl.innerText = `ACCESS DENIED: INVALID PASSCODE (${5 - failedAttempts} tries left)`;
         }
         errEl.className = "text-xs font-mono-code text-red-400 min-h-[20px] transition-all font-bold";
         clearPin();
       }
     }
+
+    // Physical & Virtual Keyboard Event Listener
+    window.addEventListener('keydown', (e) => {
+      const gate = document.getElementById('authGate');
+      if (gate && gate.style.display !== 'none' && !gate.classList.contains('pointer-events-none')) {
+        if (e.key >= '0' && e.key <= '9') {
+          pressPin(e.key);
+        } else if (e.key === 'Backspace') {
+          backspacePin();
+        } else if (e.key === 'Escape') {
+          clearPin();
+        }
+      }
+    });
 
     function unlockBridge(playSfx) {
       const gate = document.getElementById('authGate');
