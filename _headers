@@ -1,0 +1,6 @@
+/*
+  Access-Control-Allow-Origin: *
+
+/play/*
+  Access-Control-Allow-Origin: *
+  Content-Security-Policy: frame-ancestors *
