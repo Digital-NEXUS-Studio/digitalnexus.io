@@ -30,10 +30,6 @@
       --hud-bg-dark: #030814;
       --hud-panel-bg: rgba(7, 16, 36, 0.88);
       --hud-border: rgba(0, 240, 255, 0.22);
-      --sat: env(safe-area-inset-top);
-      --sab: env(safe-area-inset-bottom);
-      --sal: env(safe-area-inset-left);
-      --sar: env(safe-area-inset-right);
     }
 
     * {
@@ -147,6 +143,11 @@
   <canvas id="starfield" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
   <div class="fixed inset-0 scanlines z-10 pointer-events-none"></div>
 
+  <!-- Toast Notification System -->
+  <div id="toast" class="fixed top-5 inset-x-4 z-50 max-w-sm mx-auto p-3 rounded-xl bg-black/90 border border-emerald-400 text-emerald-400 font-mono-code text-xs text-center shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-[-20px]">
+    Toast Message
+  </div>
+
   <!-- ========================================================================= -->
   <!-- 1. QUANTUM SECURITY GATE (PASSCODE & BIOMETRIC AUTH FOR SUPREME COMMANDER) -->
   <!-- ========================================================================= -->
@@ -238,6 +239,12 @@
             <span class="text-slate-500">UTC:</span> <span id="missionTime" class="text-white font-bold text-xs">--:--:--</span>
           </div>
 
+          <!-- Pending Adjustments Badge -->
+          <button onclick="switchTab('media'); toggleAdjustmentsDrawer();" id="adjustmentsBadge" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded font-bold transition-all bg-purple-950 text-purple-300 border border-purple-500/50 text-[11px]">
+            <span>⚡</span>
+            <span id="adjustmentsCountText">0 Adjustments</span>
+          </button>
+
           <!-- DEFCON Alert Button -->
           <button id="alertBtn" onclick="cycleAlertStatus()" class="flex items-center gap-1.5 px-2.5 py-1 rounded font-bold transition-all bg-emerald-950 text-emerald-400 border border-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)] text-[11px]">
             <span class="w-2 h-2 rounded-full bg-emerald-400 beacon-pulse"></span>
@@ -270,8 +277,27 @@
       <!-- ========================================== -->
       <section id="viewBridge" class="space-y-6">
         
+        <!-- Live Social Feed Quick Action Card -->
+        <div onclick="switchTab('media')" class="hud-panel hud-panel-corner rounded-xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-[var(--hud-cyan)]/50 cursor-pointer hover:border-[var(--hud-cyan)] transition bg-gradient-to-r from-cyan-950/40 via-slate-900/80 to-slate-950/90 shadow-[0_0_25px_rgba(0,240,255,0.1)]">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-cyan-950 border border-[var(--hud-cyan)] text-[var(--hud-cyan)] flex items-center justify-center font-bold text-2xl shadow-[0_0_15px_rgba(0,240,255,0.4)] beacon-pulse shrink-0">
+              📡
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="font-orbitron font-bold text-sm sm:text-base text-white">LIVE MULTI-CHANNEL MEDIA FEED ACTIVE</h2>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-[var(--hud-cyan)]/20 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/50">14 POSTS</span>
+              </div>
+              <p class="text-xs text-slate-300 font-mono-code mt-0.5">Scroll all X, Reddit, LinkedIn & YouTube posts in one feed. Tap to review copy and transmit instant adjustments.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-xs font-mono-code text-[var(--hud-cyan)] font-bold">
+            <span>OPEN STREAM ➔</span>
+          </div>
+        </div>
+
         <!-- Organization Account Status Banner -->
-        <div class="hud-panel hud-panel-corner rounded-xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-emerald-500/30">
+        <div class="hud-panel rounded-xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-emerald-500/30">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-emerald-950 border border-emerald-400 text-emerald-400 flex items-center justify-center font-bold text-lg shadow-[0_0_12px_rgba(16,185,129,0.3)]">
               ✓
@@ -412,11 +438,11 @@
                   </div>
                 </button>
 
-                <button onclick="executeQuickOrder('GROWTH_AUDIT')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-emerald-400 text-xs text-slate-200 hover:text-emerald-400 font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
+                <button onclick="switchTab('media')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-emerald-400 text-xs text-slate-200 hover:text-emerald-400 font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
                   <span class="text-lg text-emerald-400">📡</span>
                   <div>
                     <strong class="block text-white text-xs">Audit Social Feeds</strong>
-                    <span class="text-[10px] text-slate-400">X, Reddit, LinkedIn, YouTube Shorts</span>
+                    <span class="text-[10px] text-slate-400">Scroll all posts & transmit feedback</span>
                   </div>
                 </button>
 
@@ -550,28 +576,6 @@
           </div>
         </div>
 
-        <!-- Financial Controller Breakdown Card -->
-        <div class="hud-panel rounded-xl p-5">
-          <h3 class="font-orbitron font-bold text-sm text-white mb-3">ANNUAL TRADE SUBSCRIPTION UNIT ECONOMICS</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono-code text-xs">
-            <div class="bg-black/50 p-3 rounded-xl border border-slate-800">
-              <span class="text-slate-400 block text-[10px]">JOBPROOF PRO ANCHOR</span>
-              <strong class="text-white text-base block my-1">$89.99/yr</strong>
-              <span class="text-emerald-400 text-[11px]">Net: $76.49 / subscriber</span>
-            </div>
-            <div class="bg-black/50 p-3 rounded-xl border border-slate-800">
-              <span class="text-slate-400 block text-[10px]">FLEETDVIR PRO ANCHOR</span>
-              <strong class="text-white text-base block my-1">$129.99/yr</strong>
-              <span class="text-emerald-400 text-[11px]">Net: $110.49 / subscriber</span>
-            </div>
-            <div class="bg-black/50 p-3 rounded-xl border border-slate-800">
-              <span class="text-slate-400 block text-[10px]">LEAKCHECK PRO ANCHOR</span>
-              <strong class="text-white text-base block my-1">$129.99/yr</strong>
-              <span class="text-emerald-400 text-[11px]">Net: $110.49 / subscriber</span>
-            </div>
-          </div>
-        </div>
-
       </section>
 
       <!-- ========================================== -->
@@ -629,139 +633,74 @@
 
       </section>
 
-      <!-- ========================================== -->
-      <!-- VIEW 5: 📡 MEDIA & SOCIAL (60 FPS ASSETS) -->
-      <!-- ========================================== -->
+      <!-- ========================================================================= -->
+      <!-- VIEW 5: 📡 UNIFIED MEDIA & SOCIAL FEEDS STREAM (SCROLL & ADJUSTMENT ENGINE)-->
+      <!-- ========================================================================= -->
       <section id="viewMedia" class="space-y-6 hidden">
         
-        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
-          <div>
-            <h2 class="font-orbitron font-bold text-lg text-white">CINEMA 60 FPS MARKETING ASSETS</h2>
-            <p class="text-xs text-slate-400 font-mono-code">Master Vertical Video Shorts (1080x1920) for Multi-Channel Distribution</p>
+        <!-- Stream Header & Controls -->
+        <div class="hud-panel hud-panel-corner rounded-xl p-5">
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-slate-800">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-[var(--hud-cyan)] rounded-sm"></span>
+                <h2 class="font-orbitron font-bold text-base sm:text-lg text-white">UNIFIED SOCIAL MEDIA STREAM</h2>
+              </div>
+              <p class="text-xs text-slate-400 font-mono-code mt-0.5">Scroll every active post across X, Reddit, LinkedIn & YouTube. Review copy and transmit adjustments directly.</p>
+            </div>
+            
+            <!-- Adjustments Counter Toggle -->
+            <button onclick="toggleAdjustmentsDrawer()" class="px-3 py-1.5 rounded-xl bg-purple-950/80 border border-purple-500/50 hover:bg-purple-900/60 text-purple-300 font-mono-code text-xs font-bold transition flex items-center gap-2 shadow-sm">
+              <span>⚡</span>
+              <span id="drawerToggleBtnText">View Feedback History (0)</span>
+            </button>
           </div>
-          <span class="px-2.5 py-1 rounded text-xs font-mono-code font-bold bg-purple-950 text-purple-300 border border-purple-500/50">
-            H.264 HIGH PROFILE • AAC 256K
-          </span>
+
+          <!-- Channel Filter Pills -->
+          <div class="flex flex-wrap items-center gap-2 mt-4 pt-1 font-mono-code text-xs">
+            <button onclick="filterFeed('all')" id="filterBtnAll" class="px-3 py-1.5 rounded-lg bg-[var(--hud-cyan)]/20 border border-[var(--hud-cyan)] text-[var(--hud-cyan)] font-bold transition">
+              ALL CHANNELS (14)
+            </button>
+            <button onclick="filterFeed('x')" id="filterBtnX" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition">
+              𝕏 X / TWITTER (6)
+            </button>
+            <button onclick="filterFeed('reddit')" id="filterBtnReddit" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition">
+              🔴 REDDIT (5)
+            </button>
+            <button onclick="filterFeed('linkedin')" id="filterBtnLinkedin" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition">
+              💼 LINKEDIN (1)
+            </button>
+            <button onclick="filterFeed('youtube')" id="filterBtnYoutube" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition">
+              ▶️ YOUTUBE (2)
+            </button>
+          </div>
+
+          <!-- Search & Keyword Filter -->
+          <div class="mt-3 relative">
+            <input type="text" id="feedSearch" oninput="searchFeed(this.value)" placeholder="Search posts by app or keyword (e.g. 'JobProof', 'FleetDVIR', 'OSHA', 'EPA', 'Crane')..." class="w-full bg-black/60 border border-slate-800 focus:border-[var(--hud-cyan)] rounded-xl px-3.5 py-2 text-xs font-mono-code text-white placeholder-slate-500 focus:outline-none">
+          </div>
         </div>
 
-        <!-- 8 Flagship Masters Status -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-emerald-500/40">
-            <div class="flex items-center gap-3">
-              <img src="icons/jobproof.png" alt="JobProof" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
-              <div>
-                <strong class="text-white text-xs block">JobProof Pro</strong>
-                <span class="text-[10px] text-slate-400 font-mono-code">jobproof_60fps_cinema_master.mp4</span>
-              </div>
+        <!-- Adjustments History Modal / Drawer (Toggled) -->
+        <div id="adjustmentsDrawer" class="hud-panel rounded-xl p-5 border-purple-500/50 hidden transition-all">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-purple-400 font-bold">⚡</span>
+              <h3 class="font-orbitron font-bold text-xs text-white">PENDING ADJUSTMENT DIRECTIVES</h3>
             </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/50">VOICEOVER DUCKED</span>
-          </div>
-
-          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-cyan-500/40">
-            <div class="flex items-center gap-3">
-              <img src="icons/fleetdvir.png" alt="FleetDVIR" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
-              <div>
-                <strong class="text-white text-xs block">FleetDVIR Pro</strong>
-                <span class="text-[10px] text-slate-400 font-mono-code">fleetdvir_60fps_cinema_master.mp4</span>
-              </div>
+            <div class="flex items-center gap-2">
+              <button onclick="clearAllAdjustments()" class="text-[10px] font-mono-code text-red-400 hover:underline">Clear All</button>
+              <button onclick="toggleAdjustmentsDrawer()" class="text-xs font-mono-code text-slate-400 hover:text-white px-2 py-0.5 rounded bg-slate-800">✕ Close</button>
             </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-cyan-950 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/50">60 FPS READY</span>
           </div>
-
-          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-cyan-500/40">
-            <div class="flex items-center gap-3">
-              <img src="icons/leakcheck.png" alt="LeakCheck" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
-              <div>
-                <strong class="text-white text-xs block">LeakCheck Pro</strong>
-                <span class="text-[10px] text-slate-400 font-mono-code">leakcheck_60fps_cinema_master.mp4</span>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-cyan-950 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/50">60 FPS READY</span>
+          <div id="adjustmentsList" class="space-y-2 font-mono-code text-xs max-h-64 overflow-y-auto">
+            <!-- Populated via JavaScript -->
           </div>
-
-          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-orange-500/40">
-            <div class="flex items-center gap-3">
-              <img src="icons/decisafe.png" alt="DeciSafe" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
-              <div>
-                <strong class="text-white text-xs block">DeciSafe Pro</strong>
-                <span class="text-[10px] text-slate-400 font-mono-code">decisafe_60fps_cinema_master.mp4</span>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-orange-950 text-orange-400 border border-orange-500/50">60 FPS READY</span>
-          </div>
-
-          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-orange-500/40">
-            <div class="flex items-center gap-3">
-              <img src="icons/rigsafe.png" alt="RigSafe" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
-              <div>
-                <strong class="text-white text-xs block">RigSafe Pro</strong>
-                <span class="text-[10px] text-slate-400 font-mono-code">rigsafe_60fps_cinema_master.mp4</span>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-orange-950 text-orange-400 border border-orange-500/50">60 FPS READY</span>
-          </div>
-
-          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-purple-500/40">
-            <div class="flex items-center gap-3">
-              <img src="icons/arcguard.png" alt="ArcGuard" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
-              <div>
-                <strong class="text-white text-xs block">ArcGuard Pro</strong>
-                <span class="text-[10px] text-slate-400 font-mono-code">arcguard_60fps_cinema_master.mp4</span>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-purple-950 text-purple-400 border border-purple-500/50">60 FPS READY</span>
-          </div>
-
-          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-emerald-500/40">
-            <div class="flex items-center gap-3">
-              <img src="icons/spillvault.png" alt="SpillVault" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
-              <div>
-                <strong class="text-white text-xs block">SpillVault Pro</strong>
-                <span class="text-[10px] text-slate-400 font-mono-code">spillvault_60fps_cinema_master.mp4</span>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/50">60 FPS READY</span>
-          </div>
-
-          <div class="hud-panel rounded-xl p-4 flex items-center justify-between border-emerald-500/40">
-            <div class="flex items-center gap-3">
-              <img src="icons/expiryvault.png" alt="ExpiryVault" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800">
-              <div>
-                <strong class="text-white text-xs block">ExpiryVault Pro</strong>
-                <span class="text-[10px] text-slate-400 font-mono-code">expiryvault_60fps_cinema_master.mp4</span>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/50">60 FPS READY</span>
-          </div>
-
         </div>
 
-        <!-- Social Media Channel Hub -->
-        <div class="hud-panel rounded-xl p-5">
-          <h3 class="font-orbitron font-bold text-sm text-white mb-3">DIGITAL NEXUS OFFICIAL BRAND CHANNELS</h3>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono-code">
-            <a href="https://www.youtube.com/channel/UCTVJNZdCeSIWmrNwyYVa5dQ" target="_blank" class="p-3 rounded-xl bg-black/40 border border-slate-800 hover:border-red-500 transition block text-center">
-              <span class="text-lg block mb-1">▶</span>
-              <strong class="text-white block">YouTube</strong>
-              <span class="text-[10px] text-slate-400">@DigitalNexusStudio</span>
-            </a>
-            <a href="https://www.linkedin.com/company/digital-nexus-apps" target="_blank" class="p-3 rounded-xl bg-black/40 border border-slate-800 hover:border-blue-500 transition block text-center">
-              <span class="text-lg block mb-1">💼</span>
-              <strong class="text-white block">LinkedIn</strong>
-              <span class="text-[10px] text-slate-400">Company Page</span>
-            </a>
-            <a href="https://www.reddit.com/user/DigitalNexusStudio/" target="_blank" class="p-3 rounded-xl bg-black/40 border border-slate-800 hover:border-orange-500 transition block text-center">
-              <span class="text-lg block mb-1">💬</span>
-              <strong class="text-white block">Reddit</strong>
-              <span class="text-[10px] text-slate-400">u/DigitalNexusStudio</span>
-            </a>
-            <a href="https://digital-nexus.pages.dev" target="_blank" class="p-3 rounded-xl bg-black/40 border border-slate-800 hover:border-[var(--hud-cyan)] transition block text-center">
-              <span class="text-lg block mb-1">🌐</span>
-              <strong class="text-white block">Website Hub</strong>
-              <span class="text-[10px] text-slate-400">digital-nexus.pages.dev</span>
-            </a>
-          </div>
+        <!-- THE SCROLLABLE STREAM FEED -->
+        <div id="socialFeedContainer" class="space-y-6">
+          <!-- Dynamically populated post cards with native platform styling -->
         </div>
 
       </section>
@@ -805,9 +744,581 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 4. CLIENT JAVASCRIPT: AUTH, WEB AUDIO, CANVAS & STATE ENGINE -->
+  <!-- 4. CLIENT JAVASCRIPT: AUTH, SOCIAL STREAM, WEB AUDIO & FEEDBACK ENGINE -->
   <!-- ========================================================================= -->
   <script>
+    // --- 14 CAMPAIGN POSTS ACROSS ALL CHANNELS ---
+    const SOCIAL_POSTS = [
+      {
+        id: "x_launch",
+        platform: "x",
+        channel_name: "X (Twitter)",
+        account_name: "Digital Nexus Studio",
+        account_handle: "@DigitalNexusHQ",
+        badge: "VERIFIED STUDIO",
+        date: "OCT 18, 2026",
+        status: "LIVE ON X",
+        title: "Digital Nexus Studio Official Launch Announcement",
+        text: `Introducing Digital Nexus Studio ⚡\n\nWe build offline-first B2B compliance utilities & 3D simulations for field trades, contractors, and truckers.\n\nZero cloud lock-in. Tamper-proof audit logs.\n\nFleet: https://digital-nexus.pages.dev\n\n#buildinpublic #AndroidDev #B2B #SoftwareEngineering`,
+        link: "https://x.com/DigitalNexusHQ",
+        link_text: "View on X ↗",
+        preview_img: "previews/jobproof/scene4.jpg",
+        app_tag: "STUDIO HQ",
+        media_type: "Brand Identity Badge"
+      },
+      {
+        id: "x_jobproof",
+        platform: "x",
+        channel_name: "X (Twitter)",
+        account_name: "Digital Nexus Studio",
+        account_handle: "@DigitalNexusHQ",
+        badge: "VERIFIED STUDIO",
+        date: "OCT 19, 2026",
+        status: "BROADCAST READY (VOICEOVER APPROVED)",
+        title: "JobProof Pro // 60 FPS Master Video Launch",
+        text: `Contractors lose over $12,000/year to disputed change orders and unpaid extras.\n\nJobProof fixes this: tamper-proof GPS photos, AR dimension overlays, and instant client signatures on site. 100% offline with zero cloud subscriptions.\n\nDownload on Google Play: https://play.google.com/store/apps/details?id=com.jobproof.nexus\n\n#ConstructionTech #GeneralContractors #Trades #GooglePlay #B2B`,
+        link: "https://play.google.com/store/apps/details?id=com.jobproof.nexus",
+        link_text: "Google Play Store ↗",
+        preview_img: "previews/jobproof/scene2.jpg",
+        app_tag: "JOBPROOF PRO",
+        media_type: "60 FPS Master Video (Sirius Voiceover)"
+      },
+      {
+        id: "x_fleetdvir",
+        platform: "x",
+        channel_name: "X (Twitter)",
+        account_name: "Digital Nexus Studio",
+        account_handle: "@DigitalNexusHQ",
+        badge: "VERIFIED STUDIO",
+        date: "OCT 19, 2026",
+        status: "BROADCAST READY",
+        title: "FleetDVIR Pro // 60 FPS Master Video Launch",
+        text: `A single missing pre-trip inspection log can trigger a $16,863 FMCSA penalty and put your truck out of service.\n\nFleetDVIR gives commercial drivers 100% offline, 49 CFR-compliant pre-trip & post-trip DVIRs with digital mechanic sign-offs in seconds.\n\nGet it on Google Play: https://play.google.com/store/apps/details?id=com.fleetdvir.nexus\n\n#Trucking #FleetManagement #DOTCompliance #FMCSA #Logistics`,
+        link: "https://play.google.com/store/apps/details?id=com.fleetdvir.nexus",
+        link_text: "Google Play Store ↗",
+        preview_img: "previews/fleetdvir/scene2.jpg",
+        app_tag: "FLEETDVIR PRO",
+        media_type: "60 FPS Master Video"
+      },
+      {
+        id: "x_leakcheck",
+        platform: "x",
+        channel_name: "X (Twitter)",
+        account_name: "Digital Nexus Studio",
+        account_handle: "@DigitalNexusHQ",
+        badge: "VERIFIED STUDIO",
+        date: "OCT 19, 2026",
+        status: "BROADCAST READY",
+        title: "LeakCheck Pro // 60 FPS Master Video Launch",
+        text: `EPA 608 leak rate penalties reach up to $50,276 per day per chiller.\n\nLeakCheck calculates annualized leak rates instantly, tracks refrigerant cylinder mass-balance to the ounce, and exports certified EPA audit logs. 100% offline.\n\nDownload on Google Play: https://play.google.com/store/apps/details?id=com.leakcheck.nexus\n\n#HVACR #CommercialHVAC #Refrigeration #EPA608 #FacilityManagement`,
+        link: "https://play.google.com/store/apps/details?id=com.leakcheck.nexus",
+        link_text: "Google Play Store ↗",
+        preview_img: "previews/leakcheck/scene2.jpg",
+        app_tag: "LEAKCHECK PRO",
+        media_type: "60 FPS Master Video"
+      },
+      {
+        id: "x_decisafe",
+        platform: "x",
+        channel_name: "X (Twitter)",
+        account_name: "Digital Nexus Studio",
+        account_handle: "@DigitalNexusHQ",
+        badge: "VERIFIED STUDIO",
+        date: "OCT 19, 2026",
+        status: "BROADCAST READY",
+        title: "DeciSafe Pro // 60 FPS Master Video Launch",
+        text: `OSHA 1910.95 citations start at $15,625 per unmonitored noise exposure.\n\nDeciSafe calculates live 8-hour TWA, Leq decibels, and % permissible noise dose directly on your phone. Protect your crew and stay audit-ready with zero cloud latency.\n\nDownload on Google Play: https://play.google.com/store/apps/details?id=com.decisafe.nexus\n\n#EHS #WorkplaceSafety #OSHA #IndustrialHygiene #Acoustics`,
+        link: "https://play.google.com/store/apps/details?id=com.decisafe.nexus",
+        link_text: "Google Play Store ↗",
+        preview_img: "previews/decisafe/scene2.jpg",
+        app_tag: "DECISAFE PRO",
+        media_type: "60 FPS Master Video"
+      },
+      {
+        id: "x_rigsafe",
+        platform: "x",
+        channel_name: "X (Twitter)",
+        account_name: "Digital Nexus Studio",
+        account_handle: "@DigitalNexusHQ",
+        badge: "VERIFIED STUDIO",
+        date: "OCT 19, 2026",
+        status: "BROADCAST READY",
+        title: "RigSafe Pro // 60 FPS Master Video Launch",
+        text: `One bad sling angle or soft outrigger pad can tip a 200-ton crane.\n\nRigSafe Pro computes multi-leg bridle sling tensions, crane mat ground bearing pressure, and ASME B30.9 safety factors in seconds. 100% offline.\n\nDownload on Google Play: https://play.google.com/store/apps/details?id=com.rigsafe.nexus\n\n#CraneLife #HeavyCivil #Rigging #ASME #OSHA1926 #Construction`,
+        link: "https://play.google.com/store/apps/details?id=com.rigsafe.nexus",
+        link_text: "Google Play Store ↗",
+        preview_img: "previews/rigsafe/scene2.jpg",
+        app_tag: "RIGSAFE PRO",
+        media_type: "60 FPS Master Video"
+      },
+      {
+        id: "reddit_sideproject",
+        platform: "reddit",
+        channel_name: "Reddit",
+        account_name: "u/DigitalNexusStudio",
+        account_handle: "r/SideProject",
+        badge: "DEV POST",
+        date: "OCT 18, 2026",
+        status: "LIVE ON REDDIT",
+        title: "Built a 100% offline suite of B2B field compliance utilities for trades & truckers to eliminate cloud subscription traps",
+        text: `Hey r/SideProject! We noticed field technicians, commercial truckers, and HVAC mechanics constantly get stranded in basements, rural job sites, and highway scales where cloud SaaS apps simply stall or refuse to load.\n\nWe built Digital Nexus — 16 offline-first, domain-specific utilities engineered in React/Capacitor:\n\n• JobProof: GPS timestamp photo audit & signed contractor estimates\n• FleetDVIR: DOT 49 CFR 396.11 pre-trip vehicle inspection logs\n• LeakCheck: EPA 608 commercial chiller leak rate calculator\n• DeciSafe: OSHA 1910.95 occupational noise dosimeter (8-hr TWA)\n\nAll apps run 100% locally with zero cloud dependencies and export audit-ready signed PDFs. Would love your feedback!`,
+        link: "https://www.reddit.com/user/DigitalNexusStudio/",
+        link_text: "Open on Reddit ↗",
+        preview_img: "previews/jobproof/scene2.jpg",
+        app_tag: "FLEET SHOWCASE",
+        media_type: "Case Study & Architecture"
+      },
+      {
+        id: "reddit_jobproof",
+        platform: "reddit",
+        channel_name: "Reddit",
+        account_name: "u/DigitalNexusStudio",
+        account_handle: "r/Construction",
+        badge: "FIELD TECH",
+        date: "OCT 19, 2026",
+        status: "SCHEDULED",
+        title: "Built a 100% offline tool to stop clients from disputing change orders on site",
+        text: `After seeing subbed trades get burned by "I never agreed to that price" or "that scratch was already there," we engineered JobProof.\n\nIt embeds immutable GPS coordinates, elevation, timestamp, and SHA-256 verification directly into jobsite photos and lets you generate a signed PDF quote before leaving the driveway. No accounts, no cloud fees, no subscription trap. Works even in basements with zero bars. Available on Google Play now.`,
+        link: "https://www.reddit.com/r/Construction/",
+        link_text: "Subreddit Target ↗",
+        preview_img: "previews/jobproof/scene4.jpg",
+        app_tag: "JOBPROOF PRO",
+        media_type: "Contractor Case Study"
+      },
+      {
+        id: "reddit_fleetdvir",
+        platform: "reddit",
+        channel_name: "Reddit",
+        account_name: "u/DigitalNexusStudio",
+        account_handle: "r/Truckers",
+        badge: "LOGISTICS",
+        date: "OCT 19, 2026",
+        status: "SCHEDULED",
+        title: "Stop wasting time on paper DVIRs that DOT officers reject at the scale",
+        text: `Missing or incomplete DVIR logs are the #1 source of avoidable roadside inspection citations ($16,863 max penalty!). We built FleetDVIR as an offline-first commercial inspection engine: walk around your rig, tap through 49 CFR 396.11 component checklists, snap defect photos, and export a signed, audit-proof PDF report in 30 seconds. Zero cell service required, no monthly SaaS fees.`,
+        link: "https://www.reddit.com/r/Truckers/",
+        link_text: "Subreddit Target ↗",
+        preview_img: "previews/fleetdvir/scene4.jpg",
+        app_tag: "FLEETDVIR PRO",
+        media_type: "FMCSA Compliance Breakdown"
+      },
+      {
+        id: "reddit_leakcheck",
+        platform: "reddit",
+        channel_name: "Reddit",
+        account_name: "u/DigitalNexusStudio",
+        account_handle: "r/HVAC",
+        badge: "HVACR PRO",
+        date: "OCT 19, 2026",
+        status: "SCHEDULED",
+        title: "Engineered an offline EPA 608 leak rate calculator & cylinder tracker for commercial mechanics",
+        text: `If you service commercial racks, chillers, or industrial cold storage, you know how painful EPA leak inspections can be ($50k/day fines). We engineered LeakCheck: enter full charge and refrigerant added, and it instantly calculates both the rolling average and annualized leak rate against the 10%, 20%, and 30% EPA trigger thresholds. It also tracks virgin/recovery cylinders and outputs signed compliance PDFs. Works in deep sub-basements without signal.`,
+        link: "https://www.reddit.com/r/HVAC/",
+        link_text: "Subreddit Target ↗",
+        preview_img: "previews/leakcheck/scene4.jpg",
+        app_tag: "LEAKCHECK PRO",
+        media_type: "EPA 608 Engineering Guide"
+      },
+      {
+        id: "reddit_rigsafe",
+        platform: "reddit",
+        channel_name: "Reddit",
+        account_name: "u/DigitalNexusStudio",
+        account_handle: "r/CraneOperators",
+        badge: "RIGGING",
+        date: "OCT 19, 2026",
+        status: "SCHEDULED",
+        title: "Stop doing sling trigonometry on scrap plywood before critical lifts",
+        text: `If you're rigging heavy loads, sling angles change tension dramatically (at 30 degrees, tension doubles!). RigSafe Pro calculates exact leg tension, D/d ratios for wire rope and synthetic slings, and outrigger mat ground bearing pressure against soil capacity. Generates signed lift plans in PDF format. Built by engineers, 100% offline.`,
+        link: "https://www.reddit.com/r/CraneOperators/",
+        link_text: "Subreddit Target ↗",
+        preview_img: "previews/rigsafe/scene4.jpg",
+        app_tag: "RIGSAFE PRO",
+        media_type: "ASME B30.9 Calculator Spec"
+      },
+      {
+        id: "linkedin_announcement",
+        platform: "linkedin",
+        channel_name: "LinkedIn",
+        account_name: "Digital Nexus Studio",
+        account_handle: "Company Page",
+        badge: "OFFICIAL COMPANY UPDATE",
+        date: "OCT 18, 2026",
+        status: "LIVE ON LINKEDIN",
+        title: "Announcing Digital Nexus Studio: High-Precision Mobile Compliance SaaS & 3D Simulation Engineering",
+        text: `🚀 Announcing Digital Nexus Studio: High-Precision Mobile Compliance SaaS & 3D Simulation Engineering.\n\nToday we are officially unveiling Digital Nexus (https://digital-nexus.pages.dev) — our suite of offline-first mobile micro-SaaS utilities engineered specifically for field service contractors, commercial transport fleets, and HVAC compliance professionals:\n\n🔹 JobProof — Tamper-proof contractor GPS timestamp camera & instant quote generator.\n🔹 FleetDVIR — DOT & FMCSA pre-trip truck inspection logs with 1-tap signed audit PDF exports.\n🔹 LeakCheck — EPA Section 608 certified HVAC refrigerant calculation and compliance logbook.\n🔹 Arkan 3D — Real-time hypersonic flight physics simulation.\n\nExplore our full verified portfolio: https://digital-nexus.pages.dev\nDirect Mobile Hub: https://digital-nexus.pages.dev/links\n\n#SoftwareEngineering #B2B #SaaS #MobileApps #ContractorTech #Logistics #FleetManagement #HVAC`,
+        link: "https://www.linkedin.com/company/digital-nexus-apps",
+        link_text: "View on LinkedIn ↗",
+        preview_img: "previews/jobproof/scene2.jpg",
+        app_tag: "B2B SUITE",
+        media_type: "Corporate Announcement"
+      },
+      {
+        id: "youtube_jobproof",
+        platform: "youtube",
+        channel_name: "YouTube Shorts",
+        account_name: "Digital Nexus Studio",
+        account_handle: "@DigitalNexusStudio",
+        badge: "OFFICIAL CHANNEL",
+        date: "OCT 19, 2026",
+        status: "READY FOR UPLOAD",
+        title: "Tired of Unpaid Contractor Disputes? [JobProof Pro Cinema 60 FPS]",
+        text: `General contractors lose $12,000+ per year in undocumented client disputes and disputed change orders. JobProof Pro provides immutable GPS timestamps, tamper-proof photos, and signed PDF quotes directly on your phone with zero cloud fees.\n\nWatch in cinema 60 FPS. Download on Google Play: https://digital-nexus.pages.dev/links\n\n#Shorts #Construction #Contractors #JobProof #GooglePlay`,
+        link: "https://www.youtube.com/channel/UCTVJNZdCeSIWmrNwyYVa5dQ",
+        link_text: "YouTube Channel ↗",
+        preview_img: "previews/jobproof/scene2.jpg",
+        app_tag: "JOBPROOF PRO",
+        media_type: "1080x1920 60 FPS Master Video"
+      },
+      {
+        id: "youtube_fleetdvir",
+        platform: "youtube",
+        channel_name: "YouTube Shorts",
+        account_name: "Digital Nexus Studio",
+        account_handle: "@DigitalNexusStudio",
+        badge: "OFFICIAL CHANNEL",
+        date: "OCT 19, 2026",
+        status: "READY FOR UPLOAD",
+        title: "Avoid $16,000 DOT Out-of-Service Truck Citations [FleetDVIR Pro Cinema 60 FPS]",
+        text: `Commercial vehicle pre-trip inspections are mandated under FMCSA 49 CFR 396.11. FleetDVIR lets drivers complete daily inspections, log brake/tire defects, and generate signed mechanic sign-offs in seconds with zero cell reception required.\n\nWatch in cinema 60 FPS. Download on Google Play: https://digital-nexus.pages.dev/links\n\n#Shorts #Trucking #FleetDVIR #TruckDriver #DOTInspection`,
+        link: "https://www.youtube.com/channel/UCTVJNZdCeSIWmrNwyYVa5dQ",
+        link_text: "YouTube Channel ↗",
+        preview_img: "previews/fleetdvir/scene2.jpg",
+        app_tag: "FLEETDVIR PRO",
+        media_type: "1080x1920 60 FPS Master Video"
+      }
+    ];
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function filterFeed(platform) {
+      currentFilter = platform;
+      ['all', 'x', 'reddit', 'linkedin', 'youtube'].forEach(p => {
+        const btn = document.getElementById(`filterBtn${p.charAt(0).toUpperCase() + p.slice(1)}`);
+        if (btn) {
+          if (p === platform) {
+            btn.className = "px-3 py-1.5 rounded-lg bg-[var(--hud-cyan)]/20 border border-[var(--hud-cyan)] text-[var(--hud-cyan)] font-bold transition";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition";
+          }
+        }
+      });
+      renderSocialFeed();
+      playBeep(880, 'sine', 0.04);
+    }
+
+    function searchFeed(val) {
+      searchQuery = val.toLowerCase().trim();
+      renderSocialFeed();
+    }
+
+    function renderSocialFeed() {
+      const container = document.getElementById('socialFeedContainer');
+      if (!container) return;
+
+      const adjustments = JSON.parse(localStorage.getItem('nexus_post_adjustments') || '{}');
+      updateAdjustmentsBadgeCount();
+
+      const filtered = SOCIAL_POSTS.filter(post => {
+        const matchesPlatform = currentFilter === 'all' || post.platform === currentFilter;
+        const matchesSearch = !searchQuery || 
+          post.title.toLowerCase().includes(searchQuery) || 
+          post.text.toLowerCase().includes(searchQuery) || 
+          post.app_tag.toLowerCase().includes(searchQuery);
+        return matchesPlatform && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="hud-panel rounded-xl p-8 text-center text-slate-400 font-mono-code text-xs">
+            <span class="text-2xl block mb-2">🔍</span>
+            No broadcast posts match your filter query "${searchQuery}". Tap "ALL CHANNELS" to reset.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(post => {
+        const hasAdjustment = !!adjustments[post.id];
+        const platformCol = post.platform === 'x' ? 'text-sky-400' : (post.platform === 'reddit' ? 'text-orange-400' : (post.platform === 'linkedin' ? 'text-blue-400' : 'text-red-400'));
+        const platformBorder = post.platform === 'x' ? 'border-sky-500/40' : (post.platform === 'reddit' ? 'border-orange-500/40' : (post.platform === 'linkedin' ? 'border-blue-500/40' : 'border-red-500/40'));
+        const platformBg = post.platform === 'x' ? 'bg-sky-950/20' : (post.platform === 'reddit' ? 'bg-orange-950/20' : (post.platform === 'linkedin' ? 'bg-blue-950/20' : 'bg-red-950/20'));
+
+        return `
+          <article class="hud-panel rounded-2xl p-4 sm:p-6 ${platformBorder} hover:border-[var(--hud-cyan)] transition-all shadow-lg" id="card_${post.id}">
+            
+            <!-- Platform & Author Header -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80 mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl ${platformBg} border ${platformBorder} flex items-center justify-center text-lg font-bold shrink-0">
+                  ${post.platform === 'x' ? '𝕏' : (post.platform === 'reddit' ? '🔴' : (post.platform === 'linkedin' ? '💼' : '▶️'))}
+                </div>
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <strong class="text-white text-xs sm:text-sm font-semibold">${post.account_name}</strong>
+                    <span class="text-[10px] text-slate-400 font-mono-code">${post.account_handle}</span>
+                    <span class="px-1.5 py-0.2 rounded text-[9px] font-mono-code font-bold ${platformCol} bg-black/40 border border-slate-800">${post.badge}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-[10px] text-slate-400 font-mono-code mt-0.5">
+                    <span>${post.channel_name}</span>
+                    <span>•</span>
+                    <span>${post.date}</span>
+                    <span>•</span>
+                    <span class="text-emerald-400 font-bold">${post.status}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- App Tag Badge -->
+              <span class="px-2.5 py-1 rounded text-[10px] font-mono-code font-bold bg-slate-900 border border-slate-700 text-slate-200">
+                ${post.app_tag}
+              </span>
+            </div>
+
+            <!-- Post Title & Content -->
+            <div class="space-y-3 mb-4">
+              <h3 class="font-orbitron font-bold text-xs sm:text-sm text-white leading-snug">${post.title}</h3>
+              <div class="bg-black/50 p-3.5 sm:p-4 rounded-xl border border-slate-800/80 text-xs text-slate-200 font-mono-code whitespace-pre-line leading-relaxed selection:bg-[var(--hud-cyan)]/30">
+                ${post.text}
+              </div>
+            </div>
+
+            <!-- Attached Visual Preview Card -->
+            <div class="relative rounded-xl overflow-hidden border border-slate-800/90 bg-slate-950 mb-4 group">
+              <div class="w-full max-h-80 sm:max-h-96 flex items-center justify-center bg-black/70 overflow-hidden">
+                <img src="${post.preview_img}" alt="${post.title}" class="max-h-80 sm:max-h-96 w-auto object-contain transition duration-300 group-hover:scale-105" loading="lazy" onerror="this.src='previews/jobproof/scene2.jpg'">
+              </div>
+              <div class="absolute bottom-2 left-2 right-2 flex justify-between items-center px-3 py-1.5 rounded-lg bg-black/80 backdrop-blur-md border border-slate-700/80 text-[10px] font-mono-code">
+                <span class="text-white font-semibold flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-[var(--hud-cyan)] beacon-pulse"></span>
+                  ${post.media_type}
+                </span>
+                <span class="text-emerald-400 font-bold">1080x1920 (9:16)</span>
+              </div>
+            </div>
+
+            <!-- Action & Feedback Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/80">
+              
+              <div class="flex items-center gap-2">
+                <a href="${post.link}" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-[var(--hud-cyan)] text-xs text-slate-300 hover:text-[var(--hud-cyan)] font-mono-code transition flex items-center gap-1.5">
+                  <span>${post.link_text}</span>
+                </a>
+                
+                <button onclick="copyPostText('${post.id}')" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-slate-500 text-xs text-slate-300 font-mono-code transition flex items-center gap-1">
+                  <span>Copy Text 📋</span>
+                </button>
+              </div>
+
+              <!-- Request Adjustment Trigger -->
+              <button onclick="toggleAdjustmentForm('${post.id}')" class="px-3.5 py-1.5 rounded-lg ${hasAdjustment ? 'bg-purple-900/60 border-purple-400 text-purple-200' : 'bg-[var(--hud-cyan)]/15 border-[var(--hud-cyan)] text-[var(--hud-cyan)] hover:bg-[var(--hud-cyan)]/30'} border font-mono-code font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                <span>✍️</span>
+                <span>${hasAdjustment ? 'Edit Adjustment Directive' : 'Request Adjustment'}</span>
+              </button>
+
+            </div>
+
+            <!-- INLINE ADJUSTMENT DRAWER (Toggled) -->
+            <div id="adj_drawer_${post.id}" class="mt-4 pt-4 border-t border-purple-500/30 ${hasAdjustment ? '' : 'hidden'} bg-purple-950/20 p-4 rounded-xl border border-purple-900/50">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-mono-code font-bold text-purple-300 flex items-center gap-1.5">
+                  <span>⚡</span>
+                  <span>ADJUSTMENT DIRECTIVE FOR THIS POST</span>
+                </span>
+                <span class="text-[10px] font-mono-code text-slate-400">TRANSMITS DIRECTLY TO ANTIGRAVITY</span>
+              </div>
+
+              <!-- Quick Tag Suggestions -->
+              <div class="flex flex-wrap gap-1.5 mb-2.5 text-[10px] font-mono-code">
+                <button type="button" onclick="insertQuickTag('${post.id}', 'Sharpen the hook headline to be more aggressive')" class="px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-slate-300 hover:border-purple-400">⚡ Sharpen Hook</button>
+                <button type="button" onclick="insertQuickTag('${post.id}', 'Update regulatory fine dollar amount')" class="px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-slate-300 hover:border-purple-400">💰 Adjust Fine</button>
+                <button type="button" onclick="insertQuickTag('${post.id}', 'Add specific industry hashtag')" class="px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-slate-300 hover:border-purple-400">🏷️ Add Hashtag</button>
+                <button type="button" onclick="insertQuickTag('${post.id}', 'Re-render 60 FPS video timing for Scene 4 logo lock-in')" class="px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-slate-300 hover:border-purple-400">🎬 Video Timing</button>
+                <button type="button" onclick="insertQuickTag('${post.id}', 'Sirius voiceover ducking audio balance update')" class="px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-slate-300 hover:border-purple-400">🎙️ Audio Balance</button>
+              </div>
+
+              <!-- Notes Input -->
+              <textarea id="adj_input_${post.id}" rows="2" placeholder="Describe the exact adjustments required (e.g., 'Change penalty to $16,863', 'Make the first sentence punchier', 'Re-render video')..." class="w-full bg-black/80 border border-purple-500/40 focus:border-purple-400 rounded-lg p-2.5 text-xs text-white placeholder-slate-500 font-mono-code focus:outline-none resize-none mb-2.5">${adjustments[post.id] ? adjustments[post.id].note : ''}</textarea>
+
+              <div class="flex justify-between items-center">
+                <button type="button" onclick="toggleAdjustmentForm('${post.id}')" class="text-[11px] font-mono-code text-slate-400 hover:text-white">Cancel</button>
+                <div class="flex items-center gap-2">
+                  ${hasAdjustment ? `<button type="button" onclick="deleteAdjustment('${post.id}')" class="px-3 py-1.5 rounded-lg bg-red-950/60 border border-red-800 text-red-300 text-xs font-mono-code">Delete</button>` : ''}
+                  <button type="button" onclick="saveAdjustment('${post.id}')" class="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-mono-code font-bold text-xs transition shadow-[0_0_12px_rgba(168,85,247,0.4)] flex items-center gap-1.5">
+                    <span>TRANSMIT ADJUSTMENT</span>
+                    <span>✓</span>
+                  </button>
+                </div>
+              </div>
+
+              ${hasAdjustment ? `
+                <div class="mt-2.5 pt-2 border-t border-purple-900/60 text-[10px] font-mono-code text-emerald-400 flex justify-between items-center">
+                  <span>✓ Logged at ${adjustments[post.id].timestamp}</span>
+                  <span class="text-purple-300 font-semibold">Priority Directive Active</span>
+                </div>
+              ` : ''}
+            </div>
+
+          </article>
+        `;
+      }).join('');
+    }
+
+    function toggleAdjustmentForm(postId) {
+      const drawer = document.getElementById(`adj_drawer_${postId}`);
+      if (drawer) {
+        drawer.classList.toggle('hidden');
+        if (!drawer.classList.contains('hidden')) {
+          const input = document.getElementById(`adj_input_${postId}`);
+          if (input) input.focus();
+        }
+      }
+      playBeep(980, 'sine', 0.04);
+    }
+
+    function insertQuickTag(postId, tagText) {
+      const input = document.getElementById(`adj_input_${postId}`);
+      if (input) {
+        input.value = input.value ? (input.value + " • " + tagText) : tagText;
+        input.focus();
+      }
+      playBeep(1100, 'sine', 0.03);
+    }
+
+    function saveAdjustment(postId) {
+      const input = document.getElementById(`adj_input_${postId}`);
+      const note = input ? input.value.trim() : '';
+      if (!note) {
+        showToast("Please enter adjustment instructions.");
+        return;
+      }
+
+      const post = SOCIAL_POSTS.find(p => p.id === postId);
+      const postName = post ? `[${post.channel_name}] ${post.title}` : postId;
+      const timestamp = new Date().toLocaleString();
+
+      const adjustments = JSON.parse(localStorage.getItem('nexus_post_adjustments') || '{}');
+      adjustments[postId] = {
+        postId,
+        postName,
+        note,
+        timestamp
+      };
+      localStorage.setItem('nexus_post_adjustments', JSON.stringify(adjustments));
+
+      // Also append to Commander Orders Log
+      const orders = JSON.parse(localStorage.getItem('nexus_directives') || '[]');
+      orders.unshift({ time: timestamp, text: `ADJUSTMENT DIRECTIVE (${post ? post.app_tag : ''}): ${note}` });
+      localStorage.setItem('nexus_directives', JSON.stringify(orders.slice(0, 20)));
+
+      // Log to Bridge Terminal
+      logToTerminal(`<strong class="text-purple-400">[ADJUSTMENT DIRECTIVE LOGGED]:</strong> "${note}" on <em>${postName}</em>`);
+      logToTerminal(`<span class="text-[var(--hud-cyan)]">↳ Antigravity:</span> Priority adjustment received from Supreme Commander. Processing fleet changes.`);
+
+      playBeep(1320, 'square', 0.12);
+      showToast(`✓ Adjustment directive logged for ${post ? post.app_tag : 'post'}!`);
+      renderSocialFeed();
+      renderAdjustmentsDrawer();
+    }
+
+    function deleteAdjustment(postId) {
+      const adjustments = JSON.parse(localStorage.getItem('nexus_post_adjustments') || '{}');
+      delete adjustments[postId];
+      localStorage.setItem('nexus_post_adjustments', JSON.stringify(adjustments));
+      showToast("Adjustment directive cleared.");
+      playBeep(440, 'triangle', 0.05);
+      renderSocialFeed();
+      renderAdjustmentsDrawer();
+    }
+
+    function clearAllAdjustments() {
+      if (confirm("Clear all adjustment directives?")) {
+        localStorage.removeItem('nexus_post_adjustments');
+        showToast("All adjustment directives cleared.");
+        renderSocialFeed();
+        renderAdjustmentsDrawer();
+      }
+    }
+
+    function updateAdjustmentsBadgeCount() {
+      const adjustments = JSON.parse(localStorage.getItem('nexus_post_adjustments') || '{}');
+      const count = Object.keys(adjustments).length;
+      const badge = document.getElementById('adjustmentsBadge');
+      const countText = document.getElementById('adjustmentsCountText');
+      const toggleBtn = document.getElementById('drawerToggleBtnText');
+      
+      if (countText) countText.innerText = `${count} Adjustment${count === 1 ? '' : 's'}`;
+      if (toggleBtn) toggleBtn.innerText = `View Feedback History (${count})`;
+      if (badge) {
+        if (count > 0) {
+          badge.classList.remove('hidden');
+          badge.classList.add('flex');
+        }
+      }
+    }
+
+    function toggleAdjustmentsDrawer() {
+      const drawer = document.getElementById('adjustmentsDrawer');
+      if (!drawer) return;
+      drawer.classList.toggle('hidden');
+      if (!drawer.classList.contains('hidden')) {
+        renderAdjustmentsDrawer();
+        drawer.scrollIntoView({ behavior: 'smooth' });
+      }
+      playBeep(880, 'sine', 0.04);
+    }
+
+    function renderAdjustmentsDrawer() {
+      const list = document.getElementById('adjustmentsList');
+      if (!list) return;
+      const adjustments = JSON.parse(localStorage.getItem('nexus_post_adjustments') || '{}');
+      const keys = Object.keys(adjustments);
+      
+      if (keys.length === 0) {
+        list.innerHTML = `<div class="text-slate-500 italic p-3 text-center">No pending adjustment directives recorded yet. Tap "Request Adjustment" on any post below.</div>`;
+        return;
+      }
+
+      list.innerHTML = keys.map(k => {
+        const item = adjustments[k];
+        return `
+          <div class="bg-black/60 p-3 rounded-lg border border-purple-900/60 flex flex-col gap-1">
+            <div class="flex justify-between items-center text-[10px] text-purple-300">
+              <strong class="text-white">${item.postName}</strong>
+              <span class="text-slate-500">${item.timestamp}</span>
+            </div>
+            <p class="text-xs text-slate-200">"${item.note}"</p>
+            <div class="flex justify-end pt-1">
+              <button onclick="deleteAdjustment('${k}')" class="text-[10px] text-red-400 hover:underline">Dismiss</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function copyPostText(postId) {
+      const post = SOCIAL_POSTS.find(p => p.id === postId);
+      if (post && navigator.clipboard) {
+        navigator.clipboard.writeText(post.text).then(() => {
+          showToast("Post text copied to clipboard! 📋");
+          playBeep(1100, 'sine', 0.04);
+        });
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.innerText = msg;
+      t.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+      t.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        t.classList.remove('opacity-100', 'translate-y-0');
+        t.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+      }, 2500);
+    }
+
     // --- FLEET CATALOG DATA (16 Domain-Specific Utilities) ---
     const FLEET_DATA = [
       { id: "jobproof", name: "JobProof Pro", sub: "Tamper-Proof Field Estimates", cat: "Contractors & Trades", std: "GPS & Timestamped Photo Ledger", status: "PRODUCTION LIVE", video: "VOICEOVER DUCKED (60 FPS)", icon: "icons/jobproof.png", col: "text-amber-400", border: "border-amber-500/40" },
@@ -830,6 +1341,7 @@
 
     function renderFleetGrid() {
       const grid = document.getElementById('fleetGrid');
+      if (!grid) return;
       grid.innerHTML = FLEET_DATA.map(app => `
         <div class="hud-panel rounded-xl p-4 flex flex-col justify-between ${app.border} hover:border-[var(--hud-cyan)] transition">
           <div>
@@ -854,7 +1366,6 @@
     }
 
     // --- SECURITY & PASSCODE GATE ENGINE ---
-    // Default PIN: 2026 (SHA-256 hash: 158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab)
     const DEFAULT_PIN_HASH = "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab";
     let enteredPin = "";
     let failedAttempts = 0;
@@ -952,6 +1463,7 @@
         document.getElementById('authGate').style.display = 'none';
         document.getElementById('appBridge').classList.remove('hidden');
         renderFleetGrid();
+        renderSocialFeed();
         renderDirectives();
         initRadar();
       }, 250);
@@ -1007,7 +1519,6 @@
       activeTab = tabName;
       playBeep(980, 'sine', 0.04);
 
-      // Hide all views
       TABS.forEach(t => {
         const v = document.getElementById(`view${t.charAt(0).toUpperCase() + t.slice(1)}`);
         const btn = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
@@ -1019,6 +1530,11 @@
           btn.className = "flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 hover:text-white transition active:scale-95";
         }
       });
+
+      if (tabName === 'media') {
+        renderSocialFeed();
+      }
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1082,11 +1598,11 @@
 
       // Fleet Blips
       const blips = [
-        { angle: 0.8, dist: 0.55, col: '#10b981', label: 'JobProof' },
-        { angle: 2.1, dist: 0.72, col: '#00f0ff', label: 'FleetDVIR' },
-        { angle: 3.5, dist: 0.45, col: '#00f0ff', label: 'LeakCheck' },
-        { angle: 4.8, dist: 0.80, col: '#f59e0b', label: 'DeciSafe' },
-        { angle: 5.7, dist: 0.65, col: '#c084fc', label: 'ArcGuard' }
+        { angle: 0.8, dist: 0.55, col: '#10b981' },
+        { angle: 2.1, dist: 0.72, col: '#00f0ff' },
+        { angle: 3.5, dist: 0.45, col: '#00f0ff' },
+        { angle: 4.8, dist: 0.80, col: '#f59e0b' },
+        { angle: 5.7, dist: 0.65, col: '#c084fc' }
       ];
 
       blips.forEach(b => {
@@ -1147,7 +1663,6 @@
       const el = document.getElementById('missionTime');
       if (el) el.innerText = utcString;
 
-      // Quota target: Oct 21 @ 11:37 AM UTC
       const unlockTarget = new Date('2026-10-21T09:37:00Z').getTime();
       const diff = unlockTarget - now.getTime();
       const qEl = document.getElementById('quotaCountdown');
@@ -1235,7 +1750,7 @@
           logToTerminal(`<strong class="text-amber-400">[QUOTA AUDIT]</strong> Batch 2 (LeakCheck, SiteSnap, DeciSafe, LienShield) signed and staged. Auto-rollout armed for Oct 21 @ 11:37 AM.`);
           break;
         case 'GROWTH_AUDIT':
-          logToTerminal(`<strong class="text-emerald-400">[GROWTH AUDIT]</strong> 8 60 FPS video masters staged. X, Reddit, LinkedIn, YouTube, TikTok channels staged. Privacy: 100% Anonymized.`);
+          logToTerminal(`<strong class="text-emerald-400">[GROWTH AUDIT]</strong> 14 posts active across X, Reddit, LinkedIn, YouTube. Privacy: 100% Anonymized.`);
           break;
         case 'REVENUE_SIM':
           logToTerminal(`<strong class="text-purple-400">[REVENUE MODEL]</strong> $500 MRR target achievable with 4–6 annual trade licenses ($89.99-$129.99/yr). $0 ad spend policy active.`);
@@ -1253,7 +1768,6 @@
       playBeep(1320, 'square', 0.1);
       const time = new Date().toLocaleString();
       
-      // Save to localStorage
       const orders = JSON.parse(localStorage.getItem('nexus_directives') || '[]');
       orders.unshift({ time, text: val });
       localStorage.setItem('nexus_directives', JSON.stringify(orders.slice(0, 20)));
