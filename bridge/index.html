@@ -306,10 +306,10 @@
           <div class="hud-panel hud-panel-corner rounded-xl p-3.5">
             <div class="text-[10px] font-mono-code text-slate-400 uppercase tracking-wider">Social Broadcaster</div>
             <div class="flex items-baseline gap-2 mt-1">
-              <span class="font-orbitron font-bold text-xl sm:text-2xl text-amber-400">14 POSTS</span>
-              <span class="text-[10px] font-mono-code text-amber-300">4 CHANNELS</span>
+              <span class="font-orbitron font-bold text-xl sm:text-2xl text-amber-400">14 DRAFTS</span>
+              <span class="text-[10px] font-mono-code text-amber-300">0 LIVE (QUEUED)</span>
             </div>
-            <div class="text-[10px] font-mono-code text-slate-500 mt-1">𝕏 • Reddit • LinkedIn • Shorts</div>
+            <div class="text-[10px] font-mono-code text-slate-500 mt-1">Pre-Launch Campaign Queue</div>
           </div>
 
           <div class="hud-panel hud-panel-corner rounded-xl p-3.5">
@@ -568,6 +568,24 @@
             </button>
           </div>
 
+                    <!-- PRE-LAUNCH VERIFICATION BANNER -->
+          <div class="p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/50 text-amber-300 font-mono-code text-xs flex flex-wrap items-center justify-between gap-3 shadow-lg">
+            <div class="flex items-center gap-3">
+              <span class="text-xl">📋</span>
+              <div>
+                <div class="font-bold text-amber-200 uppercase tracking-wider flex items-center gap-2">
+                  <span>PRE-BROADCAST QUEUE</span>
+                  <span class="px-1.5 py-0.5 rounded text-[9px] bg-amber-500/30 text-amber-300 border border-amber-500/40">0 LIVE POSTS</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-0.5">All 14 posts are pre-broadcast drafts awaiting video & voiceover drops. Views, likes, and karma are currently zero.</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/40 shrink-0">STATUS: QUEUED DRAFTS</span>
+              <button onclick="resetTelemetryToZero()" class="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white text-[10px] border border-slate-700 transition">Reset Clicks</button>
+            </div>
+          </div>
+
           <!-- OMNI-CHANNEL ENGAGEMENT TELEMETRY BAR -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
             <div class="bg-black/50 p-2.5 rounded-xl border border-slate-800 flex items-center gap-3">
@@ -576,7 +594,7 @@
               </div>
               <div>
                 <div class="text-[9px] font-mono-code text-slate-400 uppercase">Total Impressions</div>
-                <div id="statTotalViews" class="font-orbitron font-bold text-xs sm:text-sm text-sky-300">318.4K</div>
+                <div id="statTotalViews" class="font-orbitron font-bold text-xs sm:text-sm text-sky-300">0 (Draft)</div>
               </div>
             </div>
 
@@ -586,7 +604,7 @@
               </div>
               <div>
                 <div class="text-[9px] font-mono-code text-slate-400 uppercase">Engagements</div>
-                <div id="statTotalEngagements" class="font-orbitron font-bold text-xs sm:text-sm text-rose-300">7,942</div>
+                <div id="statTotalEngagements" class="font-orbitron font-bold text-xs sm:text-sm text-rose-300">0</div>
               </div>
             </div>
 
@@ -596,7 +614,7 @@
               </div>
               <div>
                 <div class="text-[9px] font-mono-code text-slate-400 uppercase">Discussions</div>
-                <div id="statTotalComments" class="font-orbitron font-bold text-xs sm:text-sm text-amber-300">436</div>
+                <div id="statTotalComments" class="font-orbitron font-bold text-xs sm:text-sm text-amber-300">0</div>
               </div>
             </div>
 
@@ -605,8 +623,8 @@
                 ⚡
               </div>
               <div>
-                <div class="text-[9px] font-mono-code text-slate-400 uppercase">Virality CTR</div>
-                <div class="font-orbitron font-bold text-xs sm:text-sm text-emerald-300">5.8% CTR</div>
+                <div class="text-[9px] font-mono-code text-slate-400 uppercase">Broadcast Status</div>
+                <div class="font-orbitron font-bold text-xs sm:text-sm text-amber-300">QUEUED</div>
               </div>
             </div>
           </div>
@@ -727,7 +745,7 @@
         account_handle: "@DigitalNexusHQ",
         badge: "VERIFIED STUDIO",
         date: "OCT 18, 2026",
-        status: "LIVE ON X",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "Digital Nexus Studio Official Launch Announcement",
         text: `Introducing Digital Nexus Studio ⚡\n\nWe build offline-first B2B compliance utilities & 3D simulations for field trades, contractors, and truckers.\n\nZero cloud lock-in. Tamper-proof audit logs.\n\nFleet: https://digital-nexus.pages.dev\n\n#buildinpublic #AndroidDev #B2B #SoftwareEngineering`,
         link: "https://x.com/DigitalNexusHQ",
@@ -735,11 +753,8 @@
         preview_img: "previews/jobproof/scene4.jpg",
         app_tag: "STUDIO HQ",
         media_type: "Brand Identity Badge",
-        metrics: { views: "34.8K", likes: 582, reposts: 124, replies: 38, bookmarks: 89 },
-        comments: [
-          { author: "Alex Thorne", handle: "@athorne_tech", role: "DevOps Architect", avatar: "💻", text: "Offline-first B2B apps are sorely needed. Too many SaaS products break down on basement sites.", time: "18h ago", likes: 24 },
-          { author: "Sara Lindqvist", handle: "@sara_ux", role: "Industrial Design", avatar: "✨", text: "Love the tactile dark aesthetic and high contrast dials. Exactly what field engineers need on tablets.", time: "14h ago", likes: 16 }
-        ]
+        metrics: { views: 0, likes: 0, reposts: 0, replies: 0, bookmarks: 0 },
+        comments: []
       },
       {
         id: "x_jobproof",
@@ -749,7 +764,7 @@
         account_handle: "@DigitalNexusHQ",
         badge: "VERIFIED STUDIO",
         date: "OCT 19, 2026",
-        status: "BROADCAST READY (VOICEOVER APPROVED)",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "JobProof Pro // 60 FPS Master Video Launch",
         text: `Contractors lose over $12,000/year to disputed change orders and unpaid extras.\n\nJobProof fixes this: tamper-proof GPS photos, AR dimension overlays, and instant client signatures on site. 100% offline with zero cloud subscriptions.\n\nDownload on Google Play: https://play.google.com/store/apps/details?id=com.jobproof.nexus\n\n#ConstructionTech #GeneralContractors #Trades #GooglePlay #B2B`,
         link: "https://play.google.com/store/apps/details?id=com.jobproof.nexus",
@@ -757,11 +772,8 @@
         preview_img: "previews/jobproof/scene2.jpg",
         app_tag: "JOBPROOF PRO",
         media_type: "60 FPS Master Video (Sirius Voiceover)",
-        metrics: { views: "48.2K", likes: 924, reposts: 216, replies: 64, bookmarks: 172 },
-        comments: [
-          { author: "Mike Rodriguez", handle: "@mikerod_builds", role: "Commercial Framing GC", avatar: "🔨", text: "Saved our bacon on a $14,000 conduit relocation dispute. Client signed the PDF on my phone before I walked off.", time: "6h ago", likes: 47 },
-          { author: "Danielle Wu", handle: "@dwu_inspections", role: "Site Quality Auditor", avatar: "📐", text: "Does the PDF verify GPS and timestamp SHA hashes? Need this for lien documentation.", time: "4h ago", likes: 19 }
-        ]
+        metrics: { views: 0, likes: 0, reposts: 0, replies: 0, bookmarks: 0 },
+        comments: []
       },
       {
         id: "x_fleetdvir",
@@ -771,7 +783,7 @@
         account_handle: "@DigitalNexusHQ",
         badge: "VERIFIED STUDIO",
         date: "OCT 19, 2026",
-        status: "BROADCAST READY",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "FleetDVIR Pro // 60 FPS Master Video Launch",
         text: `A single missing pre-trip inspection log can trigger a $16,863 FMCSA penalty and put your truck out of service.\n\nFleetDVIR gives commercial drivers 100% offline, 49 CFR-compliant pre-trip & post-trip DVIRs with digital mechanic sign-offs in seconds.\n\nGet it on Google Play: https://play.google.com/store/apps/details?id=com.fleetdvir.nexus\n\n#Trucking #FleetManagement #DOTCompliance #FMCSA #Logistics`,
         link: "https://play.google.com/store/apps/details?id=com.fleetdvir.nexus",
@@ -779,11 +791,8 @@
         preview_img: "previews/fleetdvir/scene2.jpg",
         app_tag: "FLEETDVIR PRO",
         media_type: "60 FPS Master Video",
-        metrics: { views: "41.6K", likes: 780, reposts: 184, replies: 52, bookmarks: 138 },
-        comments: [
-          { author: "Bobby K.", handle: "@bobbyk_freight", role: "Owner-Operator (Kenworth W900)", avatar: "🚛", text: "Passed Level II inspection at Wyoming weigh station without cell coverage. Officer tapped the signed PDF and waved me through.", time: "8h ago", likes: 62 },
-          { author: "Fleet Safety Jim", handle: "@jim_safety_dot", role: "Fleet Director, 45 Trucks", avatar: "📋", text: "Does it support mechanic re-certification signatures on screen? Need to make sure repairs clear OOS status.", time: "3h ago", likes: 21 }
-        ]
+        metrics: { views: 0, likes: 0, reposts: 0, replies: 0, bookmarks: 0 },
+        comments: []
       },
       {
         id: "x_leakcheck",
@@ -793,7 +802,7 @@
         account_handle: "@DigitalNexusHQ",
         badge: "VERIFIED STUDIO",
         date: "OCT 19, 2026",
-        status: "BROADCAST READY",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "LeakCheck Pro // 60 FPS Master Video Launch",
         text: `EPA 608 leak rate penalties reach up to $50,276 per day per chiller.\n\nLeakCheck calculates annualized leak rates instantly, tracks refrigerant cylinder mass-balance to the ounce, and exports certified EPA audit logs. 100% offline.\n\nDownload on Google Play: https://play.google.com/store/apps/details?id=com.leakcheck.nexus\n\n#HVACR #CommercialHVAC #Refrigeration #EPA608 #FacilityManagement`,
         link: "https://play.google.com/store/apps/details?id=com.leakcheck.nexus",
@@ -801,10 +810,8 @@
         preview_img: "previews/leakcheck/scene2.jpg",
         app_tag: "LEAKCHECK PRO",
         media_type: "60 FPS Master Video",
-        metrics: { views: "36.4K", likes: 642, reposts: 148, replies: 44, bookmarks: 119 },
-        comments: [
-          { author: "Chuck Bennett", handle: "@chuck_chiller_tech", role: "Master HVAC Tech, Chicago", avatar: "❄️", text: "Annualized leak calculations usually take 15 mins of spreadsheet grinding. Doing it right by the compressor is huge.", time: "11h ago", likes: 34 }
-        ]
+        metrics: { views: 0, likes: 0, reposts: 0, replies: 0, bookmarks: 0 },
+        comments: []
       },
       {
         id: "x_decisafe",
@@ -814,7 +821,7 @@
         account_handle: "@DigitalNexusHQ",
         badge: "VERIFIED STUDIO",
         date: "OCT 19, 2026",
-        status: "BROADCAST READY",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "DeciSafe Pro // 60 FPS Master Video Launch",
         text: `OSHA 1910.95 citations start at $15,625 per unmonitored noise exposure.\n\nDeciSafe calculates live 8-hour TWA, Leq decibels, and % permissible noise dose directly on your phone. Protect your crew and stay audit-ready with zero cloud latency.\n\nDownload on Google Play: https://play.google.com/store/apps/details?id=com.decisafe.nexus\n\n#EHS #WorkplaceSafety #OSHA #IndustrialHygiene #Acoustics`,
         link: "https://play.google.com/store/apps/details?id=com.decisafe.nexus",
@@ -822,10 +829,8 @@
         preview_img: "previews/decisafe/scene2.jpg",
         app_tag: "DECISAFE PRO",
         media_type: "60 FPS Master Video",
-        metrics: { views: "29.1K", likes: 512, reposts: 98, replies: 31, bookmarks: 88 },
-        comments: [
-          { author: "Karen Sterling", handle: "@karen_ehs_safety", role: "Industrial Hygienist", avatar: "🎧", text: "Dual exchange rate support (3dB ISO vs 5dB OSHA) is critical for multi-site manufacturing. Excellent engineering.", time: "5h ago", likes: 28 }
-        ]
+        metrics: { views: 0, likes: 0, reposts: 0, replies: 0, bookmarks: 0 },
+        comments: []
       },
       {
         id: "x_rigsafe",
@@ -835,7 +840,7 @@
         account_handle: "@DigitalNexusHQ",
         badge: "VERIFIED STUDIO",
         date: "OCT 19, 2026",
-        status: "BROADCAST READY",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "RigSafe Pro // 60 FPS Master Video Launch",
         text: `One bad sling angle or soft outrigger pad can tip a 200-ton crane.\n\nRigSafe Pro computes multi-leg bridle sling tensions, crane mat ground bearing pressure, and ASME B30.9 safety factors in seconds. 100% offline.\n\nDownload on Google Play: https://play.google.com/store/apps/details?id=com.rigsafe.nexus\n\n#CraneLife #HeavyCivil #Rigging #ASME #OSHA1926 #Construction`,
         link: "https://play.google.com/store/apps/details?id=com.rigsafe.nexus",
@@ -843,10 +848,8 @@
         preview_img: "previews/rigsafe/scene2.jpg",
         app_tag: "RIGSAFE PRO",
         media_type: "60 FPS Master Video",
-        metrics: { views: "33.7K", likes: 694, reposts: 154, replies: 47, bookmarks: 122 },
-        comments: [
-          { author: "Jack Kowalski", handle: "@jack_crane_op", role: "Crane Supt, 300T All-Terrain", avatar: "🏗️", text: "Double-checked bridle tension at 45 degrees before lifting a 32,000 lb HVAC chiller. Spot on with our engineering lift plan.", time: "9h ago", likes: 41 }
-        ]
+        metrics: { views: 0, likes: 0, reposts: 0, replies: 0, bookmarks: 0 },
+        comments: []
       },
       {
         id: "reddit_sideproject",
@@ -856,7 +859,7 @@
         account_handle: "r/SideProject",
         badge: "DEV POST",
         date: "OCT 18, 2026",
-        status: "LIVE ON REDDIT",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "Built a 100% offline suite of B2B field compliance utilities for trades & truckers to eliminate cloud subscription traps",
         text: `Hey r/SideProject! We noticed field technicians, commercial truckers, and HVAC mechanics constantly get stranded in basements, rural job sites, and highway scales where cloud SaaS apps simply stall or refuse to load.\n\nWe built Digital Nexus — 16 offline-first, domain-specific utilities engineered in React/Capacitor:\n\n• JobProof: GPS timestamp photo audit & signed contractor estimates\n• FleetDVIR: DOT 49 CFR 396.11 pre-trip vehicle inspection logs\n• LeakCheck: EPA 608 commercial chiller leak rate calculator\n• DeciSafe: OSHA 1910.95 occupational noise dosimeter (8-hr TWA)\n\nAll apps run 100% locally with zero cloud dependencies and export audit-ready signed PDFs. Would love your feedback!`,
         link: "https://www.reddit.com/user/DigitalNexusStudio/",
@@ -864,11 +867,8 @@
         preview_img: "previews/jobproof/scene2.jpg",
         app_tag: "FLEET SHOWCASE",
         media_type: "Case Study & Architecture",
-        metrics: { upvotes: 428, upvote_pct: "97%", replies: 56, awards: 4 },
-        comments: [
-          { author: "u/CodeCrafter_99", handle: "r/SideProject", role: "Mobile Engineer", avatar: "🤖", text: "Offline-first with zero cloud latency is the holy grail for B2B utilities. How do you handle local cryptographic storage on Android?", time: "1d ago", likes: 32 },
-          { author: "u/HVAC_Guru_Phil", handle: "r/SideProject", role: "Commercial Tech", avatar: "❄️", text: "As someone who spends 8 hours a day in hospital boiler rooms with zero cell reception, THANK YOU.", time: "22h ago", likes: 29 }
-        ]
+        metrics: { upvotes: 0, upvote_pct: "0%", replies: 0, awards: 0 },
+        comments: []
       },
       {
         id: "reddit_jobproof",
@@ -878,7 +878,7 @@
         account_handle: "r/Construction",
         badge: "FIELD TECH",
         date: "OCT 19, 2026",
-        status: "SCHEDULED",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "Built a 100% offline tool to stop clients from disputing change orders on site",
         text: `After seeing subbed trades get burned by "I never agreed to that price" or "that scratch was already there," we engineered JobProof.\n\nIt embeds immutable GPS coordinates, elevation, timestamp, and SHA-256 verification directly into jobsite photos and lets you generate a signed PDF quote before leaving the driveway. No accounts, no cloud fees, no subscription trap. Works even in basements with zero bars. Available on Google Play now.`,
         link: "https://www.reddit.com/r/Construction/",
@@ -886,10 +886,8 @@
         preview_img: "previews/jobproof/scene4.jpg",
         app_tag: "JOBPROOF PRO",
         media_type: "Contractor Case Study",
-        metrics: { upvotes: 384, upvote_pct: "95%", replies: 48, awards: 2 },
-        comments: [
-          { author: "u/Drywall_King_77", handle: "r/Construction", role: "Drywall Subcontractor", avatar: "👷", text: "Can this do quick change order addendums? General contractor added 40 sheets of moisture-resistant rock yesterday and tried acting like it was included.", time: "7h ago", likes: 35 }
-        ]
+        metrics: { upvotes: 0, upvote_pct: "0%", replies: 0, awards: 0 },
+        comments: []
       },
       {
         id: "reddit_fleetdvir",
@@ -899,7 +897,7 @@
         account_handle: "r/Truckers",
         badge: "LOGISTICS",
         date: "OCT 19, 2026",
-        status: "SCHEDULED",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "Stop wasting time on paper DVIRs that DOT officers reject at the scale",
         text: `Missing or incomplete DVIR logs are the #1 source of avoidable roadside inspection citations ($16,863 max penalty!). We built FleetDVIR as an offline-first commercial inspection engine: walk around your rig, tap through 49 CFR 396.11 component checklists, snap defect photos, and export a signed, audit-proof PDF report in 30 seconds. Zero cell service required, no monthly SaaS fees.`,
         link: "https://www.reddit.com/r/Truckers/",
@@ -907,10 +905,8 @@
         preview_img: "previews/fleetdvir/scene4.jpg",
         app_tag: "FLEETDVIR PRO",
         media_type: "FMCSA Compliance Breakdown",
-        metrics: { upvotes: 512, upvote_pct: "98%", replies: 72, awards: 5 },
-        comments: [
-          { author: "u/Diesel_Doc_OTR", handle: "r/Truckers", role: "Long Haul Driver, 2.2M Miles", avatar: "🚚", text: "Paper log books turn into grease-stained napkins by day 3 in a dirty cab. Having a signed PDF stored in my phone is a blessing.", time: "10h ago", likes: 58 }
-        ]
+        metrics: { upvotes: 0, upvote_pct: "0%", replies: 0, awards: 0 },
+        comments: []
       },
       {
         id: "reddit_leakcheck",
@@ -920,7 +916,7 @@
         account_handle: "r/HVAC",
         badge: "HVACR PRO",
         date: "OCT 19, 2026",
-        status: "SCHEDULED",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "Engineered an offline EPA 608 leak rate calculator & cylinder tracker for commercial mechanics",
         text: `If you service commercial racks, chillers, or industrial cold storage, you know how painful EPA leak inspections can be ($50k/day fines). We engineered LeakCheck: enter full charge and refrigerant added, and it instantly calculates both the rolling average and annualized leak rate against the 10%, 20%, and 30% EPA trigger thresholds. It also tracks virgin/recovery cylinders and outputs signed compliance PDFs. Works in deep sub-basements without signal.`,
         link: "https://www.reddit.com/r/HVAC/",
@@ -928,10 +924,8 @@
         preview_img: "previews/leakcheck/scene4.jpg",
         app_tag: "LEAKCHECK PRO",
         media_type: "EPA 608 Engineering Guide",
-        metrics: { upvotes: 346, upvote_pct: "94%", replies: 39, awards: 2 },
-        comments: [
-          { author: "u/RefrigTech_88", handle: "r/HVAC", role: "Supermarket Rack Mechanic", avatar: "🌡️", text: "Does it support R-448A and R-449A retrofit calculations? We are converting whole stores this quarter.", time: "5h ago", likes: 21 }
-        ]
+        metrics: { upvotes: 0, upvote_pct: "0%", replies: 0, awards: 0 },
+        comments: []
       },
       {
         id: "reddit_rigsafe",
@@ -941,7 +935,7 @@
         account_handle: "r/CraneOperators",
         badge: "RIGGING",
         date: "OCT 19, 2026",
-        status: "SCHEDULED",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "Stop doing sling trigonometry on scrap plywood before critical lifts",
         text: `If you're rigging heavy loads, sling angles change tension dramatically (at 30 degrees, tension doubles!). RigSafe Pro calculates exact leg tension, D/d ratios for wire rope and synthetic slings, and outrigger mat ground bearing pressure against soil capacity. Generates signed lift plans in PDF format. Built by engineers, 100% offline.`,
         link: "https://www.reddit.com/r/CraneOperators/",
@@ -949,10 +943,8 @@
         preview_img: "previews/rigsafe/scene4.jpg",
         app_tag: "RIGSAFE PRO",
         media_type: "ASME B30.9 Calculator Spec",
-        metrics: { upvotes: 298, upvote_pct: "96%", replies: 34, awards: 3 },
-        comments: [
-          { author: "u/HeavyLift_Hank", handle: "r/CraneOperators", role: "Master Rigger, NCCCO", avatar: "🏗️", text: "Choke reduction factors (A1 choke angle multipliers) are calculated accurately. Finally an app made by people who actually read ASME B30.9.", time: "12h ago", likes: 27 }
-        ]
+        metrics: { upvotes: 0, upvote_pct: "0%", replies: 0, awards: 0 },
+        comments: []
       },
       {
         id: "linkedin_announcement",
@@ -962,7 +954,7 @@
         account_handle: "Company Page",
         badge: "OFFICIAL COMPANY UPDATE",
         date: "OCT 18, 2026",
-        status: "LIVE ON LINKEDIN",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "Announcing Digital Nexus Studio: High-Precision Mobile Compliance SaaS & 3D Simulation Engineering",
         text: `🚀 Announcing Digital Nexus Studio: High-Precision Mobile Compliance SaaS & 3D Simulation Engineering.\n\nToday we are officially unveiling Digital Nexus (https://digital-nexus.pages.dev) — our suite of offline-first mobile micro-SaaS utilities engineered specifically for field service contractors, commercial transport fleets, and HVAC compliance professionals:\n\n🔹 JobProof — Tamper-proof contractor GPS timestamp camera & instant quote generator.\n🔹 FleetDVIR — DOT & FMCSA pre-trip truck inspection logs with 1-tap signed audit PDF exports.\n🔹 LeakCheck — EPA Section 608 certified HVAC refrigerant calculation and compliance logbook.\n🔹 Arkan 3D — Real-time hypersonic flight physics simulation.\n\nExplore our full verified portfolio: https://digital-nexus.pages.dev\nDirect Mobile Hub: https://digital-nexus.pages.dev/links\n\n#SoftwareEngineering #B2B #SaaS #MobileApps #ContractorTech #Logistics #FleetManagement #HVAC`,
         link: "https://www.linkedin.com/company/digital-nexus-apps",
@@ -970,10 +962,8 @@
         preview_img: "previews/jobproof/scene2.jpg",
         app_tag: "B2B SUITE",
         media_type: "Corporate Announcement",
-        metrics: { views: "14.2K", reactions: 312, replies: 42, reposts: 28 },
-        comments: [
-          { author: "Marcus Vance", handle: "Fleet Operations VP", role: "Midwest Logistics Group", avatar: "💼", text: "Eliminating cloud dependencies for mandatory compliance forms is the right paradigm. Excited to roll out FleetDVIR across our regional terminals.", time: "1d ago", likes: 18 }
-        ]
+        metrics: { views: 0, reactions: 0, replies: 0, reposts: 0 },
+        comments: []
       },
       {
         id: "youtube_jobproof",
@@ -983,7 +973,7 @@
         account_handle: "@DigitalNexusStudio",
         badge: "OFFICIAL CHANNEL",
         date: "OCT 19, 2026",
-        status: "READY FOR UPLOAD",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "Tired of Unpaid Contractor Disputes? [JobProof Pro Cinema 60 FPS]",
         text: `General contractors lose $12,000+ per year in undocumented client disputes and disputed change orders. JobProof Pro provides immutable GPS timestamps, tamper-proof photos, and signed PDF quotes directly on your phone with zero cloud fees.\n\nWatch in cinema 60 FPS. Download on Google Play: https://digital-nexus.pages.dev/links\n\n#Shorts #Construction #Contractors #JobProof #GooglePlay`,
         link: "https://www.youtube.com/channel/UCTVJNZdCeSIWmrNwyYVa5dQ",
@@ -991,10 +981,8 @@
         preview_img: "previews/jobproof/scene2.jpg",
         app_tag: "JOBPROOF PRO",
         media_type: "1080x1920 60 FPS Master Video",
-        metrics: { views: "28.4K", likes: 1420, replies: 86, shares: 94 },
-        comments: [
-          { author: "BuilderDave_Shorts", handle: "@builderdave", role: "Remodeling Contractor", avatar: "🔨", text: "The 60 FPS animation on that dimension overlay looks crazy smooth. Getting this today.", time: "8h ago", likes: 52 }
-        ]
+        metrics: { views: 0, likes: 0, replies: 0, shares: 0 },
+        comments: []
       },
       {
         id: "youtube_fleetdvir",
@@ -1004,7 +992,7 @@
         account_handle: "@DigitalNexusStudio",
         badge: "OFFICIAL CHANNEL",
         date: "OCT 19, 2026",
-        status: "READY FOR UPLOAD",
+        status: "DRAFT // READY FOR BROADCAST",
         title: "Avoid $16,000 DOT Out-of-Service Truck Citations [FleetDVIR Pro Cinema 60 FPS]",
         text: `Commercial vehicle pre-trip inspections are mandated under FMCSA 49 CFR 396.11. FleetDVIR lets drivers complete daily inspections, log brake/tire defects, and generate signed mechanic sign-offs in seconds with zero cell reception required.\n\nWatch in cinema 60 FPS. Download on Google Play: https://digital-nexus.pages.dev/links\n\n#Shorts #Trucking #FleetDVIR #TruckDriver #DOTInspection`,
         link: "https://www.youtube.com/channel/UCTVJNZdCeSIWmrNwyYVa5dQ",
@@ -1012,10 +1000,8 @@
         preview_img: "previews/fleetdvir/scene2.jpg",
         app_tag: "FLEETDVIR PRO",
         media_type: "1080x1920 60 FPS Master Video",
-        metrics: { views: "22.9K", likes: 1180, replies: 64, shares: 78 },
-        comments: [
-          { author: "HighwayHauler_99", handle: "@highwayhauler", role: "Commercial Hauler", avatar: "🚛", text: "Showed this to my terminal manager. We need this instead of the binder that fell apart last winter.", time: "6h ago", likes: 44 }
-        ]
+        metrics: { views: 0, likes: 0, replies: 0, shares: 0 },
+        comments: []
       }
     ];
 
@@ -1065,7 +1051,21 @@
 
     // --- INTERACTIVE ACTIONS ENGINE (LIKES, UPVOTES, REPOSTS, BOOKMARKS) ---
     function getStoredInteractions() {
+      if (localStorage.getItem('nexus_zero_draft_v1') !== 'true') {
+        localStorage.removeItem('nexus_post_interactions');
+        localStorage.removeItem('nexus_post_replies');
+        localStorage.setItem('nexus_zero_draft_v1', 'true');
+      }
       return JSON.parse(localStorage.getItem('nexus_post_interactions') || '{}');
+    }
+
+    function resetTelemetryToZero() {
+      localStorage.removeItem('nexus_post_interactions');
+      localStorage.removeItem('nexus_post_replies');
+      localStorage.setItem('nexus_zero_draft_v1', 'true');
+      playBeep(440, 'triangle', 0.08);
+      showToast("✓ All telemetry reset to clean 0 draft state.");
+      renderSocialFeed();
     }
 
     function saveStoredInteractions(data) {
@@ -1244,8 +1244,10 @@
         totalComms += baseComments + r.length;
       });
 
+      const viewsEl = document.getElementById('statTotalViews');
       const engEl = document.getElementById('statTotalEngagements');
       const commEl = document.getElementById('statTotalComments');
+      if (viewsEl) viewsEl.innerText = totalEng > 0 ? (totalEng * 8).toLocaleString() : '0 (Draft)';
       if (engEl) engEl.innerText = totalEng.toLocaleString();
       if (commEl) commEl.innerText = totalComms.toLocaleString();
     }
@@ -1384,7 +1386,7 @@ ${getPlatformAvatarBadge(post.platform)}
                     <span>•</span>
                     <span>${post.date}</span>
                     <span>•</span>
-                    <span class="text-emerald-400 font-bold">${post.status}</span>
+                    <span class="px-2 py-0.5 rounded text-[9px] font-mono-code font-bold text-amber-400 bg-amber-950/60 border border-amber-600/50">${post.status}</span>
                   </div>
                 </div>
               </div>
@@ -1452,7 +1454,7 @@ ${getPlatformAvatarBadge(post.platform)}
                   <!-- X Views Telemetry -->
                   <span class="hidden sm:flex items-center gap-1 text-[11px] text-slate-500 px-1">
                     <span>👁️</span>
-                    <span>${post.metrics?.views || '24.1K'}</span>
+                    <span>${currentLikes > 0 ? (currentLikes * 5) : '0'}</span>
                   </span>
                 ` : ''}
 
@@ -1477,9 +1479,9 @@ ${getPlatformAvatarBadge(post.platform)}
                   </button>
 
                   <!-- Reddit Award Badge -->
-                  <span class="hidden sm:flex items-center gap-1 text-[11px] text-amber-400 px-1.5 py-0.5 rounded bg-amber-950/30 border border-amber-800/40">
+                  <span class="hidden sm:flex items-center gap-1 text-[11px] text-slate-500 px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800">
                     <span>🏆</span>
-                    <span>${post.metrics?.awards || 3}</span>
+                    <span>0</span>
                   </span>
                 ` : ''}
 
@@ -1487,7 +1489,7 @@ ${getPlatformAvatarBadge(post.platform)}
                   <!-- LinkedIn Reactions -->
                   <button onclick="toggleLike('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 ${isLiked ? 'text-blue-400 bg-blue-950/40 border border-blue-800/60' : 'text-slate-400 hover:text-blue-400 hover:bg-slate-900'}">
                     <span>👍 💡 👏</span>
-                    <span class="font-bold text-[11px]">${currentLikes + 312}</span>
+                    <span class="font-bold text-[11px]">${currentLikes}</span>
                   </button>
 
                   <!-- LinkedIn Comments -->
@@ -1499,7 +1501,7 @@ ${getPlatformAvatarBadge(post.platform)}
                   <!-- LinkedIn Reposts -->
                   <button onclick="toggleRepost('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 text-slate-400 hover:text-emerald-400 hover:bg-slate-900">
                     <span>🔁</span>
-                    <span class="font-bold text-[11px]">${(post.metrics?.reposts || 28) + (postInter.repostDelta || 0)}</span>
+                    <span class="font-bold text-[11px]">${currentReposts}</span>
                   </button>
                 ` : ''}
 
@@ -1518,7 +1520,7 @@ ${getPlatformAvatarBadge(post.platform)}
 
                   <span class="hidden sm:flex items-center gap-1 text-[11px] text-slate-500 px-1">
                     <span>👁️</span>
-                    <span>${post.metrics?.views || '22.9K'}</span>
+                    <span>${currentLikes > 0 ? (currentLikes * 10) : '0'}</span>
                   </span>
                 ` : ''}
 
@@ -1568,7 +1570,13 @@ ${getPlatformAvatarBadge(post.platform)}
 
               <!-- Comments List -->
               <div class="space-y-2.5 mb-3.5 max-h-60 overflow-y-auto pr-1">
-                ${allComments.map(c => `
+                ${allComments.length === 0 ? `
+                  <div class="p-4 rounded-xl bg-black/40 border border-slate-800/80 text-center text-xs font-mono-code text-slate-400">
+                    <div class="text-base mb-1">⏳</div>
+                    <div class="font-bold text-slate-300">No Inquiries Yet (Draft Mode)</div>
+                    <div class="text-[11px] text-slate-500 mt-1">This campaign post is currently in <strong>[DRAFT / PRE-LAUNCH]</strong> status. Community inquiries will stream here once published live.</div>
+                  </div>
+                ` : allComments.map(c => `
                   <div class="bg-black/60 p-3 rounded-lg border ${c.badge ? 'border-sky-500/50 bg-sky-950/20' : 'border-slate-800/90'} space-y-1">
                     <div class="flex items-center justify-between text-[11px]">
                       <div class="flex items-center gap-1.5">
