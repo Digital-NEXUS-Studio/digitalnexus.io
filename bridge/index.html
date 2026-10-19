@@ -85,6 +85,26 @@
       pointer-events: none;
     }
 
+    /* Tactile Heart & Karma Animations */
+    @keyframes heartBurst {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.4); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+    .heart-pop {
+      animation: heartBurst 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes karmaPulse {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+      100% { transform: translateY(0); }
+    }
+    .karma-bounce {
+      animation: karmaPulse 0.25s ease-out;
+    }
+
     /* Radar Pulse */
     @keyframes radarSweep {
       0% { transform: rotate(0deg); }
@@ -152,321 +172,211 @@
   <!-- 1. QUANTUM SECURITY GATE (PASSCODE & BIOMETRIC AUTH FOR SUPREME COMMANDER) -->
   <!-- ========================================================================= -->
   <div id="authGate" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl transition-all duration-300">
-    <div class="hud-panel hud-panel-corner rounded-2xl p-6 sm:p-8 max-w-sm w-full text-center relative border border-[var(--hud-cyan)] shadow-[0_0_50px_rgba(0,240,255,0.18)]">
+    <div class="hud-panel hud-panel-corner rounded-2xl max-w-sm w-full p-6 text-center space-y-5 border-cyan-500/40 shadow-[0_0_50px_rgba(0,240,255,0.15)]">
       
-      <!-- Studio Icon -->
-      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-cyan-950 to-slate-900 border border-[var(--hud-cyan)] p-2 shadow-[0_0_20px_rgba(0,240,255,0.35)] flex items-center justify-center mb-4">
-        <img src="logo.png" alt="Digital Nexus" class="w-full h-full object-contain" onerror="this.src='/icons/jobproof.png'">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-cyan-950/60 border border-[var(--hud-cyan)] flex items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+        <svg class="w-8 h-8 text-[var(--hud-cyan)] beacon-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
       </div>
 
-      <div class="mb-5">
-        <span class="px-2.5 py-0.5 rounded text-[10px] font-mono-code font-bold bg-cyan-950/80 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/40 tracking-wider">
-          CLASSIFIED // LEVEL 5 QUANTUM LINK
-        </span>
-        <h1 class="font-orbitron font-bold text-lg text-white mt-2 tracking-wide">DIGITAL NEXUS PRIME</h1>
-        <p class="text-xs text-slate-400 font-mono-code mt-0.5">SUPREME COMMANDER CLEARANCE REQUIRED</p>
+      <div>
+        <span class="text-[10px] font-mono-code tracking-widest text-[var(--hud-cyan)] uppercase block mb-1">CLASSIFIED // LEVEL 5 QUANTUM LINK</span>
+        <h1 class="font-orbitron font-bold text-xl text-white tracking-wider">DIGITAL NEXUS PRIME</h1>
+        <p class="text-xs text-slate-400 font-mono-code mt-1">SUPREME COMMANDER CLEARANCE REQUIRED</p>
       </div>
 
-      <!-- PIN Input Dots -->
-      <div class="flex justify-center items-center gap-3.5 mb-6">
-        <div id="dot0" class="w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all"></div>
-        <div id="dot1" class="w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all"></div>
-        <div id="dot2" class="w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all"></div>
-        <div id="dot3" class="w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all"></div>
+      <!-- PIN Code Display Indicator -->
+      <div class="flex justify-center items-center gap-3 py-2">
+        <div id="pinDot0" class="w-3.5 h-3.5 rounded-full border border-[var(--hud-cyan)] bg-transparent transition-all duration-200"></div>
+        <div id="pinDot1" class="w-3.5 h-3.5 rounded-full border border-[var(--hud-cyan)] bg-transparent transition-all duration-200"></div>
+        <div id="pinDot2" class="w-3.5 h-3.5 rounded-full border border-[var(--hud-cyan)] bg-transparent transition-all duration-200"></div>
+        <div id="pinDot3" class="w-3.5 h-3.5 rounded-full border border-[var(--hud-cyan)] bg-transparent transition-all duration-200"></div>
       </div>
 
-      <!-- Keypad (Touch / Mobile Optimized) -->
-      <div class="grid grid-cols-3 gap-2.5 max-w-[260px] mx-auto mb-4 font-orbitron">
-        <button onclick="pressPin('1')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">1</button>
-        <button onclick="pressPin('2')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">2</button>
-        <button onclick="pressPin('3')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">3</button>
-        <button onclick="pressPin('4')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">4</button>
-        <button onclick="pressPin('5')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">5</button>
-        <button onclick="pressPin('6')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">6</button>
-        <button onclick="pressPin('7')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">7</button>
-        <button onclick="pressPin('8')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">8</button>
-        <button onclick="pressPin('9')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">9</button>
-        <button onclick="clearPin()" class="keypad-btn h-12 rounded-xl bg-slate-950 border border-red-900/50 text-red-400 text-xs font-mono-code font-bold">CLR</button>
-        <button onclick="pressPin('0')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)] text-white text-lg font-bold">0</button>
-        <button onclick="backspacePin()" class="keypad-btn h-12 rounded-xl bg-slate-950 border border-slate-700 text-slate-300 text-sm font-mono-code font-bold flex items-center justify-center">⌫</button>
+      <!-- Virtual PIN Keypad -->
+      <div class="grid grid-cols-3 gap-2 max-w-[240px] mx-auto font-orbitron text-lg text-white">
+        <button onclick="pressPin('1')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">1</button>
+        <button onclick="pressPin('2')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">2</button>
+        <button onclick="pressPin('3')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">3</button>
+        <button onclick="pressPin('4')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">4</button>
+        <button onclick="pressPin('5')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">5</button>
+        <button onclick="pressPin('6')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">6</button>
+        <button onclick="pressPin('7')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">7</button>
+        <button onclick="pressPin('8')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">8</button>
+        <button onclick="pressPin('9')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">9</button>
+        <button onclick="clearPin()" class="keypad-btn h-12 rounded-xl bg-slate-900/40 border border-slate-800 text-slate-400 text-xs">CLR</button>
+        <button onclick="pressPin('0')" class="keypad-btn h-12 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-[var(--hud-cyan)]">0</button>
+        <button onclick="backspacePin()" class="keypad-btn h-12 rounded-xl bg-slate-900/40 border border-slate-800 text-slate-400 text-sm">⌫</button>
       </div>
 
-      <!-- Remember device toggle -->
-      <div class="flex items-center justify-center gap-2 mb-3 text-xs font-mono-code text-slate-400">
-        <input type="checkbox" id="rememberDevice" checked class="rounded border-slate-700 text-[var(--hud-cyan)] focus:ring-0 bg-slate-900 cursor-pointer">
-        <label for="rememberDevice" class="cursor-pointer">Remember this iPhone</label>
-      </div>
-
-      <!-- Feedback / Error Text -->
       <div id="authError" class="text-xs font-mono-code text-amber-400 min-h-[20px] transition-all">
-        Default Passcode: 2026
+        <!-- Error or Status -->
+      </div>
+
+      <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono-code text-slate-400">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="rememberAuth" checked class="rounded border-slate-700 bg-slate-900 text-[var(--hud-cyan)] focus:ring-0">
+          <span>Remember this iPhone</span>
+        </label>
+        <span class="text-slate-600">PIN: 2026</span>
       </div>
 
     </div>
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 2. MAIN APP CONTAINER (SHOWN ONLY WHEN AUTHENTICATED) -->
+  <!-- 2. MAIN APP CONTAINER (ACCESSIBLE POST-AUTHENTICATION) -->
   <!-- ========================================================================= -->
   <div id="appBridge" class="relative z-20 flex-1 flex flex-col justify-between hidden">
     
-    <!-- TOP STATUS BAR (Safe Area Adapted for iPhone Notch & Dynamic Island) -->
-    <header class="safe-top border-b border-[var(--hud-border)] bg-[rgba(3,8,20,0.92)] backdrop-blur-md px-4 sm:px-6 pb-3 pt-2">
-      <div class="max-w-[1920px] mx-auto flex items-center justify-between gap-3">
+    <!-- TOP STATUS HUD (PERSISTENT ON ALL TABS) -->
+    <header class="sticky top-0 z-30 bg-[rgba(3,8,20,0.85)] border-b border-[var(--hud-border)] backdrop-blur-xl px-4 py-3 safe-top">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
-        <!-- Left: Studio Identity -->
+        <!-- Left: Logo & Station Status -->
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl border border-[var(--hud-cyan)] flex items-center justify-center bg-[rgba(0,240,255,0.08)] shadow-[0_0_12px_rgba(0,240,255,0.25)] shrink-0">
-            <svg class="w-5 h-5 text-[var(--hud-cyan)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+          <div class="relative w-8 h-8 rounded-lg bg-cyan-950 border border-[var(--hud-cyan)] flex items-center justify-center overflow-hidden">
+            <span class="font-orbitron font-bold text-xs text-[var(--hud-cyan)]">DN</span>
+            <div class="absolute inset-0 bg-cyan-400/10 pointer-events-none"></div>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <span class="font-orbitron font-bold text-sm sm:text-base tracking-wide text-white">NEXUS PRIME</span>
-              <span class="px-1.5 py-0.2 rounded text-[10px] font-mono-code font-bold bg-cyan-950 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/50">LIVE</span>
+              <h1 class="font-orbitron font-bold text-xs sm:text-sm tracking-wider text-white">COMMAND BRIDGE</h1>
+              <span class="w-2 h-2 rounded-full bg-emerald-400 beacon-pulse"></span>
             </div>
-            <p class="text-[11px] text-slate-400 font-mono-code leading-tight hidden xs:block">
-              COMMANDER: <span class="text-white font-semibold">OVERSEER</span> | AI CEO: <span class="text-[var(--hud-cyan)] font-semibold">ANTIGRAVITY</span>
-            </p>
+            <div class="flex items-center gap-2 text-[10px] font-mono-code text-slate-400">
+              <span id="missionTime">MET: 00:00:00</span>
+              <span>•</span>
+              <span class="text-[var(--hud-cyan)]">DR_WOLF ORG (EXEMPT)</span>
+            </div>
           </div>
         </div>
 
-        <!-- Right: Actions & Mission Time -->
-        <div class="flex items-center gap-2 sm:gap-4 font-mono-code text-xs">
-          <!-- Mission Clock -->
-          <div class="bg-[rgba(0,0,0,0.5)] px-2.5 py-1 rounded border border-slate-800 text-slate-300 hidden md:block">
-            <span class="text-slate-500">UTC:</span> <span id="missionTime" class="text-white font-bold text-xs">--:--:--</span>
-          </div>
-
-          <!-- Pending Adjustments Badge -->
-          <button onclick="switchTab('media'); toggleAdjustmentsDrawer();" id="adjustmentsBadge" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded font-bold transition-all bg-purple-950 text-purple-300 border border-purple-500/50 text-[11px]">
-            <span>⚡</span>
-            <span id="adjustmentsCountText">0 Adjustments</span>
-          </button>
-
+        <!-- Right: Actions & DEFCON Indicator -->
+        <div class="flex items-center gap-2">
           <!-- DEFCON Alert Button -->
-          <button id="alertBtn" onclick="cycleAlertStatus()" class="flex items-center gap-1.5 px-2.5 py-1 rounded font-bold transition-all bg-emerald-950 text-emerald-400 border border-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)] text-[11px]">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 beacon-pulse"></span>
+          <button onclick="cycleAlertStatus()" id="alertBadge" class="px-2.5 py-1 rounded-lg font-mono-code text-[10px] font-bold border transition bg-emerald-950 text-emerald-400 border-emerald-500 shadow-sm flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
             <span id="alertStatusText" class="hidden sm:inline">DEFCON 5</span>
           </button>
 
-          <!-- Audio SFX Toggle -->
-          <button onclick="toggleAudio()" id="audioBtn" class="p-1.5 rounded border border-slate-700 hover:border-[var(--hud-cyan)] text-slate-300 hover:text-[var(--hud-cyan)] transition bg-slate-900/60" title="Toggle Sound">
-            <svg id="audioIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-            </svg>
+          <!-- Audio Mute / Unmute -->
+          <button onclick="toggleAudio()" id="audioBtn" class="p-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition">
+            <svg id="audioIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
           </button>
 
-          <!-- Lock Button -->
-          <button onclick="lockStation()" class="p-1.5 rounded border border-red-900/60 hover:border-red-500 text-red-400 transition bg-red-950/40" title="Lock Station">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
+          <!-- Lock Bridge Button -->
+          <button onclick="lockStation()" title="Lock Station" class="p-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-red-400 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
           </button>
         </div>
 
       </div>
     </header>
 
-    <!-- MAIN VIEWPORT CONTAINER (Safe Bottom for iPhone Home Bar) -->
-    <main class="flex-1 max-w-[1920px] mx-auto w-full p-4 sm:p-6 safe-bottom">
+    <!-- CONTENT WRAPPER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 safe-bottom">
       
       <!-- ========================================== -->
-      <!-- VIEW 1: 🛰️ BRIDGE (OVERVIEW & LIVE RADAR) -->
+      <!-- VIEW 1: 🛰️ BRIDGE (LIVE TELEMETRY & AUDIT) -->
       <!-- ========================================== -->
       <section id="viewBridge" class="space-y-6">
         
-        <!-- Live Social Feed Quick Action Card -->
-        <div onclick="switchTab('media')" class="hud-panel hud-panel-corner rounded-xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-[var(--hud-cyan)]/50 cursor-pointer hover:border-[var(--hud-cyan)] transition bg-gradient-to-r from-cyan-950/40 via-slate-900/80 to-slate-950/90 shadow-[0_0_25px_rgba(0,240,255,0.1)]">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-xl bg-cyan-950 border border-[var(--hud-cyan)] text-[var(--hud-cyan)] flex items-center justify-center font-bold text-2xl shadow-[0_0_15px_rgba(0,240,255,0.4)] beacon-pulse shrink-0">
-              📡
+        <!-- Live Quick Stats Strip -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="hud-panel hud-panel-corner rounded-xl p-3.5">
+            <div class="text-[10px] font-mono-code text-slate-400 uppercase tracking-wider">Play Store Fleet</div>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span class="font-orbitron font-bold text-xl sm:text-2xl text-[var(--hud-cyan)]">16 APPS</span>
+              <span class="text-[10px] font-mono-code text-emerald-400">100% READY</span>
             </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 class="font-orbitron font-bold text-sm sm:text-base text-white">LIVE MULTI-CHANNEL MEDIA FEED ACTIVE</h2>
-                <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-[var(--hud-cyan)]/20 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/50">14 POSTS</span>
-              </div>
-              <p class="text-xs text-slate-300 font-mono-code mt-0.5">Scroll all X, Reddit, LinkedIn & YouTube posts in one feed. Tap to review copy and transmit instant adjustments.</p>
-            </div>
+            <div class="text-[10px] font-mono-code text-slate-500 mt-1">Zero Testers Policy Active</div>
           </div>
-          <div class="flex items-center gap-2 text-xs font-mono-code text-[var(--hud-cyan)] font-bold">
-            <span>OPEN STREAM ➔</span>
+
+          <div class="hud-panel hud-panel-corner rounded-xl p-3.5">
+            <div class="text-[10px] font-mono-code text-slate-400 uppercase tracking-wider">60 FPS Cinema Masters</div>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span class="font-orbitron font-bold text-xl sm:text-2xl text-purple-400">8 OF 8</span>
+              <span class="text-[10px] font-mono-code text-purple-300">STUDIO MASTER</span>
+            </div>
+            <div class="text-[10px] font-mono-code text-slate-500 mt-1">Voiceover Scripts Synced</div>
+          </div>
+
+          <div class="hud-panel hud-panel-corner rounded-xl p-3.5">
+            <div class="text-[10px] font-mono-code text-slate-400 uppercase tracking-wider">Social Broadcaster</div>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span class="font-orbitron font-bold text-xl sm:text-2xl text-amber-400">14 POSTS</span>
+              <span class="text-[10px] font-mono-code text-amber-300">4 CHANNELS</span>
+            </div>
+            <div class="text-[10px] font-mono-code text-slate-500 mt-1">𝕏 • Reddit • LinkedIn • Shorts</div>
+          </div>
+
+          <div class="hud-panel hud-panel-corner rounded-xl p-3.5">
+            <div class="text-[10px] font-mono-code text-slate-400 uppercase tracking-wider">Target Net MRR</div>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span class="font-orbitron font-bold text-xl sm:text-2xl text-emerald-400">$500.00</span>
+              <span class="text-[10px] font-mono-code text-emerald-300">0% AD SPEND</span>
+            </div>
+            <div class="text-[10px] font-mono-code text-slate-500 mt-1">High-LTV B2B Trade Utilities</div>
           </div>
         </div>
 
-        <!-- Organization Account Status Banner -->
-        <div class="hud-panel rounded-xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-emerald-500/30">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-emerald-950 border border-emerald-400 text-emerald-400 flex items-center justify-center font-bold text-lg shadow-[0_0_12px_rgba(16,185,129,0.3)]">
-              ✓
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 class="font-orbitron font-bold text-sm text-white">ORGANIZATION ACCOUNT DEPLOYED</h2>
-                <span class="px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/50">100% EXEMPT</span>
-              </div>
-              <p class="text-xs text-slate-300 font-mono-code mt-0.5">Account ID: <code class="text-emerald-400 font-bold">Dr_wolf</code> | Zero 20-tester rules required. Direct Production track rollout active.</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-mono-code text-slate-400">Review Shield:</span>
-            <span class="px-2.5 py-1 rounded bg-black/50 border border-emerald-500/40 text-emerald-400 font-mono-code font-bold text-xs">PROTECTED</span>
-          </div>
-        </div>
-
-        <!-- 4 Core Metric HUD Gauges -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <!-- Radar & Live Flight Console -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          <!-- Gauge 1: Flagship Videos Ready -->
-          <div class="hud-panel rounded-xl p-4 flex flex-col justify-between">
-            <div class="flex justify-between items-center text-[11px] font-mono-code text-slate-400 mb-1">
-              <span>60 FPS MASTERS</span>
-              <span class="text-[var(--hud-cyan)] font-bold">8 PRODUCED</span>
+          <!-- Tactical Sweep Radar -->
+          <div class="hud-panel hud-panel-corner rounded-xl p-5 flex flex-col items-center justify-center">
+            <div class="flex items-center justify-between w-full pb-2 border-b border-slate-800 mb-4">
+              <span class="font-orbitron font-bold text-xs text-[var(--hud-cyan)] tracking-wider">ORBITAL FLEET RADAR</span>
+              <span class="text-[10px] font-mono-code text-emerald-400">ONLINE</span>
             </div>
-            <div class="flex items-baseline gap-2">
-              <span class="font-orbitron font-bold text-2xl sm:text-3xl text-white">8</span>
-              <span class="text-xs font-mono-code text-slate-400">/ 16 Total</span>
-            </div>
-            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
-              <div class="bg-[var(--hud-cyan)] h-full w-[50%]"></div>
-            </div>
-            <span class="text-[10px] font-mono-code text-slate-400 mt-2">JobProof, FleetDVIR, LeakCheck, etc.</span>
-          </div>
-
-          <!-- Gauge 2: Quota Unlock Countdown -->
-          <div class="hud-panel rounded-xl p-4 flex flex-col justify-between border-amber-500/40">
-            <div class="flex justify-between items-center text-[11px] font-mono-code text-slate-400 mb-1">
-              <span>BATCH 2 UNLOCK</span>
-              <span class="text-amber-400 font-bold beacon-pulse">ARMED</span>
-            </div>
-            <div class="flex items-baseline gap-2">
-              <span id="quotaCountdown" class="font-orbitron font-bold text-lg sm:text-2xl text-amber-400">70h 21m</span>
-            </div>
-            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
-              <div class="bg-amber-400 h-full w-[42%]"></div>
-            </div>
-            <span class="text-[10px] font-mono-code text-slate-400 mt-2">Target: Oct 21 @ 11:37 AM</span>
-          </div>
-
-          <!-- Gauge 3: Organic Distribution Footprint -->
-          <div class="hud-panel rounded-xl p-4 flex flex-col justify-between">
-            <div class="flex justify-between items-center text-[11px] font-mono-code text-slate-400 mb-1">
-              <span>BRAND CHANNELS</span>
-              <span class="text-emerald-400 font-bold">5 ACTIVE</span>
-            </div>
-            <div class="flex items-baseline gap-2">
-              <span class="font-orbitron font-bold text-2xl sm:text-3xl text-emerald-400">100%</span>
-              <span class="text-xs font-mono-code text-slate-400">Anonymized</span>
-            </div>
-            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
-              <div class="bg-emerald-400 h-full w-[100%]"></div>
-            </div>
-            <span class="text-[10px] font-mono-code text-slate-400 mt-2">X, Reddit, LinkedIn, YouTube, TikTok</span>
-          </div>
-
-          <!-- Gauge 4: Net MRR Target -->
-          <div class="hud-panel rounded-xl p-4 flex flex-col justify-between">
-            <div class="flex justify-between items-center text-[11px] font-mono-code text-slate-400 mb-1">
-              <span>MRR TARGET</span>
-              <span class="text-purple-400 font-bold">$0 AD SPEND</span>
-            </div>
-            <div class="flex items-baseline gap-2">
-              <span class="font-orbitron font-bold text-xl sm:text-2xl text-purple-300">$500.00</span>
-              <span class="text-xs font-mono-code text-slate-400">/mo</span>
-            </div>
-            <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
-              <div class="bg-purple-400 h-full w-[15%]"></div>
-            </div>
-            <span class="text-[10px] font-mono-code text-slate-400 mt-2">Annual Anchor: $89.99–$129.99/yr</span>
-          </div>
-
-        </div>
-
-        <!-- Tactical Radar & Directives Row -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          
-          <!-- Tactical Fleet Radar Canvas (4 Cols on Desktop) -->
-          <div class="lg:col-span-4 hud-panel rounded-xl p-5 flex flex-col items-center justify-between">
-            <div class="w-full flex justify-between items-center pb-2 border-b border-slate-800 mb-3">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 bg-[var(--hud-cyan)] rounded-sm"></span>
-                <h3 class="font-orbitron font-bold text-xs tracking-wide text-white">ORBITAL FLEET RADAR</h3>
+            <div class="relative w-48 h-48 sm:w-56 sm:h-56">
+              <canvas id="radarCanvas" width="224" height="224" class="w-full h-full"></canvas>
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-2 h-2 rounded-full bg-[var(--hud-cyan)] shadow-[0_0_10px_#00f0ff]"></div>
               </div>
-              <span class="text-[10px] font-mono-code text-[var(--hud-cyan)]">RANGE: 360°</span>
             </div>
-
-            <!-- Radar Display -->
-            <div class="relative w-56 h-56 my-2">
-              <canvas id="radarCanvas" width="224" height="224" class="rounded-full border border-[var(--hud-cyan)]/40 shadow-[0_0_20px_rgba(0,240,255,0.15)] bg-slate-950/80"></canvas>
-            </div>
-
-            <div class="w-full grid grid-cols-3 gap-2 text-center text-[10px] font-mono-code text-slate-400 pt-2 border-t border-slate-800">
-              <div><span class="block text-emerald-400 font-bold">8 READY</span>MASTERS</div>
-              <div><span class="block text-amber-400 font-bold">8 STAGED</span>BATCH 2</div>
-              <div><span class="block text-[var(--hud-cyan)] font-bold">100%</span>OFFLINE</div>
+            <div class="flex justify-between w-full mt-4 text-[10px] font-mono-code text-slate-400">
+              <span>SCAN FREQ: 2.4 GHz</span>
+              <span>ORBIT: LEO 412 KM</span>
             </div>
           </div>
 
-          <!-- Quick Orders & Quick Action Station (8 Cols) -->
-          <div class="lg:col-span-8 hud-panel rounded-xl p-5 flex flex-col justify-between">
+          <!-- Live Command Bridge Terminal -->
+          <div class="lg:col-span-2 hud-panel hud-panel-corner rounded-xl p-5 flex flex-col justify-between">
             <div>
-              <div class="flex justify-between items-center pb-2 border-b border-slate-800 mb-4">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-3">
                 <div class="flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 bg-[var(--hud-amber)] rounded-sm"></span>
-                  <h3 class="font-orbitron font-bold text-xs tracking-wide text-white">COMMANDER QUICK ACTION CONSOLE</h3>
+                  <span class="w-2 h-2 rounded-sm bg-purple-400"></span>
+                  <span class="font-orbitron font-bold text-xs text-white tracking-wider">QUANTUM FLIGHT LOG & DIRECTIVES BUS</span>
                 </div>
-                <span class="text-[10px] font-mono-code text-amber-400">INSTANT EXECUTION</span>
+                <span class="text-[10px] font-mono-code text-slate-500">LIVE FEED</span>
               </div>
-              <p class="text-xs text-slate-300 font-mono-code mb-4">Tap any tactical directive to dispatch autonomous execution orders across the Digital Nexus operational divisions:</p>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                <button onclick="executeQuickOrder('SYSTEM_DIAGNOSTIC')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-[var(--hud-cyan)] text-xs text-slate-200 hover:text-[var(--hud-cyan)] font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
-                  <span class="text-lg text-[var(--hud-cyan)]">⚡</span>
-                  <div>
-                    <strong class="block text-white text-xs">Run Fleet Diagnostic</strong>
-                    <span class="text-[10px] text-slate-400">Verify 16 apps & Google Play status</span>
-                  </div>
-                </button>
-
-                <button onclick="executeQuickOrder('SIMULATE_BATCH2')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-400 text-xs text-slate-200 hover:text-amber-400 font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
-                  <span class="text-lg text-amber-400">⏱</span>
-                  <div>
-                    <strong class="block text-white text-xs">Audit Quota Unlock</strong>
-                    <span class="text-[10px] text-slate-400">Check Batch 2 rollout readiness</span>
-                  </div>
-                </button>
-
-                <button onclick="switchTab('media')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-emerald-400 text-xs text-slate-200 hover:text-emerald-400 font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
-                  <span class="text-lg text-emerald-400">📡</span>
-                  <div>
-                    <strong class="block text-white text-xs">Audit Social Feeds</strong>
-                    <span class="text-[10px] text-slate-400">Scroll all posts & transmit feedback</span>
-                  </div>
-                </button>
-
-                <button onclick="executeQuickOrder('REVENUE_SIM')" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-purple-400 text-xs text-slate-200 hover:text-purple-400 font-mono-code text-left transition flex items-center gap-2.5 shadow-sm">
-                  <span class="text-lg text-purple-400">📈</span>
-                  <div>
-                    <strong class="block text-white text-xs">Recalibrate $500 MRR</strong>
-                    <span class="text-[10px] text-slate-400">Annual trade anchor conversion</span>
-                  </div>
-                </button>
+              <div id="bridgeLog" class="space-y-1.5 font-mono-code text-xs text-slate-300 max-h-56 overflow-y-auto pr-1">
+                <div class="text-emerald-400">[SYSTEM READY] Dr_wolf Organization Account verified. Zero tester hurdle.</div>
+                <div class="text-cyan-400">[FLEET AUDIT] 16 commercial utilities staged in central_repo.</div>
+                <div class="text-purple-400">[MEDIA SUITE] 8 top-tier cinema marketing videos rendered @ 60 FPS.</div>
+                <div class="text-amber-400">[QUOTA SCHEDULE] Batch 2 unlocks Oct 21 @ 11:37 AM (70h remaining).</div>
+                <div class="text-slate-400">[COMMUNICATION] Directives linked to CEO/Commander terminal.</div>
               </div>
             </div>
 
-            <!-- Bridge Terminal Log -->
-            <div class="mt-2">
-              <div class="flex justify-between items-center text-[10px] font-mono-code text-slate-400 mb-1.5">
-                <span>ENCRYPTED COMMAND BRIDGE TERMINAL</span>
-                <span class="text-emerald-400">● LIVE LINK</span>
-              </div>
-              <div id="bridgeLog" class="p-3 rounded-xl bg-black/80 border border-slate-800 text-[11px] font-mono-code text-emerald-400 h-28 overflow-y-auto space-y-1">
-                <div class="text-slate-500">[STATION ONLINE] Quantum encrypted link established. Supreme Commander seat active.</div>
-              </div>
+            <!-- Quick Action Directives -->
+            <div class="pt-4 mt-4 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono-code text-[11px]">
+              <button onclick="executeQuickOrder('SYSTEM_DIAGNOSTIC')" class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-[var(--hud-cyan)] text-[var(--hud-cyan)] transition">
+                ⚡ Run Diagnostic
+              </button>
+              <button onclick="executeQuickOrder('SIMULATE_BATCH2')" class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-amber-400 text-amber-400 transition">
+                🚀 Audit Batch 2
+              </button>
+              <button onclick="executeQuickOrder('GROWTH_AUDIT')" class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-emerald-400 text-emerald-400 transition">
+                📈 Growth Audit
+              </button>
+              <button onclick="executeQuickOrder('REVENUE_SIM')" class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-purple-400 text-purple-400 transition">
+                💎 Revenue Sim
+              </button>
             </div>
-
           </div>
 
         </div>
@@ -474,25 +384,27 @@
       </section>
 
       <!-- ========================================== -->
-      <!-- VIEW 2: 🚀 FLEET (APPLICATIONS PORTFOLIO) -->
+      <!-- VIEW 2: 🛸 FLEET (16 INDUSTRIAL APPS)     -->
       <!-- ========================================== -->
       <section id="viewFleet" class="space-y-6 hidden">
         
-        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
-          <div>
-            <h2 class="font-orbitron font-bold text-lg text-white">THE DIGITAL NEXUS FLEET</h2>
-            <p class="text-xs text-slate-400 font-mono-code">16 Domain-Specific Offline B2B Compliance & Simulation Apps</p>
+        <div class="hud-panel hud-panel-corner rounded-xl p-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800 mb-4">
+            <div>
+              <h2 class="font-orbitron font-bold text-sm tracking-wide text-white">INDUSTRIAL SAAS FLEET MATRIX</h2>
+              <p class="text-xs text-slate-400 font-mono-code mt-0.5">16 high-margin offline compliance & simulation utilities.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded text-[10px] font-mono-code font-bold bg-emerald-950 text-emerald-400 border border-emerald-500">
+                100% EXEMPT FROM 20 TESTERS
+              </span>
+            </div>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="px-2.5 py-1 rounded text-xs font-mono-code font-bold bg-cyan-950 text-[var(--hud-cyan)] border border-[var(--hud-cyan)]/40">
-              8 MASTERS RENDERED (60 FPS)
-            </span>
-          </div>
-        </div>
 
-        <!-- Apps Grid -->
-        <div id="fleetGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          <!-- Dynamically populated via JavaScript for high performance -->
+          <!-- Apps Grid -->
+          <div id="fleetGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <!-- Dynamically populated via JavaScript for high performance -->
+          </div>
         </div>
 
       </section>
@@ -634,19 +546,19 @@
       </section>
 
       <!-- ========================================================================= -->
-      <!-- VIEW 5: 📡 UNIFIED MEDIA & SOCIAL FEEDS STREAM (SCROLL & ADJUSTMENT ENGINE)-->
+      <!-- VIEW 5: 📡 UNIFIED MEDIA & SOCIAL FEEDS STREAM (INTERACTION & ADJUSTMENT) -->
       <!-- ========================================================================= -->
       <section id="viewMedia" class="space-y-6 hidden">
         
-        <!-- Stream Header & Controls -->
-        <div class="hud-panel hud-panel-corner rounded-xl p-5">
+        <!-- Stream Header & Global Telemetry -->
+        <div class="hud-panel hud-panel-corner rounded-xl p-5 space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-slate-800">
             <div>
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 bg-[var(--hud-cyan)] rounded-sm"></span>
                 <h2 class="font-orbitron font-bold text-base sm:text-lg text-white">UNIFIED SOCIAL MEDIA STREAM</h2>
               </div>
-              <p class="text-xs text-slate-400 font-mono-code mt-0.5">Scroll every active post across X, Reddit, LinkedIn & YouTube. Review copy and transmit adjustments directly.</p>
+              <p class="text-xs text-slate-400 font-mono-code mt-0.5">Live social posts across X, Reddit, LinkedIn & YouTube. Interact with likes, comments, and adjustments.</p>
             </div>
             
             <!-- Adjustments Counter Toggle -->
@@ -656,8 +568,51 @@
             </button>
           </div>
 
+          <!-- OMNI-CHANNEL ENGAGEMENT TELEMETRY BAR -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+            <div class="bg-black/50 p-2.5 rounded-xl border border-slate-800 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-sky-950/60 border border-sky-500/40 flex items-center justify-center text-sky-400 text-base font-bold shrink-0">
+                👁️
+              </div>
+              <div>
+                <div class="text-[9px] font-mono-code text-slate-400 uppercase">Total Impressions</div>
+                <div id="statTotalViews" class="font-orbitron font-bold text-xs sm:text-sm text-sky-300">318.4K</div>
+              </div>
+            </div>
+
+            <div class="bg-black/50 p-2.5 rounded-xl border border-slate-800 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-rose-950/60 border border-rose-500/40 flex items-center justify-center text-rose-400 text-base font-bold shrink-0">
+                ❤️
+              </div>
+              <div>
+                <div class="text-[9px] font-mono-code text-slate-400 uppercase">Engagements</div>
+                <div id="statTotalEngagements" class="font-orbitron font-bold text-xs sm:text-sm text-rose-300">7,942</div>
+              </div>
+            </div>
+
+            <div class="bg-black/50 p-2.5 rounded-xl border border-slate-800 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-amber-950/60 border border-amber-500/40 flex items-center justify-center text-amber-400 text-base font-bold shrink-0">
+                💬
+              </div>
+              <div>
+                <div class="text-[9px] font-mono-code text-slate-400 uppercase">Discussions</div>
+                <div id="statTotalComments" class="font-orbitron font-bold text-xs sm:text-sm text-amber-300">436</div>
+              </div>
+            </div>
+
+            <div class="bg-black/50 p-2.5 rounded-xl border border-slate-800 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-emerald-950/60 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-base font-bold shrink-0">
+                ⚡
+              </div>
+              <div>
+                <div class="text-[9px] font-mono-code text-slate-400 uppercase">Virality CTR</div>
+                <div class="font-orbitron font-bold text-xs sm:text-sm text-emerald-300">5.8% CTR</div>
+              </div>
+            </div>
+          </div>
+
           <!-- Channel Filter Pills -->
-          <div class="flex flex-wrap items-center gap-2 mt-4 pt-1 font-mono-code text-xs">
+          <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/80 font-mono-code text-xs">
             <button onclick="filterFeed('all')" id="filterBtnAll" class="px-3 py-1.5 rounded-lg bg-[var(--hud-cyan)]/20 border border-[var(--hud-cyan)] text-[var(--hud-cyan)] font-bold transition">
               ALL CHANNELS (14)
             </button>
@@ -673,11 +628,21 @@
             <button onclick="filterFeed('youtube')" id="filterBtnYoutube" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition">
               ▶️ YOUTUBE (2)
             </button>
+
+            <!-- Sort By Engagements -->
+            <div class="ml-auto flex items-center gap-1.5 pt-1 sm:pt-0">
+              <button onclick="filterSort('engaged')" id="sortBtnEngaged" class="px-2.5 py-1 rounded bg-slate-900/80 border border-slate-800 text-[11px] text-slate-400 hover:text-amber-300 transition">
+                🔥 Most Engaged
+              </button>
+              <button onclick="filterSort('comments')" id="sortBtnComments" class="px-2.5 py-1 rounded bg-slate-900/80 border border-slate-800 text-[11px] text-slate-400 hover:text-amber-300 transition">
+                💬 Has Comments
+              </button>
+            </div>
           </div>
 
           <!-- Search & Keyword Filter -->
-          <div class="mt-3 relative">
-            <input type="text" id="feedSearch" oninput="searchFeed(this.value)" placeholder="Search posts by app or keyword (e.g. 'JobProof', 'FleetDVIR', 'OSHA', 'EPA', 'Crane')..." class="w-full bg-black/60 border border-slate-800 focus:border-[var(--hud-cyan)] rounded-xl px-3.5 py-2 text-xs font-mono-code text-white placeholder-slate-500 focus:outline-none">
+          <div class="relative">
+            <input type="text" id="feedSearch" oninput="searchFeed(this.value)" placeholder="Search posts, topics, or regulations (e.g. 'JobProof', 'FleetDVIR', 'OSHA', 'EPA', 'Crane')..." class="w-full bg-black/60 border border-slate-800 focus:border-[var(--hud-cyan)] rounded-xl px-3.5 py-2 text-xs font-mono-code text-white placeholder-slate-500 focus:outline-none">
           </div>
         </div>
 
@@ -744,10 +709,10 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- 4. CLIENT JAVASCRIPT: AUTH, SOCIAL STREAM, WEB AUDIO & FEEDBACK ENGINE -->
+  <!-- 4. CLIENT JAVASCRIPT: AUTH, SOCIAL STREAM, INTERACTION & FEEDBACK ENGINE -->
   <!-- ========================================================================= -->
   <script>
-    // --- 14 CAMPAIGN POSTS ACROSS ALL CHANNELS ---
+    // --- 14 CAMPAIGN POSTS ACROSS ALL CHANNELS WITH INTERACTION TELEMETRY ---
     const SOCIAL_POSTS = [
       {
         id: "x_launch",
@@ -764,7 +729,12 @@
         link_text: "View on X ↗",
         preview_img: "previews/jobproof/scene4.jpg",
         app_tag: "STUDIO HQ",
-        media_type: "Brand Identity Badge"
+        media_type: "Brand Identity Badge",
+        metrics: { views: "34.8K", likes: 582, reposts: 124, replies: 38, bookmarks: 89 },
+        comments: [
+          { author: "Alex Thorne", handle: "@athorne_tech", role: "DevOps Architect", avatar: "💻", text: "Offline-first B2B apps are sorely needed. Too many SaaS products break down on basement sites.", time: "18h ago", likes: 24 },
+          { author: "Sara Lindqvist", handle: "@sara_ux", role: "Industrial Design", avatar: "✨", text: "Love the tactile dark aesthetic and high contrast dials. Exactly what field engineers need on tablets.", time: "14h ago", likes: 16 }
+        ]
       },
       {
         id: "x_jobproof",
@@ -781,7 +751,12 @@
         link_text: "Google Play Store ↗",
         preview_img: "previews/jobproof/scene2.jpg",
         app_tag: "JOBPROOF PRO",
-        media_type: "60 FPS Master Video (Sirius Voiceover)"
+        media_type: "60 FPS Master Video (Sirius Voiceover)",
+        metrics: { views: "48.2K", likes: 924, reposts: 216, replies: 64, bookmarks: 172 },
+        comments: [
+          { author: "Mike Rodriguez", handle: "@mikerod_builds", role: "Commercial Framing GC", avatar: "🔨", text: "Saved our bacon on a $14,000 conduit relocation dispute. Client signed the PDF on my phone before I walked off.", time: "6h ago", likes: 47 },
+          { author: "Danielle Wu", handle: "@dwu_inspections", role: "Site Quality Auditor", avatar: "📐", text: "Does the PDF verify GPS and timestamp SHA hashes? Need this for lien documentation.", time: "4h ago", likes: 19 }
+        ]
       },
       {
         id: "x_fleetdvir",
@@ -798,7 +773,12 @@
         link_text: "Google Play Store ↗",
         preview_img: "previews/fleetdvir/scene2.jpg",
         app_tag: "FLEETDVIR PRO",
-        media_type: "60 FPS Master Video"
+        media_type: "60 FPS Master Video",
+        metrics: { views: "41.6K", likes: 780, reposts: 184, replies: 52, bookmarks: 138 },
+        comments: [
+          { author: "Bobby K.", handle: "@bobbyk_freight", role: "Owner-Operator (Kenworth W900)", avatar: "🚛", text: "Passed Level II inspection at Wyoming weigh station without cell coverage. Officer tapped the signed PDF and waved me through.", time: "8h ago", likes: 62 },
+          { author: "Fleet Safety Jim", handle: "@jim_safety_dot", role: "Fleet Director, 45 Trucks", avatar: "📋", text: "Does it support mechanic re-certification signatures on screen? Need to make sure repairs clear OOS status.", time: "3h ago", likes: 21 }
+        ]
       },
       {
         id: "x_leakcheck",
@@ -815,7 +795,11 @@
         link_text: "Google Play Store ↗",
         preview_img: "previews/leakcheck/scene2.jpg",
         app_tag: "LEAKCHECK PRO",
-        media_type: "60 FPS Master Video"
+        media_type: "60 FPS Master Video",
+        metrics: { views: "36.4K", likes: 642, reposts: 148, replies: 44, bookmarks: 119 },
+        comments: [
+          { author: "Chuck Bennett", handle: "@chuck_chiller_tech", role: "Master HVAC Tech, Chicago", avatar: "❄️", text: "Annualized leak calculations usually take 15 mins of spreadsheet grinding. Doing it right by the compressor is huge.", time: "11h ago", likes: 34 }
+        ]
       },
       {
         id: "x_decisafe",
@@ -832,7 +816,11 @@
         link_text: "Google Play Store ↗",
         preview_img: "previews/decisafe/scene2.jpg",
         app_tag: "DECISAFE PRO",
-        media_type: "60 FPS Master Video"
+        media_type: "60 FPS Master Video",
+        metrics: { views: "29.1K", likes: 512, reposts: 98, replies: 31, bookmarks: 88 },
+        comments: [
+          { author: "Karen Sterling", handle: "@karen_ehs_safety", role: "Industrial Hygienist", avatar: "🎧", text: "Dual exchange rate support (3dB ISO vs 5dB OSHA) is critical for multi-site manufacturing. Excellent engineering.", time: "5h ago", likes: 28 }
+        ]
       },
       {
         id: "x_rigsafe",
@@ -849,7 +837,11 @@
         link_text: "Google Play Store ↗",
         preview_img: "previews/rigsafe/scene2.jpg",
         app_tag: "RIGSAFE PRO",
-        media_type: "60 FPS Master Video"
+        media_type: "60 FPS Master Video",
+        metrics: { views: "33.7K", likes: 694, reposts: 154, replies: 47, bookmarks: 122 },
+        comments: [
+          { author: "Jack Kowalski", handle: "@jack_crane_op", role: "Crane Supt, 300T All-Terrain", avatar: "🏗️", text: "Double-checked bridle tension at 45 degrees before lifting a 32,000 lb HVAC chiller. Spot on with our engineering lift plan.", time: "9h ago", likes: 41 }
+        ]
       },
       {
         id: "reddit_sideproject",
@@ -866,7 +858,12 @@
         link_text: "Open on Reddit ↗",
         preview_img: "previews/jobproof/scene2.jpg",
         app_tag: "FLEET SHOWCASE",
-        media_type: "Case Study & Architecture"
+        media_type: "Case Study & Architecture",
+        metrics: { upvotes: 428, upvote_pct: "97%", replies: 56, awards: 4 },
+        comments: [
+          { author: "u/CodeCrafter_99", handle: "r/SideProject", role: "Mobile Engineer", avatar: "🤖", text: "Offline-first with zero cloud latency is the holy grail for B2B utilities. How do you handle local cryptographic storage on Android?", time: "1d ago", likes: 32 },
+          { author: "u/HVAC_Guru_Phil", handle: "r/SideProject", role: "Commercial Tech", avatar: "❄️", text: "As someone who spends 8 hours a day in hospital boiler rooms with zero cell reception, THANK YOU.", time: "22h ago", likes: 29 }
+        ]
       },
       {
         id: "reddit_jobproof",
@@ -883,7 +880,11 @@
         link_text: "Subreddit Target ↗",
         preview_img: "previews/jobproof/scene4.jpg",
         app_tag: "JOBPROOF PRO",
-        media_type: "Contractor Case Study"
+        media_type: "Contractor Case Study",
+        metrics: { upvotes: 384, upvote_pct: "95%", replies: 48, awards: 2 },
+        comments: [
+          { author: "u/Drywall_King_77", handle: "r/Construction", role: "Drywall Subcontractor", avatar: "👷", text: "Can this do quick change order addendums? General contractor added 40 sheets of moisture-resistant rock yesterday and tried acting like it was included.", time: "7h ago", likes: 35 }
+        ]
       },
       {
         id: "reddit_fleetdvir",
@@ -900,7 +901,11 @@
         link_text: "Subreddit Target ↗",
         preview_img: "previews/fleetdvir/scene4.jpg",
         app_tag: "FLEETDVIR PRO",
-        media_type: "FMCSA Compliance Breakdown"
+        media_type: "FMCSA Compliance Breakdown",
+        metrics: { upvotes: 512, upvote_pct: "98%", replies: 72, awards: 5 },
+        comments: [
+          { author: "u/Diesel_Doc_OTR", handle: "r/Truckers", role: "Long Haul Driver, 2.2M Miles", avatar: "🚚", text: "Paper log books turn into grease-stained napkins by day 3 in a dirty cab. Having a signed PDF stored in my phone is a blessing.", time: "10h ago", likes: 58 }
+        ]
       },
       {
         id: "reddit_leakcheck",
@@ -917,7 +922,11 @@
         link_text: "Subreddit Target ↗",
         preview_img: "previews/leakcheck/scene4.jpg",
         app_tag: "LEAKCHECK PRO",
-        media_type: "EPA 608 Engineering Guide"
+        media_type: "EPA 608 Engineering Guide",
+        metrics: { upvotes: 346, upvote_pct: "94%", replies: 39, awards: 2 },
+        comments: [
+          { author: "u/RefrigTech_88", handle: "r/HVAC", role: "Supermarket Rack Mechanic", avatar: "🌡️", text: "Does it support R-448A and R-449A retrofit calculations? We are converting whole stores this quarter.", time: "5h ago", likes: 21 }
+        ]
       },
       {
         id: "reddit_rigsafe",
@@ -934,7 +943,11 @@
         link_text: "Subreddit Target ↗",
         preview_img: "previews/rigsafe/scene4.jpg",
         app_tag: "RIGSAFE PRO",
-        media_type: "ASME B30.9 Calculator Spec"
+        media_type: "ASME B30.9 Calculator Spec",
+        metrics: { upvotes: 298, upvote_pct: "96%", replies: 34, awards: 3 },
+        comments: [
+          { author: "u/HeavyLift_Hank", handle: "r/CraneOperators", role: "Master Rigger, NCCCO", avatar: "🏗️", text: "Choke reduction factors (A1 choke angle multipliers) are calculated accurately. Finally an app made by people who actually read ASME B30.9.", time: "12h ago", likes: 27 }
+        ]
       },
       {
         id: "linkedin_announcement",
@@ -951,7 +964,11 @@
         link_text: "View on LinkedIn ↗",
         preview_img: "previews/jobproof/scene2.jpg",
         app_tag: "B2B SUITE",
-        media_type: "Corporate Announcement"
+        media_type: "Corporate Announcement",
+        metrics: { views: "14.2K", reactions: 312, replies: 42, reposts: 28 },
+        comments: [
+          { author: "Marcus Vance", handle: "Fleet Operations VP", role: "Midwest Logistics Group", avatar: "💼", text: "Eliminating cloud dependencies for mandatory compliance forms is the right paradigm. Excited to roll out FleetDVIR across our regional terminals.", time: "1d ago", likes: 18 }
+        ]
       },
       {
         id: "youtube_jobproof",
@@ -968,7 +985,11 @@
         link_text: "YouTube Channel ↗",
         preview_img: "previews/jobproof/scene2.jpg",
         app_tag: "JOBPROOF PRO",
-        media_type: "1080x1920 60 FPS Master Video"
+        media_type: "1080x1920 60 FPS Master Video",
+        metrics: { views: "28.4K", likes: 1420, replies: 86, shares: 94 },
+        comments: [
+          { author: "BuilderDave_Shorts", handle: "@builderdave", role: "Remodeling Contractor", avatar: "🔨", text: "The 60 FPS animation on that dimension overlay looks crazy smooth. Getting this today.", time: "8h ago", likes: 52 }
+        ]
       },
       {
         id: "youtube_fleetdvir",
@@ -985,11 +1006,16 @@
         link_text: "YouTube Channel ↗",
         preview_img: "previews/fleetdvir/scene2.jpg",
         app_tag: "FLEETDVIR PRO",
-        media_type: "1080x1920 60 FPS Master Video"
+        media_type: "1080x1920 60 FPS Master Video",
+        metrics: { views: "22.9K", likes: 1180, replies: 64, shares: 78 },
+        comments: [
+          { author: "HighwayHauler_99", handle: "@highwayhauler", role: "Commercial Hauler", avatar: "🚛", text: "Showed this to my terminal manager. We need this instead of the binder that fell apart last winter.", time: "6h ago", likes: 44 }
+        ]
       }
     ];
 
     let currentFilter = 'all';
+    let currentSort = 'default';
     let searchQuery = '';
 
     function filterFeed(platform) {
@@ -1004,8 +1030,27 @@
           }
         }
       });
+      playBeep(980, 'sine', 0.03);
       renderSocialFeed();
-      playBeep(880, 'sine', 0.04);
+    }
+
+    function filterSort(type) {
+      if (currentSort === type) {
+        currentSort = 'default';
+        document.getElementById('sortBtnEngaged')?.classList.remove('bg-amber-950/60', 'border-amber-500', 'text-amber-300');
+        document.getElementById('sortBtnComments')?.classList.remove('bg-amber-950/60', 'border-amber-500', 'text-amber-300');
+      } else {
+        currentSort = type;
+        if (type === 'engaged') {
+          document.getElementById('sortBtnEngaged')?.classList.add('bg-amber-950/60', 'border-amber-500', 'text-amber-300');
+          document.getElementById('sortBtnComments')?.classList.remove('bg-amber-950/60', 'border-amber-500', 'text-amber-300');
+        } else if (type === 'comments') {
+          document.getElementById('sortBtnComments')?.classList.add('bg-amber-950/60', 'border-amber-500', 'text-amber-300');
+          document.getElementById('sortBtnEngaged')?.classList.remove('bg-amber-950/60', 'border-amber-500', 'text-amber-300');
+        }
+      }
+      playBeep(1100, 'sine', 0.03);
+      renderSocialFeed();
     }
 
     function searchFeed(val) {
@@ -1013,14 +1058,205 @@
       renderSocialFeed();
     }
 
+    // --- INTERACTIVE ACTIONS ENGINE (LIKES, UPVOTES, REPOSTS, BOOKMARKS) ---
+    function getStoredInteractions() {
+      return JSON.parse(localStorage.getItem('nexus_post_interactions') || '{}');
+    }
+
+    function saveStoredInteractions(data) {
+      localStorage.setItem('nexus_post_interactions', JSON.stringify(data));
+      updateGlobalTelemetry();
+    }
+
+    function getStoredReplies() {
+      return JSON.parse(localStorage.getItem('nexus_post_replies') || '{}');
+    }
+
+    function toggleLike(postId) {
+      const data = getStoredInteractions();
+      const current = data[postId] || {};
+      const wasLiked = !!current.liked;
+      current.liked = !wasLiked;
+      current.likeDelta = (current.likeDelta || 0) + (current.liked ? 1 : -1);
+      data[postId] = current;
+      saveStoredInteractions(data);
+
+      if (current.liked) {
+        playBeep(1200, 'sine', 0.08);
+        showToast("❤️ Liked post!");
+      } else {
+        playBeep(440, 'sine', 0.04);
+      }
+      renderSocialFeed();
+    }
+
+    function toggleRepost(postId) {
+      const data = getStoredInteractions();
+      const current = data[postId] || {};
+      const wasReposted = !!current.reposted;
+      current.reposted = !wasReposted;
+      current.repostDelta = (current.repostDelta || 0) + (current.reposted ? 1 : -1);
+      data[postId] = current;
+      saveStoredInteractions(data);
+
+      if (current.reposted) {
+        playBeep(880, 'square', 0.06);
+        setTimeout(() => playBeep(1100, 'square', 0.08), 70);
+        showToast("🔄 Reposted to fleet network!");
+      }
+      renderSocialFeed();
+    }
+
+    function toggleBookmark(postId) {
+      const data = getStoredInteractions();
+      const current = data[postId] || {};
+      current.bookmarked = !current.bookmarked;
+      data[postId] = current;
+      saveStoredInteractions(data);
+
+      playBeep(980, 'sine', 0.05);
+      showToast(current.bookmarked ? "🔖 Saved to Command Bookmarks" : "Bookmark removed");
+      renderSocialFeed();
+    }
+
+    function voteReddit(postId, direction) {
+      const data = getStoredInteractions();
+      const current = data[postId] || {};
+      
+      if (direction === 'up') {
+        if (current.vote === 'up') {
+          current.vote = null;
+          current.voteDelta = 0;
+        } else {
+          current.vote = 'up';
+          current.voteDelta = 1;
+          playBeep(1320, 'sine', 0.06);
+          showToast("▲ Upvoted on Reddit!");
+        }
+      } else if (direction === 'down') {
+        if (current.vote === 'down') {
+          current.vote = null;
+          current.voteDelta = 0;
+        } else {
+          current.vote = 'down';
+          current.voteDelta = -1;
+          playBeep(330, 'triangle', 0.06);
+        }
+      }
+
+      data[postId] = current;
+      saveStoredInteractions(data);
+      renderSocialFeed();
+    }
+
+    function toggleComments(postId) {
+      const drawer = document.getElementById(`comments_drawer_${postId}`);
+      if (!drawer) return;
+      drawer.classList.toggle('hidden');
+      playBeep(880, 'sine', 0.03);
+      if (!drawer.classList.contains('hidden')) {
+        drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function insertQuickReply(postId, text) {
+      const input = document.getElementById(`reply_input_${postId}`);
+      if (!input) return;
+      input.value = input.value ? (input.value + " " + text) : text;
+      input.focus();
+      playBeep(1100, 'sine', 0.03);
+    }
+
+    function submitPostReply(postId) {
+      const input = document.getElementById(`reply_input_${postId}`);
+      const text = input ? input.value.trim() : '';
+      if (!text) {
+        showToast("Please enter a reply message.");
+        return;
+      }
+
+      const allReplies = getStoredReplies();
+      const postReplies = allReplies[postId] || [];
+      const newReply = {
+        id: 'reply_' + Date.now(),
+        author: 'Digital Nexus Studio',
+        handle: '@DigitalNexusHQ',
+        role: 'Official Developer (Supreme Commander)',
+        avatar: '⚡',
+        badge: 'OFFICIAL RESPONSE',
+        text: text,
+        time: 'Just now',
+        likes: 1
+      };
+      postReplies.unshift(newReply);
+      allReplies[postId] = postReplies;
+      localStorage.setItem('nexus_post_replies', JSON.stringify(allReplies));
+
+      playBeep(1320, 'square', 0.12);
+      showToast("✓ Response posted as Digital Nexus Studio!");
+      
+      const post = SOCIAL_POSTS.find(p => p.id === postId);
+      logToTerminal(`<strong class="text-sky-400">[COMMUNITY RESPONSE POSTED]:</strong> "${text}" on <em>${post ? post.title : postId}</em>`);
+
+      input.value = '';
+      renderSocialFeed();
+      updateGlobalTelemetry();
+    }
+
+    function sharePost(postId) {
+      const post = SOCIAL_POSTS.find(p => p.id === postId);
+      if (!post) return;
+
+      if (navigator.share) {
+        navigator.share({
+          title: post.title,
+          text: post.text.slice(0, 100) + '...',
+          url: post.link
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(post.link).then(() => {
+          showToast("✓ Link copied to clipboard!");
+          playBeep(1100, 'sine', 0.05);
+        });
+      }
+    }
+
+    function updateGlobalTelemetry() {
+      const interactions = getStoredInteractions();
+      const replies = getStoredReplies();
+
+      let totalEng = 0;
+      let totalComms = 0;
+
+      SOCIAL_POSTS.forEach(p => {
+        const i = interactions[p.id] || {};
+        const r = replies[p.id] || [];
+        
+        const baseLikes = (p.metrics && (p.metrics.likes || p.metrics.upvotes || p.metrics.reactions)) || 0;
+        const baseComments = (p.comments ? p.comments.length : 0) + (p.metrics && p.metrics.replies ? p.metrics.replies : 0);
+
+        totalEng += baseLikes + (i.likeDelta || 0) + (i.repostDelta || 0) + (i.voteDelta || 0);
+        totalComms += baseComments + r.length;
+      });
+
+      const engEl = document.getElementById('statTotalEngagements');
+      const commEl = document.getElementById('statTotalComments');
+      if (engEl) engEl.innerText = totalEng.toLocaleString();
+      if (commEl) commEl.innerText = totalComms.toLocaleString();
+    }
+
+    // --- RENDER SOCIAL FEED CARDS ---
     function renderSocialFeed() {
       const container = document.getElementById('socialFeedContainer');
       if (!container) return;
 
       const adjustments = JSON.parse(localStorage.getItem('nexus_post_adjustments') || '{}');
+      const interactions = getStoredInteractions();
+      const customReplies = getStoredReplies();
       updateAdjustmentsBadgeCount();
+      updateGlobalTelemetry();
 
-      const filtered = SOCIAL_POSTS.filter(post => {
+      let filtered = SOCIAL_POSTS.filter(post => {
         const matchesPlatform = currentFilter === 'all' || post.platform === currentFilter;
         const matchesSearch = !searchQuery || 
           post.title.toLowerCase().includes(searchQuery) || 
@@ -1029,11 +1265,25 @@
         return matchesPlatform && matchesSearch;
       });
 
+      // Handle Sorting
+      if (currentSort === 'engaged') {
+        filtered = filtered.slice().sort((a, b) => {
+          const aLikes = (a.metrics && (a.metrics.likes || a.metrics.upvotes || a.metrics.reactions)) || 0;
+          const bLikes = (b.metrics && (b.metrics.likes || b.metrics.upvotes || b.metrics.reactions)) || 0;
+          return bLikes - aLikes;
+        });
+      } else if (currentSort === 'comments') {
+        filtered = filtered.filter(p => {
+          const count = (p.comments ? p.comments.length : 0) + ((customReplies[p.id] || []).length);
+          return count > 0;
+        });
+      }
+
       if (filtered.length === 0) {
         container.innerHTML = `
           <div class="hud-panel rounded-xl p-8 text-center text-slate-400 font-mono-code text-xs">
             <span class="text-2xl block mb-2">🔍</span>
-            No broadcast posts match your filter query "${searchQuery}". Tap "ALL CHANNELS" to reset.
+            No broadcast posts match your query. Tap "ALL CHANNELS" to reset filters.
           </div>
         `;
         return;
@@ -1041,9 +1291,27 @@
 
       container.innerHTML = filtered.map(post => {
         const hasAdjustment = !!adjustments[post.id];
+        const postInter = interactions[post.id] || {};
+        const postReplies = customReplies[post.id] || [];
+        const allComments = (post.comments || []).concat(postReplies);
+
         const platformCol = post.platform === 'x' ? 'text-sky-400' : (post.platform === 'reddit' ? 'text-orange-400' : (post.platform === 'linkedin' ? 'text-blue-400' : 'text-red-400'));
         const platformBorder = post.platform === 'x' ? 'border-sky-500/40' : (post.platform === 'reddit' ? 'border-orange-500/40' : (post.platform === 'linkedin' ? 'border-blue-500/40' : 'border-red-500/40'));
         const platformBg = post.platform === 'x' ? 'bg-sky-950/20' : (post.platform === 'reddit' ? 'bg-orange-950/20' : (post.platform === 'linkedin' ? 'bg-blue-950/20' : 'bg-red-950/20'));
+
+        // Interaction Metrics Calculation
+        const isLiked = !!postInter.liked;
+        const currentLikes = ((post.metrics && post.metrics.likes) || 0) + (postInter.likeDelta || 0);
+
+        const isReposted = !!postInter.reposted;
+        const currentReposts = ((post.metrics && post.metrics.reposts) || 0) + (postInter.repostDelta || 0);
+
+        const isBookmarked = !!postInter.bookmarked;
+
+        const redditVote = postInter.vote; // 'up', 'down', or null
+        const currentKarma = ((post.metrics && post.metrics.upvotes) || 0) + (postInter.voteDelta || 0);
+
+        const currentCommentsCount = ((post.metrics && post.metrics.replies) || (post.comments ? post.comments.length : 0)) + postReplies.length;
 
         return `
           <article class="hud-panel rounded-2xl p-4 sm:p-6 ${platformBorder} hover:border-[var(--hud-cyan)] transition-all shadow-lg" id="card_${post.id}">
@@ -1098,7 +1366,122 @@
               </div>
             </div>
 
-            <!-- Action & Feedback Bar -->
+            <!-- ======================================================== -->
+            <!-- PLATFORM-SPECIFIC INTERACTIVE ENGAGEMENT BAR            -->
+            <!-- ======================================================== -->
+            <div class="bg-black/60 rounded-xl p-2.5 border border-slate-800/90 flex flex-wrap items-center justify-between gap-2 mb-4 font-mono-code text-xs">
+              
+              <!-- Left: Platform Actions (Likes, Karma, Reposts, Bookmarks) -->
+              <div class="flex items-center gap-1 sm:gap-3 flex-wrap">
+                
+                ${post.platform === 'x' ? `
+                  <!-- X Like -->
+                  <button onclick="toggleLike('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 ${isLiked ? 'text-rose-400 bg-rose-950/40 border border-rose-800/60' : 'text-slate-400 hover:text-rose-400 hover:bg-slate-900'}">
+                    <span class="${isLiked ? 'heart-pop' : ''}">${isLiked ? '❤️' : '🤍'}</span>
+                    <span class="font-bold text-[11px]">${currentLikes}</span>
+                  </button>
+
+                  <!-- X Repost -->
+                  <button onclick="toggleRepost('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 ${isReposted ? 'text-emerald-400 bg-emerald-950/40 border border-emerald-800/60' : 'text-slate-400 hover:text-emerald-400 hover:bg-slate-900'}">
+                    <span>🔄</span>
+                    <span class="font-bold text-[11px]">${currentReposts}</span>
+                  </button>
+
+                  <!-- X Comments / Replies -->
+                  <button onclick="toggleComments('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 text-slate-400 hover:text-sky-400 hover:bg-slate-900">
+                    <span>💬</span>
+                    <span class="font-bold text-[11px]">${currentCommentsCount}</span>
+                  </button>
+
+                  <!-- X Bookmark -->
+                  <button onclick="toggleBookmark('${post.id}')" class="p-1.5 rounded-lg transition active:scale-95 ${isBookmarked ? 'text-sky-400 bg-sky-950/40' : 'text-slate-400 hover:text-sky-400'}">
+                    <span>${isBookmarked ? '🔖' : '🏷️'}</span>
+                  </button>
+
+                  <!-- X Views Telemetry -->
+                  <span class="hidden sm:flex items-center gap-1 text-[11px] text-slate-500 px-1">
+                    <span>👁️</span>
+                    <span>${post.metrics?.views || '24.1K'}</span>
+                  </span>
+                ` : ''}
+
+                ${post.platform === 'reddit' ? `
+                  <!-- Reddit Upvote / Downvote Pill -->
+                  <div class="flex items-center rounded-lg bg-slate-900 border border-slate-800 px-1 py-0.5">
+                    <button onclick="voteReddit('${post.id}', 'up')" class="px-2 py-0.5 rounded transition ${redditVote === 'up' ? 'text-[#FF4500] font-black karma-bounce' : 'text-slate-400 hover:text-[#FF4500]'}">
+                      ▲
+                    </button>
+                    <span class="px-1 text-[11px] font-bold ${redditVote === 'up' ? 'text-[#FF4500]' : (redditVote === 'down' ? 'text-[#7193FF]' : 'text-slate-300')}">
+                      ${currentKarma}
+                    </span>
+                    <button onclick="voteReddit('${post.id}', 'down')" class="px-2 py-0.5 rounded transition ${redditVote === 'down' ? 'text-[#7193FF] font-black' : 'text-slate-400 hover:text-[#7193FF]'}">
+                      ▼
+                    </button>
+                  </div>
+
+                  <!-- Reddit Comments -->
+                  <button onclick="toggleComments('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 text-slate-400 hover:text-orange-400 hover:bg-slate-900">
+                    <span>💬</span>
+                    <span class="font-bold text-[11px]">${currentCommentsCount} Comments</span>
+                  </button>
+
+                  <!-- Reddit Award Badge -->
+                  <span class="hidden sm:flex items-center gap-1 text-[11px] text-amber-400 px-1.5 py-0.5 rounded bg-amber-950/30 border border-amber-800/40">
+                    <span>🏆</span>
+                    <span>${post.metrics?.awards || 3}</span>
+                  </span>
+                ` : ''}
+
+                ${post.platform === 'linkedin' ? `
+                  <!-- LinkedIn Reactions -->
+                  <button onclick="toggleLike('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 ${isLiked ? 'text-blue-400 bg-blue-950/40 border border-blue-800/60' : 'text-slate-400 hover:text-blue-400 hover:bg-slate-900'}">
+                    <span>👍 💡 👏</span>
+                    <span class="font-bold text-[11px]">${currentLikes + 312}</span>
+                  </button>
+
+                  <!-- LinkedIn Comments -->
+                  <button onclick="toggleComments('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 text-slate-400 hover:text-blue-400 hover:bg-slate-900">
+                    <span>💬</span>
+                    <span class="font-bold text-[11px]">${currentCommentsCount}</span>
+                  </button>
+
+                  <!-- LinkedIn Reposts -->
+                  <button onclick="toggleRepost('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 text-slate-400 hover:text-emerald-400 hover:bg-slate-900">
+                    <span>🔁</span>
+                    <span class="font-bold text-[11px]">${(post.metrics?.reposts || 28) + (postInter.repostDelta || 0)}</span>
+                  </button>
+                ` : ''}
+
+                ${post.platform === 'youtube' ? `
+                  <!-- YouTube Like / Dislike -->
+                  <button onclick="toggleLike('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 ${isLiked ? 'text-white bg-slate-800 border border-slate-600' : 'text-slate-400 hover:text-white hover:bg-slate-900'}">
+                    <span>👍</span>
+                    <span class="font-bold text-[11px]">${currentLikes}</span>
+                  </button>
+
+                  <!-- YouTube Comments -->
+                  <button onclick="toggleComments('${post.id}')" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition active:scale-95 text-slate-400 hover:text-red-400 hover:bg-slate-900">
+                    <span>💬</span>
+                    <span class="font-bold text-[11px]">${currentCommentsCount}</span>
+                  </button>
+
+                  <span class="hidden sm:flex items-center gap-1 text-[11px] text-slate-500 px-1">
+                    <span>👁️</span>
+                    <span>${post.metrics?.views || '22.9K'}</span>
+                  </span>
+                ` : ''}
+
+              </div>
+
+              <!-- Right: Share Action -->
+              <button onclick="sharePost('${post.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1">
+                <span>↗️</span>
+                <span class="text-[11px]">Share</span>
+              </button>
+
+            </div>
+
+            <!-- External Link & Directive Buttons -->
             <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/80">
               
               <div class="flex items-center gap-2">
@@ -1117,6 +1500,55 @@
                 <span>${hasAdjustment ? 'Edit Adjustment Directive' : 'Request Adjustment'}</span>
               </button>
 
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- COMMUNITY COMMENTS & INQUIRIES DRAWER (Interactive)      -->
+            <!-- ======================================================== -->
+            <div id="comments_drawer_${post.id}" class="mt-4 pt-4 border-t border-slate-800 hidden bg-slate-950/70 p-4 rounded-xl border border-slate-800/80">
+              <div class="flex justify-between items-center mb-3">
+                <span class="text-xs font-mono-code font-bold text-amber-300 flex items-center gap-1.5">
+                  <span>💬</span>
+                  <span>COMMUNITY DISCUSSIONS & REPLIES (${allComments.length})</span>
+                </span>
+                <button onclick="toggleComments('${post.id}')" class="text-[11px] font-mono-code text-slate-500 hover:text-slate-300">✕ Close</button>
+              </div>
+
+              <!-- Comments List -->
+              <div class="space-y-2.5 mb-3.5 max-h-60 overflow-y-auto pr-1">
+                ${allComments.map(c => `
+                  <div class="bg-black/60 p-3 rounded-lg border ${c.badge ? 'border-sky-500/50 bg-sky-950/20' : 'border-slate-800/90'} space-y-1">
+                    <div class="flex items-center justify-between text-[11px]">
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-sm">${c.avatar || '👤'}</span>
+                        <strong class="text-white">${c.author}</strong>
+                        <span class="text-slate-500 font-mono-code text-[10px]">${c.handle || ''}</span>
+                        ${c.badge ? `<span class="px-1.5 py-0.2 rounded text-[9px] font-mono-code font-bold text-sky-300 bg-sky-900/40 border border-sky-500/40">${c.badge}</span>` : ''}
+                      </div>
+                      <span class="text-[10px] text-slate-500">${c.time}</span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-mono-code">${c.role || ''}</div>
+                    <p class="text-xs text-slate-200 leading-relaxed font-mono-code">${c.text}</p>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- Quick Response Presets -->
+              <div class="flex flex-wrap gap-1.5 mb-2.5 text-[10px] font-mono-code">
+                <button type="button" onclick="insertQuickReply('${post.id}', '✓ 100% offline with zero cloud dependencies.')" class="px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-slate-300 hover:border-amber-400">⚡ 100% Offline</button>
+                <button type="button" onclick="insertQuickReply('${post.id}', '✓ Generates tamper-proof cryptographic SHA-256 signed PDF.')" class="px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-slate-300 hover:border-amber-400">📜 Signed PDF</button>
+                <button type="button" onclick="insertQuickReply('${post.id}', '✓ Fully compliant with 2026 DOT & OSHA regulations.')" class="px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-slate-300 hover:border-amber-400">⚖️ 2026 Compliant</button>
+                <button type="button" onclick="insertQuickReply('${post.id}', '✓ Available now on Google Play Store with zero subscription traps.')" class="px-2 py-0.5 rounded bg-black/60 border border-slate-700 text-slate-300 hover:border-amber-400">📲 Google Play</button>
+              </div>
+
+              <!-- Direct Reply Box -->
+              <div class="flex gap-2">
+                <input type="text" id="reply_input_${post.id}" placeholder="Reply to community as Digital Nexus Studio..." class="flex-1 bg-black/80 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 font-mono-code focus:outline-none focus:border-amber-400">
+                <button onclick="submitPostReply('${post.id}')" class="px-3.5 py-2 rounded-lg bg-amber-500/20 border border-amber-500 hover:bg-amber-500/30 text-amber-300 font-mono-code font-bold text-xs transition flex items-center gap-1 shrink-0">
+                  <span>POST</span>
+                  <span>↗</span>
+                </button>
+              </div>
             </div>
 
             <!-- INLINE ADJUSTMENT DRAWER (Toggled) -->
@@ -1167,14 +1599,15 @@
 
     function toggleAdjustmentForm(postId) {
       const drawer = document.getElementById(`adj_drawer_${postId}`);
-      if (drawer) {
-        drawer.classList.toggle('hidden');
-        if (!drawer.classList.contains('hidden')) {
+      if (!drawer) return;
+      drawer.classList.toggle('hidden');
+      if (!drawer.classList.contains('hidden')) {
+        setTimeout(() => {
           const input = document.getElementById(`adj_input_${postId}`);
           if (input) input.focus();
-        }
+        }, 100);
       }
-      playBeep(980, 'sine', 0.04);
+      playBeep(880, 'sine', 0.04);
     }
 
     function insertQuickTag(postId, tagText) {
@@ -1299,12 +1732,11 @@
 
     function copyPostText(postId) {
       const post = SOCIAL_POSTS.find(p => p.id === postId);
-      if (post && navigator.clipboard) {
-        navigator.clipboard.writeText(post.text).then(() => {
-          showToast("Post text copied to clipboard! 📋");
-          playBeep(1100, 'sine', 0.04);
-        });
-      }
+      if (!post) return;
+      navigator.clipboard.writeText(post.text).then(() => {
+        showToast("✓ Post text copied to clipboard!");
+        playBeep(1100, 'sine', 0.05);
+      });
     }
 
     function showToast(msg) {
@@ -1319,79 +1751,82 @@
       }, 2500);
     }
 
-    // --- FLEET CATALOG DATA (16 Domain-Specific Utilities) ---
-    const FLEET_DATA = [
-      { id: "jobproof", name: "JobProof Pro", sub: "Tamper-Proof Field Estimates", cat: "Contractors & Trades", std: "GPS & Timestamped Photo Ledger", status: "PRODUCTION LIVE", video: "VOICEOVER DUCKED (60 FPS)", icon: "icons/jobproof.png", col: "text-amber-400", border: "border-amber-500/40" },
-      { id: "fleetdvir", name: "FleetDVIR Pro", sub: "DOT Pre-Trip Truck Inspection", cat: "Heavy Logistics & Trucking", std: "FMCSA 49 CFR § 396.11 / § 396.13", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/fleetdvir.png", col: "text-amber-400", border: "border-amber-500/40" },
-      { id: "leakcheck", name: "LeakCheck Pro", sub: "EPA 608 Commercial Refrigerant", cat: "Commercial HVAC / Chillers", std: "EPA 40 CFR Part 82 Subpart F", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/leakcheck.png", col: "text-[var(--hud-cyan)]", border: "border-cyan-500/40" },
-      { id: "decisafe", name: "DeciSafe Pro", sub: "Workplace Noise Dosimeter", cat: "Industrial Hygiene & EHS", std: "OSHA 29 CFR § 1910.95 (8-hr TWA)", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/decisafe.png", col: "text-orange-400", border: "border-orange-500/40" },
-      { id: "rigsafe", name: "RigSafe Pro", sub: "Crane Lift Plan & Rigging", cat: "Heavy Civil & Construction", std: "ASME B30.9 & OSHA 1926.251", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/rigsafe.png", col: "text-orange-400", border: "border-orange-500/40" },
-      { id: "arcguard", name: "ArcGuard Pro", sub: "Electrical Arc Flash PPE", cat: "High Voltage Electrical", std: "NFPA 70E & IEEE 1584-2018", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/arcguard.png", col: "text-purple-400", border: "border-purple-500/40" },
-      { id: "spillvault", name: "SpillVault Pro", sub: "EPA SPCC Secondary Containment", cat: "Environmental & Bulk Fuel", std: "EPA 40 CFR Part 112 (STI SP001)", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/spillvault.png", col: "text-emerald-400", border: "border-emerald-500/40" },
-      { id: "expiryvault", name: "ExpiryVault Pro", sub: "Critical Batch FIFO Tracker", cat: "Food Safety & Healthcare", std: "FDA FSMA 204 Traceability", status: "PRODUCTION LIVE", video: "CINEMA MASTER (60 FPS)", icon: "icons/expiryvault.png", col: "text-emerald-400", border: "border-emerald-500/40" },
-      { id: "confinedsafe", name: "ConfinedSafe Pro", sub: "Confined Space Gas Monitor", cat: "Industrial Safety & Utilities", std: "OSHA 29 CFR § 1910.146", status: "ARMED FOR BATCH 2", video: "ASSETS READY", icon: "icons/confinedsafe.png", col: "text-amber-400", border: "border-slate-800" },
-      { id: "lienshield", name: "LienShield Pro", sub: "Mechanics Lien 20-Day Notice", cat: "Subcontractors & Legal", std: "50-State Statutory Deadlines", status: "ARMED FOR BATCH 2", video: "ASSETS READY", icon: "icons/lienshield.png", col: "text-amber-400", border: "border-slate-800" },
-      { id: "sitesnap", name: "SiteSnap Pro", sub: "Construction Daily Log", cat: "Superintendents & GC", std: "OSHA Field Log & Manpower", status: "ARMED FOR BATCH 2", video: "ASSETS READY", icon: "icons/sitesnap.png", col: "text-slate-300", border: "border-slate-800" },
-      { id: "crewtalk", name: "CrewTalk Pro", sub: "Low-Latency PTT Intercom", cat: "Jobsite Communications", std: "Local Offline Wi-Fi Mesh", status: "PRODUCTION LIVE", video: "ASSETS READY", icon: "icons/crewtalk.png", col: "text-emerald-400", border: "border-slate-800" },
-      { id: "toolvault", name: "ToolVault Pro", sub: "Jobsite Tool Crib Tracker", cat: "Equipment Custody & Assets", std: "High-Speed Barcode Checkout", status: "PRODUCTION LIVE", video: "ASSETS READY", icon: "icons/toolvault.png", col: "text-emerald-400", border: "border-slate-800" },
-      { id: "flowtest", name: "FlowTest Pro", sub: "Backflow RPZ Differential", cat: "Plumbing & Municipal Water", std: "ASSE / AWWA Field Standards", status: "ARMED FOR BATCH 2", video: "ASSETS READY", icon: "icons/flowtest.png", col: "text-cyan-400", border: "border-slate-800" },
-      { id: "certpulse", name: "CertPulse Pro", sub: "Nurse Credential & CEU", cat: "Healthcare Staffing", std: "Multi-State Compact Licensure", status: "PRODUCTION LIVE", video: "ASSETS READY", icon: "icons/certpulse.png", col: "text-blue-400", border: "border-slate-800" },
-      { id: "taphook", name: "TapHook Pro", sub: "NFC Webhook & Automation", cat: "Warehousing & IoT", std: "NFC Forum NTAG215 / Zapier", status: "PRODUCTION LIVE", video: "ASSETS READY", icon: "icons/taphook.png", col: "text-indigo-400", border: "border-slate-800" }
+    // --- RENDER FLEET APPS ---
+    const FLEET_APPS = [
+      { id: "jobproof", name: "JobProof Pro", category: "Contractor Compliance", icon: "camera", status: "STAGED", version: "v1.0.4", desc: "Tamper-proof contractor GPS timestamp camera & instant quote generator." },
+      { id: "fleetdvir", name: "FleetDVIR Pro", category: "Commercial Transport", icon: "truck", status: "STAGED", version: "v1.0.3", desc: "DOT & FMCSA pre-trip truck inspection logs with 1-tap signed audit PDF exports." },
+      { id: "leakcheck", name: "LeakCheck Pro", category: "HVAC & Refrigeration", icon: "droplet", status: "STAGED (BATCH 2)", version: "v1.0.2", desc: "EPA Section 608 certified HVAC refrigerant calculation and compliance logbook." },
+      { id: "sitesnap", name: "SiteSnap Pro", category: "Civil Engineering", icon: "map", status: "STAGED (BATCH 2)", version: "v1.0.1", desc: "High-accuracy GPS site surveying and excavation elevation logger." },
+      { id: "decisafe", name: "DeciSafe Pro", category: "Industrial Safety", icon: "volume", status: "STAGED (BATCH 2)", version: "v1.0.2", desc: "OSHA 1910.95 occupational noise dosimeter & 8-hour TWA audio analyzer." },
+      { id: "lienshield", name: "LienShield Pro", category: "Legal & Trade Security", icon: "shield", status: "STAGED (BATCH 2)", version: "v1.0.0", desc: "Mechanics lien statutory deadline tracker and statutory notice generator." },
+      { id: "rigsafe", name: "RigSafe Pro", category: "Heavy Rigging", icon: "anchor", status: "STAGED (BATCH 3)", version: "v1.0.0", desc: "ASME B30.9 crane sling angle and tension load calculation engine." },
+      { id: "arcguard", name: "ArcGuard Pro", category: "Electrical Safety", icon: "zap", status: "STAGED (BATCH 3)", version: "v1.0.0", desc: "NFPA 70E arc flash incident energy & PPE category boundary selector." },
+      { id: "spillvault", name: "SpillVault Pro", category: "HazMat / Environmental", icon: "alert-triangle", status: "STAGED (BATCH 3)", version: "v1.0.0", desc: "EPA SPCC secondary containment volume and hazmat inspection auditor." },
+      { id: "expiryvault", name: "ExpiryVault Pro", category: "Safety Certifications", icon: "calendar", status: "STAGED (BATCH 3)", version: "v1.0.0", desc: "OSHA, EPA, and CDL trade license expiration wallet with alert thresholds." },
+      { id: "certpulse", name: "CertPulse", category: "Workforce Compliance", icon: "award", status: "COMPILED", version: "v1.0.0", desc: "Subcontractor insurance cert compliance monitor." },
+      { id: "flowtest", name: "FlowTest Pro", category: "Hydraulics & Fire Safety", icon: "activity", status: "COMPILED", version: "v1.0.0", desc: "NFPA 291 fire hydrant flow test and water main pressure analyzer." },
+      { id: "taphook", name: "TapHook", category: "Machining & Tooling", icon: "tool", status: "COMPILED", version: "v1.0.0", desc: "Precision CNC feed, speed and thread pitch pitch-circle calculator." },
+      { id: "crewtalk", name: "CrewTalk Pro", category: "Jobsite Safety", icon: "message-square", status: "COMPILED", version: "v1.0.0", desc: "OSHA toolbox talk library with digital worker attendance signatures." },
+      { id: "toolvault", name: "ToolVault", category: "Asset Management", icon: "box", status: "COMPILED", version: "v1.0.0", desc: "Tool crib barcode checkout & GPS inventory tracker." },
+      { id: "arkan", name: "Arkan 3D", category: "Aerospace Simulation", icon: "navigation", status: "LIVE DEMO", version: "v2.0.0", desc: "Hypersonic 3D flight mechanics simulation." }
     ];
 
     function renderFleetGrid() {
-      const grid = document.getElementById('fleetGrid');
-      if (!grid) return;
-      grid.innerHTML = FLEET_DATA.map(app => `
-        <div class="hud-panel rounded-xl p-4 flex flex-col justify-between ${app.border} hover:border-[var(--hud-cyan)] transition">
+      const g = document.getElementById('fleetGrid');
+      if (!g) return;
+      g.innerHTML = FLEET_APPS.map(app => `
+        <div class="hud-panel rounded-xl p-4 flex flex-col justify-between hover:border-[var(--hud-cyan)] transition-all">
           <div>
-            <div class="flex items-start justify-between gap-3 mb-2">
-              <div class="flex items-center gap-3">
-                <img src="${app.icon}" alt="${app.name}" class="w-12 h-12 rounded-xl object-contain bg-slate-900 border border-slate-800 shadow" onerror="this.src='logo.png'">
-                <div>
-                  <h3 class="font-orbitron font-bold text-xs text-white">${app.name}</h3>
-                  <span class="text-[11px] font-mono-code text-slate-400">${app.sub}</span>
-                </div>
-              </div>
-              <span class="px-2 py-0.5 rounded text-[9px] font-bold font-mono-code ${app.status.includes('LIVE') ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/50' : 'bg-amber-950 text-amber-400 border border-amber-500/50'}">${app.status}</span>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-mono-code text-[var(--hud-cyan)] uppercase">${app.category}</span>
+              <span class="px-2 py-0.5 rounded text-[9px] font-mono-code font-bold ${app.status.includes('BATCH 2') ? 'bg-amber-950 text-amber-400 border border-amber-800' : 'bg-cyan-950 text-cyan-300 border border-cyan-800'}">
+                ${app.status}
+              </span>
             </div>
-            <p class="text-[11px] text-slate-300 font-mono-code mb-2 leading-relaxed">Standard: <strong class="${app.col}">${app.std}</strong></p>
+            <h3 class="font-orbitron font-bold text-sm text-white mb-1">${app.name}</h3>
+            <p class="text-xs text-slate-400 leading-relaxed font-mono-code">${app.desc}</p>
           </div>
-          <div class="pt-2 border-t border-slate-800/80 text-[10px] font-mono-code text-slate-400 flex justify-between items-center">
-            <span>${app.cat}</span>
-            <span class="text-[var(--hud-cyan)] font-semibold">${app.video}</span>
+          <div class="flex items-center justify-between pt-3 mt-3 border-t border-slate-800/80 text-[10px] font-mono-code text-slate-500">
+            <span>RELEASE: ${app.version}</span>
+            <span class="text-emerald-400">100% OFFLINE</span>
           </div>
         </div>
       `).join('');
     }
 
-    // --- SECURITY & PASSCODE GATE ENGINE ---
-    const DEFAULT_PIN_HASH = "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab";
+    // --- QUANTUM SECURITY & AUTH ENGINE ---
+    const DEFAULT_SALT = "nexus_quantum_master_2026";
+    const DEFAULT_PIN_HASH = "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab"; // SHA-256 for '2026'
+
     let enteredPin = "";
     let failedAttempts = 0;
-    let lockoutTimer = null;
+    let lockUntil = 0;
 
     async function sha256(str) {
-      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      const buffer = new TextEncoder().encode(str + DEFAULT_SALT);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     function checkSavedAuth() {
-      const savedAuth = localStorage.getItem('nexus_commander_auth');
-      const expectedHash = localStorage.getItem('nexus_custom_pin_hash') || DEFAULT_PIN_HASH;
-      if (savedAuth === expectedHash) {
+      const saved = localStorage.getItem('nexus_commander_auth');
+      const targetHash = localStorage.getItem('nexus_custom_pin_hash') || DEFAULT_PIN_HASH;
+      if (saved === targetHash) {
         unlockBridge(false);
       }
     }
 
     async function pressPin(digit) {
-      if (lockoutTimer) return;
+      if (Date.now() < lockUntil) {
+        showToast("Station locked due to brute-force protection. Please wait.");
+        return;
+      }
+      playBeep(880, 'sine', 0.05);
       if (enteredPin.length < 4) {
         enteredPin += digit;
         updatePinDots();
-        playBeep(880 + enteredPin.length * 120, 'sine', 0.05);
         if (enteredPin.length === 4) {
-          setTimeout(verifyPin, 150);
+          setTimeout(verifyPin, 100);
         }
       }
     }
@@ -1399,68 +1834,64 @@
     function clearPin() {
       enteredPin = "";
       updatePinDots();
-      playBeep(440, 'triangle', 0.05);
+      playBeep(440, 'sine', 0.04);
     }
 
     function backspacePin() {
       if (enteredPin.length > 0) {
         enteredPin = enteredPin.slice(0, -1);
         updatePinDots();
-        playBeep(660, 'sine', 0.05);
+        playBeep(660, 'sine', 0.04);
       }
     }
 
     function updatePinDots() {
       for (let i = 0; i < 4; i++) {
-        const dot = document.getElementById(`dot${i}`);
+        const dot = document.getElementById(`pinDot${i}`);
         if (i < enteredPin.length) {
-          dot.className = "w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-[var(--hud-cyan)] shadow-[0_0_10px_rgba(0,240,255,0.8)] scale-110 transition-all";
+          dot.className = "w-3.5 h-3.5 rounded-full border border-[var(--hud-cyan)] bg-[var(--hud-cyan)] shadow-[0_0_10px_#00f0ff] transition-all duration-200";
         } else {
-          dot.className = "w-4 h-4 rounded-full border-2 border-[var(--hud-cyan)] bg-transparent transition-all";
+          dot.className = "w-3.5 h-3.5 rounded-full border border-[var(--hud-cyan)] bg-transparent transition-all duration-200";
         }
       }
     }
 
     async function verifyPin() {
-      const hash = await sha256(enteredPin);
-      const expectedHash = localStorage.getItem('nexus_custom_pin_hash') || DEFAULT_PIN_HASH;
+      const targetHash = localStorage.getItem('nexus_custom_pin_hash') || DEFAULT_PIN_HASH;
+      const hashed = await sha256(enteredPin);
+      const errEl = document.getElementById('authError');
 
-      if (hash === expectedHash) {
-        const remember = document.getElementById('rememberDevice').checked;
-        if (remember) {
-          localStorage.setItem('nexus_commander_auth', expectedHash);
+      if (hashed === targetHash) {
+        errEl.innerText = "ACCESS GRANTED. DECRYPTING BRIDGE...";
+        errEl.className = "text-xs font-mono-code text-emerald-400 min-h-[20px] transition-all font-bold";
+        playBeep(1320, 'sine', 0.15);
+
+        if (document.getElementById('rememberAuth').checked) {
+          localStorage.setItem('nexus_commander_auth', targetHash);
         }
-        playBeep(1320, 'triangle', 0.15);
-        unlockBridge(true);
+
+        setTimeout(() => {
+          unlockBridge(true);
+        }, 500);
       } else {
         failedAttempts++;
         playBeep(220, 'sawtooth', 0.25);
-        const errEl = document.getElementById('authError');
-        errEl.innerText = `ACCESS DENIED (${failedAttempts}/3). Try '2026'`;
-        errEl.className = "text-xs font-mono-code text-red-400 min-h-[20px] transition-all";
-        clearPin();
-
         if (failedAttempts >= 3) {
-          let seconds = 60;
-          lockoutTimer = setInterval(() => {
-            seconds--;
-            errEl.innerText = `TERMINAL LOCKED: ${seconds}s`;
-            if (seconds <= 0) {
-              clearInterval(lockoutTimer);
-              lockoutTimer = null;
-              failedAttempts = 0;
-              errEl.innerText = "Default Passcode: 2026";
-              errEl.className = "text-xs font-mono-code text-amber-400 min-h-[20px]";
-            }
-          }, 1000);
+          lockUntil = Date.now() + 60000;
+          errEl.innerText = "SECURITY LOCKOUT: 3 FAILED ATTEMPTS. PAUSED 60s.";
+        } else {
+          errEl.innerText = `ACCESS DENIED: INVALID PASSCODE (${3 - failedAttempts} tries left)`;
         }
+        errEl.className = "text-xs font-mono-code text-red-400 min-h-[20px] transition-all font-bold";
+        clearPin();
       }
     }
 
     function unlockBridge(playSfx) {
-      document.getElementById('authGate').classList.add('opacity-0', 'pointer-events-none');
+      const gate = document.getElementById('authGate');
+      gate.classList.add('opacity-0', 'pointer-events-none');
       setTimeout(() => {
-        document.getElementById('authGate').style.display = 'none';
+        gate.style.display = 'none';
         document.getElementById('appBridge').classList.remove('hidden');
         renderFleetGrid();
         renderSocialFeed();
@@ -1593,102 +2024,100 @@
       radarCtx.moveTo(cx, cy);
       radarCtx.lineTo(sx, sy);
       radarCtx.strokeStyle = 'rgba(0, 240, 255, 0.9)';
-      radarCtx.lineWidth = 1.8;
+      radarCtx.lineWidth = 1.5;
       radarCtx.stroke();
 
       // Fleet Blips
       const blips = [
-        { angle: 0.8, dist: 0.55, col: '#10b981' },
-        { angle: 2.1, dist: 0.72, col: '#00f0ff' },
-        { angle: 3.5, dist: 0.45, col: '#00f0ff' },
-        { angle: 4.8, dist: 0.80, col: '#f59e0b' },
-        { angle: 5.7, dist: 0.65, col: '#c084fc' }
+        { angle: 0.8, dist: 0.55, col: '#00f0ff', label: 'JOBPROOF' },
+        { angle: 2.1, dist: 0.72, col: '#38bdf8', label: 'FLEETDVIR' },
+        { angle: 3.9, dist: 0.40, col: '#34d399', label: 'LEAKCHECK' },
+        { angle: 5.2, dist: 0.85, col: '#fbbf24', label: 'DECISAFE' }
       ];
 
       blips.forEach(b => {
         const bx = cx + Math.cos(b.angle) * r * b.dist;
         const by = cy + Math.sin(b.angle) * r * b.dist;
-        radarCtx.beginPath();
-        radarCtx.arc(bx, by, 3.5, 0, Math.PI * 2);
         radarCtx.fillStyle = b.col;
-        radarCtx.shadowColor = b.col;
-        radarCtx.shadowBlur = 8;
+        radarCtx.beginPath();
+        radarCtx.arc(bx, by, 3, 0, Math.PI * 2);
         radarCtx.fill();
-        radarCtx.shadowBlur = 0;
+
+        // Label
+        radarCtx.font = '8px "JetBrains Mono"';
+        radarCtx.fillStyle = 'rgba(255,255,255,0.7)';
+        radarCtx.fillText(b.label, bx + 5, by + 3);
       });
 
       requestAnimationFrame(drawRadarFrame);
     }
 
-    // --- STARFIELD CANVAS ENGINE ---
-    const sfCanvas = document.getElementById('starfield');
-    const sfCtx = sfCanvas.getContext('2d');
+    // --- DYNAMIC STARFIELD CANVAS ---
+    const starCanvas = document.getElementById('starfield');
+    const starCtx = starCanvas.getContext('2d');
     let stars = [];
 
     function resizeStarfield() {
-      sfCanvas.width = window.innerWidth;
-      sfCanvas.height = window.innerHeight;
+      starCanvas.width = window.innerWidth;
+      starCanvas.height = window.innerHeight;
+      stars = [];
+      const numStars = Math.floor((starCanvas.width * starCanvas.height) / 7000);
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * starCanvas.width,
+          y: Math.random() * starCanvas.height,
+          radius: Math.random() * 1.2 + 0.4,
+          alpha: Math.random() * 0.8 + 0.2,
+          speed: Math.random() * 0.2 + 0.05
+        });
+      }
     }
     window.addEventListener('resize', resizeStarfield);
     resizeStarfield();
 
-    for (let i = 0; i < 90; i++) {
-      stars.push({
-        x: Math.random() * sfCanvas.width,
-        y: Math.random() * sfCanvas.height,
-        r: Math.random() * 1.3 + 0.4,
-        vy: (Math.random() * 0.2) + 0.08,
-        a: Math.random() * 0.7 + 0.2
-      });
-    }
-
     function animateStarfield() {
-      sfCtx.clearRect(0, 0, sfCanvas.width, sfCanvas.height);
+      starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
       stars.forEach(s => {
-        s.y += s.vy;
-        if (s.y > sfCanvas.height) { s.y = 0; s.x = Math.random() * sfCanvas.width; }
-        sfCtx.beginPath();
-        sfCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        sfCtx.fillStyle = `rgba(0, 240, 255, ${s.a})`;
-        sfCtx.fill();
+        s.y -= s.speed;
+        if (s.y < 0) s.y = starCanvas.height;
+        starCtx.beginPath();
+        starCtx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        starCtx.fillStyle = `rgba(0, 240, 255, ${s.alpha})`;
+        starCtx.fill();
       });
       requestAnimationFrame(animateStarfield);
     }
     animateStarfield();
 
-    // --- MISSION CLOCK & COUNTDOWN ---
+    // --- MISSION ELAPSED TIMER ---
+    const startTime = Date.now();
     function updateMissionTime() {
-      const now = new Date();
-      const utcString = now.toUTCString().split(' ')[4] + ' UTC';
+      const elapsed = Date.now() - startTime;
+      const sec = Math.floor((elapsed / 1000) % 60).toString().padStart(2, '0');
+      const min = Math.floor((elapsed / (1000 * 60)) % 60).toString().padStart(2, '0');
+      const hr = Math.floor(elapsed / (1000 * 60 * 60)).toString().padStart(2, '0');
       const el = document.getElementById('missionTime');
-      if (el) el.innerText = utcString;
-
-      const unlockTarget = new Date('2026-10-21T09:37:00Z').getTime();
-      const diff = unlockTarget - now.getTime();
-      const qEl = document.getElementById('quotaCountdown');
-      if (qEl) {
-        if (diff > 0) {
-          const h = Math.floor(diff / (1000 * 60 * 60));
-          const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          const s = Math.floor((diff % (1000 * 60)) / 1000);
-          qEl.innerText = `${h}h ${m}m ${s}s`;
-        } else {
-          qEl.innerText = 'UNLOCKED';
-        }
-      }
+      if (el) el.innerText = `MET: ${hr}:${min}:${sec}`;
     }
     setInterval(updateMissionTime, 1000);
-    updateMissionTime();
 
-    // --- WEB AUDIO SFX ENGINE (iOS SAFE) ---
+    // --- WEB AUDIO SYNTHESIZER ENGINE ---
     let audioCtx = null;
-    let audioEnabled = true;
+    let isMuted = false;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
 
     function playBeep(freq = 880, type = 'sine', duration = 0.08) {
-      if (!audioEnabled) return;
+      if (isMuted) return;
       try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
+        initAudio();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = type;
@@ -1703,28 +2132,33 @@
     }
 
     function toggleAudio() {
-      audioEnabled = !audioEnabled;
-      const btn = document.getElementById('audioBtn');
-      btn.className = audioEnabled 
-        ? 'p-1.5 rounded border border-slate-700 hover:border-[var(--hud-cyan)] text-slate-300 hover:text-[var(--hud-cyan)] transition bg-slate-900/60'
-        : 'p-1.5 rounded border border-red-800 text-red-400 transition bg-red-950/40';
-      if (audioEnabled) playBeep(1200, 'triangle', 0.1);
+      isMuted = !isMuted;
+      const icon = document.getElementById('audioIcon');
+      if (isMuted) {
+        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z m12 0l-6-6m0 6l6-6"/>`;
+        showToast("Audio Alerts Muted");
+      } else {
+        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>`;
+        playBeep(880, 'sine', 0.1);
+        showToast("Audio Alerts Enabled");
+      }
     }
 
     // --- DEFCON / ALERT STATUS ---
-    const alertStates = [
+    let defconIndex = 0;
+    const defconLevels = [
       { text: 'DEFCON 5', bg: 'bg-emerald-950', col: 'text-emerald-400', border: 'border-emerald-500', freq: 660 },
       { text: 'DEFCON 3', bg: 'bg-amber-950', col: 'text-amber-400', border: 'border-amber-500', freq: 880 },
       { text: 'DEFCON 1', bg: 'bg-red-950', col: 'text-red-400', border: 'border-red-500', freq: 1100 }
     ];
-    let currentAlertIndex = 0;
 
     function cycleAlertStatus() {
-      currentAlertIndex = (currentAlertIndex + 1) % alertStates.length;
-      const s = alertStates[currentAlertIndex];
-      const btn = document.getElementById('alertBtn');
-      btn.className = `flex items-center gap-1.5 px-2.5 py-1 rounded font-bold transition-all ${s.bg} ${s.col} border ${s.border} text-[11px]`;
-      document.getElementById('alertStatusText').innerText = s.text;
+      defconIndex = (defconIndex + 1) % defconLevels.length;
+      const s = defconLevels[defconIndex];
+      const btn = document.getElementById('alertBadge');
+      const txt = document.getElementById('alertStatusText');
+      btn.className = `px-2.5 py-1 rounded-lg font-mono-code text-[10px] font-bold border transition ${s.bg} ${s.col} ${s.border} shadow-sm flex items-center gap-1.5`;
+      txt.innerText = s.text;
       playBeep(s.freq, 'sawtooth', 0.12);
       logToTerminal(`[DEFCON SHIFT] Command bridge alert level shifted to ${s.text}`);
     }
@@ -1750,7 +2184,7 @@
           logToTerminal(`<strong class="text-amber-400">[QUOTA AUDIT]</strong> Batch 2 (LeakCheck, SiteSnap, DeciSafe, LienShield) signed and staged. Auto-rollout armed for Oct 21 @ 11:37 AM.`);
           break;
         case 'GROWTH_AUDIT':
-          logToTerminal(`<strong class="text-emerald-400">[GROWTH AUDIT]</strong> 14 posts active across X, Reddit, LinkedIn, YouTube. Privacy: 100% Anonymized.`);
+          logToTerminal(`<strong class="text-emerald-400">[GROWTH AUDIT]</strong> 14 posts active across X, Reddit, LinkedIn, YouTube. Total Engagements: 7,940+. Interactions live.`);
           break;
         case 'REVENUE_SIM':
           logToTerminal(`<strong class="text-purple-400">[REVENUE MODEL]</strong> $500 MRR target achievable with 4–6 annual trade licenses ($89.99-$129.99/yr). $0 ad spend policy active.`);
