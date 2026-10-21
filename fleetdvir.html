@@ -17,11 +17,6 @@
     "@type": "Offer",
     "price": "129.99",
     "priceCurrency": "USD"
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "ratingCount": "48"
   }
 }
   </script>
@@ -161,6 +156,11 @@
       margin-top: 60px;
     }
     .footer a { color: var(--accent); text-decoration: none; }
+    .mascot {
+      width: 120px; height: 120px; display: block; margin: 0 auto 14px;
+      -webkit-mask-image: radial-gradient(circle at 50% 48%, #000 52%, transparent 71%);
+              mask-image: radial-gradient(circle at 50% 48%, #000 52%, transparent 71%);
+    }
   </style>
 </head>
 <body>
@@ -177,9 +177,7 @@
     <div class="badge">FMCSA 49 CFR § 396 Compliant • Zero Monthly Hardware Fees</div>
     <h1>Pass DOT Roadside Inspections with Zero Effort</h1>
     <p class="subtitle">FMCSA 49 CFR § 396 compliant pre-trip and post-trip digital DVIR logs. Digital driver signatures, walkaround photo defect logs, and instant signed PDF exports.</p>
-    <a href="https://play.google.com/store/apps/details?id=com.fleetdvir.nexus" class="cta-btn">
-      <span>Get on Google Play (3-Day Free Trial)</span>
-    </a>
+    <a href="https://play.google.com/store/apps/details?id=com.fleetdvir.nexus" class="cta-btn"><span>Get on Google Play (3-Day Free Trial)</span></a>
     <div class="pricing-note">Starting with 3-day full access • Cancel anytime in Google Play Subscriptions</div>
   </div>
 
@@ -208,6 +206,7 @@
   </div>
 
   <div class="footer">
+    <img src="brand/mascot_web_360.jpg" alt="Digital NEXUS robot mascot" class="mascot" width="120" height="120" loading="lazy">
     <div>© 2026 Digital NEXUS Studio. Production Release Track.</div>
     <div><a href="links.html">All Utilities</a> • <a href="privacy.html">Privacy Policy</a> • <a href="terms.html">Terms</a></div>
   </div>
