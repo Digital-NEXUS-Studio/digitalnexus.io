@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Digital NEXUS — Official Mobile Software &amp; 3D Gaming Studio</title>
-  <meta name="description" content="Official studio website and compliance portal for Digital NEXUS. Enterprise-grade offline-first field SaaS utilities, productivity apps, cultural heritage software, and 3D mobile games on Google Play.">
+  <title>Digital NEXUS — Android apps for field crews and small businesses</title>
+  <meta name="description" content="Digital NEXUS makes simple, offline-first Android apps for tradespeople, truck drivers and small teams: TapHook, FleetDVIR, JobProof, CrewTalk and more on Google Play, plus free browser games.">
   <link rel="icon" type="image/png" href="logo.png">
   <style>
     :root {
@@ -657,18 +657,17 @@
   <header class="navbar">
     <div class="nav-inner">
       <a href="#" class="brand">
-        <img src="logo.png" alt="Digital NEXUS Official Emblem">
+        <img src="logo.png" alt="Digital NEXUS logo">
         <div>
           <span class="brand-title">Digital NEXUS</span>
           <span class="brand-sub">Mobile Software &amp; 3D Gaming Studio</span>
         </div>
       </a>
       <nav class="nav-links">
-        <a href="#portfolio">Software Portfolio</a>
+        <a href="#portfolio">Apps</a>
         <a href="links.html" style="color: var(--cyan); font-weight: 600;">Mobile Hub &rarr;</a>
         <a href="play/" style="color: #FFB300; font-weight: 700;">Instant Arcade ⚡</a>
-        <a href="#games">3D Games</a>
-        <a href="#compliance">Privacy &amp; Compliance</a>
+        <a href="#compliance">Privacy</a>
         <a href="terms.html">Terms of Service</a>
         <a href="mailto:digital.nexus.studios2@gmail.com" class="nav-cta">Contact Studio</a>
       </nav>
@@ -678,69 +677,59 @@
   <!-- Hero Section with Auto-Loop 24 FPS Emblem Sequence -->
   <section class="hero">
     <div>
-      <div class="eyebrow">&#9733; Official Google Play Publisher Portal</div>
-      <h1>Precision Mobile Software &amp; <span>Next-Gen Interactive Apps</span></h1>
+      <div class="eyebrow">&#9733; Independent Android studio</div>
+      <h1>Practical apps for <span>field crews &amp; small businesses</span></h1>
       <p>
-        <strong>Digital NEXUS</strong> engineers offline-first commercial field utilities, industrial compliance instrumentation, smart consumer finance tools, Arabic heritage platforms, and 3D mobile games for Android devices worldwide.
+        <strong>Digital NEXUS</strong> makes simple, offline-first Android tools for tradespeople, truck drivers and small teams, plus a few free browser games. Your data stays on your phone unless an app's privacy policy says otherwise.
       </p>
       <div class="hero-actions">
-        <a href="#portfolio" class="btn-primary">Explore 23 Published Apps</a>
-        <a href="links.html" class="btn-secondary" style="border-color: var(--border-cyan); color: var(--cyan);">&#9733; 1-Tap Mobile Hub</a>
-        <a href="#compliance" class="btn-secondary">Legal &amp; Privacy Center</a>
+        <a href="#portfolio" class="btn-primary">See the apps</a>
+        <a href="links.html" class="btn-secondary" style="border-color: var(--border-cyan); color: var(--cyan);">&#9733; Mobile Hub</a>
+        <a href="#compliance" class="btn-secondary">Privacy &amp; terms</a>
       </div>
     </div>
 
     <!-- Clean 24 FPS Auto-Loop Logo Animation -->
     <div class="hero-sequence-card" id="dnHeroSequenceCard">
       <div class="dn-canvas-wrap">
-        <canvas id="dnHeroSequenceCanvas" class="dn-sequence-canvas" width="672" height="448" aria-label="Digital NEXUS Animated Gold and Blue Logo"></canvas>
+        <canvas id="dnHeroSequenceCanvas" class="dn-sequence-canvas" width="672" height="448" aria-label="Digital NEXUS animated logo"></canvas>
       </div>
     </div>
   </section>
 
-  <!-- Software & Games Portfolio -->
+  <!-- Apps -->
   <section id="portfolio" class="section">
     <div class="section-header">
       <div>
-        <h2>Published Software &amp; Games Portfolio</h2>
-        <p>Select any application below to inspect its dedicated Google Play Privacy Policy or view its store package.</p>
+        <h2>Our apps on Google Play</h2>
+        <p>Each card links to the app's Google Play page and its privacy policy.</p>
       </div>
-    </div>
-
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterApps('all', this)">All Products (23)</button>
-      <button class="filter-btn" onclick="filterApps('saas', this)">Field &amp; Commercial SaaS (12)</button>
-      <button class="filter-btn" onclick="filterApps('life', this)">Finance &amp; Lifestyle (2)</button>
-      <button class="filter-btn" onclick="filterApps('heritage', this)">Arabic Heritage &amp; AI (2)</button>
-      <button class="filter-btn" id="games" onclick="filterApps('game', this)">3D Arcade &amp; STEM Games (7)</button>
     </div>
 
     <div class="app-grid" id="appGrid">
 
-      <!-- 1. CertPulse -->
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <img src="icons/certpulse.png" alt="CertPulse" class="app-icon">
+            <img src="icons/taphook.png" alt="Taphook icon" class="app-icon">
             <div>
-              <span class="cat-tag tag-saas">Healthcare Compliance</span>
-              <h3 class="app-title">CertPulse: Nurse Credentials</h3>
-              <span class="app-pkg">com.certpulse.nexus</span>
+              <span class="cat-tag tag-saas">Automation &amp; NFC</span>
+              <h3 class="app-title">TapHook: NFC Webhook Trigger</h3>
+              <span class="app-pkg">com.taphook.nexus</span>
             </div>
           </div>
-          <p class="app-desc">Clinical license, CEU credit tracker, and automated expiration radar for registered nurses and medical staff.</p>
+          <p class="app-desc">Tap an NFC tag to send a webhook to Zapier, Home Assistant, n8n or any URL.</p>
         </div>
         <div class="app-links">
-          <a href="certpulse-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.certpulse.nexus" class="play-link">Google Play</a>
+          <a href="taphook.html" style="color: var(--cyan); font-weight: 700;">Details &rarr;</a>
+          <a href="taphook-privacy.html">Privacy</a>
+          <a href="https://play.google.com/store/apps/details?id=com.taphook.nexus" class="play-link">Google Play</a>
         </div>
       </div>
-
-      <!-- 2. CrewTalk -->
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <img src="icons/crewtalk.png" alt="CrewTalk" class="app-icon">
+            <img src="icons/crewtalk.png" alt="Crewtalk icon" class="app-icon">
             <div>
               <span class="cat-tag tag-saas">Field Communications</span>
               <h3 class="app-title">CrewTalk: Voice Log</h3>
@@ -750,450 +739,162 @@
           <p class="app-desc">Hold-to-record voice notes for jobsite crews, with a timestamped replay log. Notes stay on the phone.</p>
         </div>
         <div class="app-links">
-          <a href="crewtalk-privacy.html">Privacy Policy &rarr;</a>
-          <a href="crewtalk-terms.html">Terms of Service &rarr;</a>
+          <a href="crewtalk-privacy.html">Privacy</a>
+          <a href="crewtalk-terms.html">Terms</a>
           <a href="https://play.google.com/store/apps/details?id=com.crewtalk.nexus" class="play-link">Google Play</a>
         </div>
       </div>
-
-      <!-- 3. ExpiryVault -->
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <img src="icons/expiryvault.png" alt="ExpiryVault" class="app-icon">
+            <img src="icons/fleetdvir.png" alt="Fleetdvir icon" class="app-icon">
             <div>
-              <span class="cat-tag tag-saas">Retail &amp; Cold Chain</span>
-              <h3 class="app-title">ExpiryVault: FIFO Batch Track</h3>
-              <span class="app-pkg">com.expiryvault.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Barcode shelf-life scanner, FIFO lot rotation manager, and markdown audit log for grocery and pharmacy inventory.</p>
-        </div>
-        <div class="app-links">
-          <a href="expiryvault-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.expiryvault.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 4. FleetDVIR -->
-      <div class="app-card" data-cat="saas">
-        <div>
-          <div class="app-top">
-            <img src="icons/fleetdvir.png" alt="FleetDVIR" class="app-icon">
-            <div>
-              <span class="cat-tag tag-saas">DOT &amp; FMCSA Trucking</span>
-              <h3 class="app-title">FleetDVIR: DOT Pre-Trip Truck</h3>
+              <span class="cat-tag tag-saas">Trucking</span>
+              <h3 class="app-title">FleetDVIR: Pre-Trip Inspection</h3>
               <span class="app-pkg">com.fleetdvir.nexus</span>
             </div>
           </div>
-          <p class="app-desc">FMCSA 49 CFR 396.11 commercial vehicle pre-trip and post-trip inspection checklist with digital mechanic sign-off.</p>
+          <p class="app-desc">Pre-trip truck inspection checklist, defect log and DVIR report. Works offline.</p>
         </div>
         <div class="app-links">
-          <a href="fleetdvir.html" style="color: var(--cyan); font-weight: 700;">Features &rarr;</a>
+          <a href="fleetdvir.html" style="color: var(--cyan); font-weight: 700;">Details &rarr;</a>
           <a href="fleetdvir-privacy.html">Privacy</a>
           <a href="https://play.google.com/store/apps/details?id=com.fleetdvir.nexus" class="play-link">Google Play</a>
         </div>
       </div>
-
-      <!-- 5. JobProof -->
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <img src="icons/jobproof.png" alt="JobProof" class="app-icon">
+            <img src="icons/jobproof.png" alt="Jobproof icon" class="app-icon">
             <div>
-              <span class="cat-tag tag-saas">Contractor Operations</span>
+              <span class="cat-tag tag-saas">Contractors</span>
               <h3 class="app-title">JobProof: Field GPS &amp; Quote</h3>
               <span class="app-pkg">com.jobproof.nexus</span>
             </div>
           </div>
-          <p class="app-desc">Timestamped GPS photo evidence, before/after work verification, and instant client PDF estimate generator.</p>
+          <p class="app-desc">GPS and time-stamped jobsite photos, markups and PDF quotes for contractors.</p>
         </div>
         <div class="app-links">
-          <a href="jobproof.html" style="color: var(--cyan); font-weight: 700;">Features &rarr;</a>
+          <a href="jobproof.html" style="color: var(--cyan); font-weight: 700;">Details &rarr;</a>
           <a href="jobproof-privacy.html">Privacy</a>
           <a href="https://play.google.com/store/apps/details?id=com.jobproof.nexus" class="play-link">Google Play</a>
         </div>
       </div>
-
-      <!-- 6. TapHook -->
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <img src="icons/taphook.png" alt="TapHook" class="app-icon">
+            <img src="icons/lienshield.png" alt="Lienshield icon" class="app-icon">
             <div>
-              <span class="cat-tag tag-saas">IoT &amp; Automation</span>
-              <h3 class="app-title">TapHook: NFC Webhook Trigger</h3>
-              <span class="app-pkg">com.taphook.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Industrial NFC tag reader/writer that executes custom HTTP webhooks, REST payloads, and local automation routines.</p>
-        </div>
-        <div class="app-links">
-          <a href="taphook-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.taphook.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 7. ToolVault -->
-      <div class="app-card" data-cat="saas">
-        <div>
-          <div class="app-top">
-            <img src="icons/toolvault.png" alt="ToolVault" class="app-icon">
-            <div>
-              <span class="cat-tag tag-saas">Equipment Custody</span>
-              <h3 class="app-title">ToolVault: Jobsite Tool Log</h3>
-              <span class="app-pkg">com.toolvault.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Heavy equipment check-in/check-out registry, serial number custody tracker, and calibration maintenance log.</p>
-        </div>
-        <div class="app-links">
-          <a href="toolvault-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.toolvault.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 8. SiteSnap -->
-      <div class="app-card" data-cat="saas">
-        <div>
-          <div class="app-top">
-            <img src="icons/sitesnap.png" alt="SiteSnap" class="app-icon">
-            <div>
-              <span class="cat-tag tag-saas">Construction &amp; OSHA</span>
-              <h3 class="app-title">SiteSnap: Daily Log &amp; OSHA</h3>
-              <span class="app-pkg">com.sitesnap.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Daily construction superintendent field reports, subcontractor headcount logs, and OSHA safety audit documentation.</p>
-        </div>
-        <div class="app-links">
-          <a href="sitesnap-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.sitesnap.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 9. LienShield -->
-      <div class="app-card" data-cat="saas">
-        <div>
-          <div class="app-top">
-            <img src="icons/lienshield.png" alt="LienShield" class="app-icon">
-            <div>
-              <span class="cat-tag tag-saas">Construction Legal Tech</span>
+              <span class="cat-tag tag-saas">Construction</span>
               <h3 class="app-title">LienShield: Mechanics Lien Log</h3>
               <span class="app-pkg">com.lienshield.nexus</span>
             </div>
           </div>
-          <p class="app-desc">50-state statutory preliminary notice calculator, mechanics lien deadline radar, and conditional/unconditional waiver generator.</p>
+          <p class="app-desc">Track preliminary notice and lien deadlines and fill notice and waiver drafts.</p>
         </div>
         <div class="app-links">
-          <a href="lienshield-privacy.html">Privacy Policy &rarr;</a>
+          <a href="lienshield-privacy.html">Privacy</a>
           <a href="https://play.google.com/store/apps/details?id=com.lienshield.nexus" class="play-link">Google Play</a>
         </div>
       </div>
-
-      <!-- 10. FlowTest Pro -->
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <img src="icons/flowtest.png" alt="FlowTest" class="app-icon">
+            <img src="icons/toolvault.png" alt="Toolvault icon" class="app-icon">
             <div>
-              <span class="cat-tag tag-saas">Water &amp; Cross-Connection</span>
-              <h3 class="app-title">FlowTest Pro: Backflow Tester</h3>
-              <span class="app-pkg">com.flowtest.nexus</span>
+              <span class="cat-tag tag-saas">Equipment</span>
+              <h3 class="app-title">ToolVault: Jobsite Tool Log</h3>
+              <span class="app-pkg">com.toolvault.nexus</span>
             </div>
           </div>
-          <p class="app-desc">Digital differential pressure workbench and municipal certification generator for RPZ, DCVA, and PVB backflow assemblies.</p>
+          <p class="app-desc">Track jobsite tools, who has them, signed check-outs and service history.</p>
         </div>
         <div class="app-links">
-          <a href="flowtest-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.flowtest.nexus" class="play-link">Google Play</a>
+          <a href="toolvault-privacy.html">Privacy</a>
+          <a href="https://play.google.com/store/apps/details?id=com.toolvault.nexus" class="play-link">Google Play</a>
         </div>
       </div>
-
-      <!-- 11. DeciSafe -->
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <img src="icons/decisafe.png" alt="DeciSafe" class="app-icon">
+            <img src="icons/expiryvault.png" alt="Expiryvault icon" class="app-icon">
             <div>
-              <span class="cat-tag tag-saas">Industrial Hygiene</span>
-              <h3 class="app-title">DeciSafe: OSHA Noise Dosimeter</h3>
-              <span class="app-pkg">com.decisafe.nexus</span>
+              <span class="cat-tag tag-saas">Kitchens &amp; Production</span>
+              <h3 class="app-title">ExpiryVault: FIFO Batch Track</h3>
+              <span class="app-pkg">com.expiryvault.nexus</span>
             </div>
           </div>
-          <p class="app-desc">OSHA 29 CFR 1910.95 &amp; NIOSH 8-hour TWA acoustic noise dose calculator and workplace hearing conservation logger.</p>
+          <p class="app-desc">Track ingredient lots, expiry dates and which lots went into each batch.</p>
         </div>
         <div class="app-links">
-          <a href="decisafe-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.decisafe.nexus" class="play-link">Google Play</a>
+          <a href="expiryvault-privacy.html">Privacy</a>
+          <a href="https://play.google.com/store/apps/details?id=com.expiryvault.nexus" class="play-link">Google Play</a>
         </div>
       </div>
-
-      <!-- 12. LeakCheck -->
       <div class="app-card" data-cat="saas">
         <div>
           <div class="app-top">
-            <img src="icons/leakcheck.png" alt="LeakCheck" class="app-icon">
+            <img src="icons/certpulse.png" alt="Certpulse icon" class="app-icon">
             <div>
-              <span class="cat-tag tag-saas">HVACR &amp; EPA 608</span>
-              <h3 class="app-title">LeakCheck: EPA 608 Refrigerant</h3>
-              <span class="app-pkg">com.leakcheck.nexus</span>
+              <span class="cat-tag tag-saas">Healthcare</span>
+              <h3 class="app-title">CertPulse: CE &amp; Nurse Tracker</h3>
+              <span class="app-pkg">com.certpulse.nexus</span>
             </div>
           </div>
-          <p class="app-desc">Commercial HVACR refrigerant cylinder ledger, EPA Section 608 annualized leak rate calculator, and recovery compliance vault.</p>
+          <p class="app-desc">Track nursing licenses, certifications and CE hours, with renewal reminders.</p>
         </div>
         <div class="app-links">
-          <a href="leakcheck.html" style="color: var(--cyan); font-weight: 700;">Features &rarr;</a>
-          <a href="leakcheck-privacy.html">Privacy</a>
-          <a href="https://play.google.com/store/apps/details?id=com.leakcheck.nexus" class="play-link">Google Play</a>
+          <a href="certpulse-privacy.html">Privacy</a>
+          <a href="https://play.google.com/store/apps/details?id=com.certpulse.nexus" class="play-link">Google Play</a>
         </div>
       </div>
 
-      <!-- 13. Split -->
-      <div class="app-card" data-cat="life">
+      <div class="app-card" data-cat="game" id="games">
         <div>
           <div class="app-top">
-            <img src="icons/split.png" alt="Split" class="app-icon">
+            <img src="icons/kitbot.png" alt="Instant Arcade icon" class="app-icon">
             <div>
-              <span class="cat-tag tag-life">Personal Finance</span>
-              <h3 class="app-title">Split: Group Expense Sharing</h3>
-              <span class="app-pkg">com.split.nexus</span>
+              <span class="cat-tag tag-game">Free browser games</span>
+              <h3 class="app-title">Instant Arcade</h3>
+              <span class="app-pkg">digitalnexus.studio/play</span>
             </div>
           </div>
-          <p class="app-desc">Smart bill splitting, multi-currency group trip ledger, and instant debt simplification for roommates and travelers.</p>
+          <p class="app-desc">Our 3D arcade and robot games, playable in your browser with nothing to install.</p>
         </div>
         <div class="app-links">
-          <a href="split-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.split.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 14. Stake -->
-      <div class="app-card" data-cat="life">
-        <div>
-          <div class="app-top">
-            <img src="icons/stake.png" alt="Stake" class="app-icon">
-            <div>
-              <span class="cat-tag tag-life">Habit &amp; Performance</span>
-              <h3 class="app-title">Stake: Habit &amp; Goal Tracker</h3>
-              <span class="app-pkg">com.stake.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">High-accountability daily habit streaks, milestone analytics, and behavioral discipline routines.</p>
-        </div>
-        <div class="app-links">
-          <a href="stake-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.stake.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 15. Firasah -->
-      <div class="app-card" data-cat="heritage">
-        <div>
-          <div class="app-top">
-            <img src="icons/firasah.png" alt="Firasah" class="app-icon">
-            <div>
-              <span class="cat-tag tag-heritage">Psychology &amp; Heritage</span>
-              <h3 class="app-title">Firasah: Character &amp; Face Reading</h3>
-              <span class="app-pkg">com.firasah.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Comprehensive Arabic &amp; multilingual guide to classical physiognomy (Al-Firasah), body language, and micro-expression analysis.</p>
-        </div>
-        <div class="app-links">
-          <a href="firasah-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.firasah.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 16. Ilm Al-Jafr -->
-      <div class="app-card" data-cat="heritage">
-        <div>
-          <div class="app-top">
-            <img src="icons/aljafr.png" alt="Ilm Al-Jafr" class="app-icon">
-            <div>
-              <span class="cat-tag tag-heritage">Classical Manuscripts</span>
-              <h3 class="app-title">Ilm Al-Jafr: Numerology &amp; Letters</h3>
-              <span class="app-pkg">com.aljafr.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Offline digital library, indexed tables, and historical literary commentary on classical Arabic Abjad letter numerology.</p>
-        </div>
-        <div class="app-links">
-          <a href="aljafr-privacy.html">Privacy Policy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.aljafr.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 17. Assemble: Robot Lab -->
-      <div class="app-card" data-cat="game">
-        <div>
-          <div class="app-top">
-            <img src="icons/robotlab.png" alt="Robot Lab" class="app-icon">
-            <div>
-              <span class="cat-tag tag-game">3D STEM Simulation</span>
-              <h3 class="app-title">Assemble: Robot Lab</h3>
-              <span class="app-pkg">com.robotlab.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Interactive 3D mechanical engineering puzzle game where players assemble, weld, and test custom robotics.</p>
-        </div>
-        <div class="app-links">
-          <a href="play/assemble-robot-lab/" class="play-link" style="color: var(--cyan) !important; font-weight: 700;">&#9889; Play Instant</a>
-          <a href="robotlab-privacy.html">Privacy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.robotlab.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 18. Bop & Bolt -->
-      <div class="app-card" data-cat="game">
-        <div>
-          <div class="app-top">
-            <img src="icons/bopbolt.png" alt="Bop & Bolt" class="app-icon">
-            <div>
-              <span class="cat-tag tag-game">Arcade Platformer</span>
-              <h3 class="app-title">Bop &amp; Bolt</h3>
-              <span class="app-pkg">com.bopbolt.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Fast-paced robot companion action platformer featuring kinetic obstacle courses and precision physics puzzles.</p>
-        </div>
-        <div class="app-links">
-          <a href="play/bop-and-bolt/" class="play-link" style="color: var(--cyan) !important; font-weight: 700;">&#9889; Play Instant</a>
-          <a href="bopbolt-privacy.html">Privacy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.bopbolt.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 19. Idle Core Miner -->
-      <div class="app-card" data-cat="game">
-        <div>
-          <div class="app-top">
-            <img src="icons/idlecoreminer.png" alt="Idle Core Miner" class="app-icon">
-            <div>
-              <span class="cat-tag tag-game">Sci-Fi Strategy</span>
-              <h3 class="app-title">Idle Core Miner</h3>
-              <span class="app-pkg">com.idlecoreminer.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Deep-crust planetary drilling simulation with automated extraction rigs, thermal upgrades, and rare mineral refining.</p>
-        </div>
-        <div class="app-links">
-          <a href="play/idle-core-miner/" class="play-link" style="color: var(--cyan) !important; font-weight: 700;">&#9889; Play Instant</a>
-          <a href="idlecoreminer-privacy.html">Privacy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.idlecoreminer.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 20. Kitbot: Robot Transform 3D -->
-      <div class="app-card" data-cat="game">
-        <div>
-          <div class="app-top">
-            <img src="icons/kitbot.png" alt="Kitbot" class="app-icon">
-            <div>
-              <span class="cat-tag tag-game">3D Mecha Action</span>
-              <h3 class="app-title">Kitbot: Robot Transform 3D</h3>
-              <span class="app-pkg">com.kitbot.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">3D transforming mecha sandbox featuring modular chassis upgrades, vehicle morphing, and arena time trials.</p>
-        </div>
-        <div class="app-links">
-          <a href="play/kitbot/" class="play-link" style="color: var(--cyan) !important; font-weight: 700;">&#9889; Play Instant</a>
-          <a href="kitbot-privacy.html">Privacy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.kitbot.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 21. Rock Smasher 3D -->
-      <div class="app-card" data-cat="game">
-        <div>
-          <div class="app-top">
-            <img src="icons/rocksmasher.png" alt="Rock Smasher 3D" class="app-icon">
-            <div>
-              <span class="cat-tag tag-game">3D Physics Arcade</span>
-              <h3 class="app-title">Rock Smasher 3D</h3>
-              <span class="app-pkg">com.rocksmasher.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Satisfying voxel and crystal demolition physics simulator with heavy hydraulic crushers and ore collection.</p>
-        </div>
-        <div class="app-links">
-          <a href="play/rock-smasher-3d/" class="play-link" style="color: var(--cyan) !important; font-weight: 700;">&#9889; Play Instant</a>
-          <a href="rocksmasher-privacy.html">Privacy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.rocksmasher.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 22. Rock Smasher: Expedition -->
-      <div class="app-card" data-cat="game">
-        <div>
-          <div class="app-top">
-            <img src="icons/rockexpedition.png" alt="Rock Smasher Expedition" class="app-icon">
-            <div>
-              <span class="cat-tag tag-game">Adventure Mining</span>
-              <h3 class="app-title">Rock Smasher: Expedition</h3>
-              <span class="app-pkg">com.rockexpedition.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">Open-zone geological expedition game across volcanic caverns, glacier quarries, and ancient crystal ruins.</p>
-        </div>
-        <div class="app-links">
-          <a href="play/rock-smasher-expedition/" class="play-link" style="color: var(--cyan) !important; font-weight: 700;">&#9889; Play Instant</a>
-          <a href="rockexpedition-privacy.html">Privacy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.rockexpedition.nexus" class="play-link">Google Play</a>
-        </div>
-      </div>
-
-      <!-- 23. Smash Rocks Classic -->
-      <div class="app-card" data-cat="game">
-        <div>
-          <div class="app-top">
-            <img src="icons/smashrocks.png" alt="Smash Rocks Classic" class="app-icon">
-            <div>
-              <span class="cat-tag tag-game">Retro Arcade</span>
-              <h3 class="app-title">Smash Rocks Classic</h3>
-              <span class="app-pkg">com.smashrocks.nexus</span>
-            </div>
-          </div>
-          <p class="app-desc">High-score asteroid and boulder breaker arcade challenge with precision ricochet physics and power-up combos.</p>
-        </div>
-        <div class="app-links">
-          <a href="play/smash-rocks-classic/" class="play-link" style="color: var(--cyan) !important; font-weight: 700;">&#9889; Play Instant</a>
-          <a href="smashrocks-privacy.html">Privacy &rarr;</a>
-          <a href="https://play.google.com/store/apps/details?id=com.smashrocks.nexus" class="play-link">Google Play</a>
+          <a href="play/" class="play-link" style="color: var(--cyan) !important; font-weight: 700;">&#9889; Play now</a>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- Legal & Compliance Center -->
+  <!-- Privacy & terms -->
   <section id="compliance" class="section">
     <div class="legal-box">
-      <span class="eyebrow" style="margin-bottom: 12px;">Google Play User Data &amp; Legal Compliance</span>
-      <h2 style="margin: 0 0 8px; font-size: 26px;">Official Privacy &amp; Governance Frameworks</h2>
+      <span class="eyebrow" style="margin-bottom: 12px;">Privacy &amp; terms</span>
+      <h2 style="margin: 0 0 8px; font-size: 26px;">How we handle your data</h2>
       <p style="margin: 0; color: var(--muted); max-width: 760px;">
-        All Digital NEXUS software titles adhere strictly to Google Play Developer Program Policies, GDPR data minimization standards, and offline-first local storage architecture.
+        Every app has its own privacy policy, linked from its card above and from its Google Play page. Questions: <a href="mailto:digital.nexus.studios2@gmail.com">digital.nexus.studios2@gmail.com</a>.
       </p>
 
       <div class="legal-grid">
         <a href="privacy.html" class="legal-card">
-          <span class="cat-tag tag-saas">Master Policy</span>
-          <h3>Universal Privacy Policy</h3>
-          <p>Comprehensive data protection, zero-cloud telemetry, and device permission disclosures across all Digital NEXUS apps.</p>
+          <span class="cat-tag tag-saas">All apps</span>
+          <h3>Privacy policy</h3>
+          <p>Our general privacy policy, with links to each app's own policy.</p>
         </a>
 
         <a href="fleetdvir-privacy.html" class="legal-card">
-          <span class="cat-tag tag-heritage">Commercial Fleet Compliance</span>
-          <h3>FleetDVIR DOT Privacy</h3>
-          <p>Dedicated privacy disclosures for commercial vehicle pre-trip inspections and FMCSA safety logs.</p>
+          <span class="cat-tag tag-heritage">FleetDVIR</span>
+          <h3>FleetDVIR privacy policy</h3>
+          <p>What the pre-trip inspection app stores on your phone and what it shares.</p>
         </a>
 
         <a href="terms.html" class="legal-card">
-          <span class="cat-tag tag-life">End-User License</span>
-          <h3>Terms of Service (EULA)</h3>
-          <p>Software licensing, Google Play Billing subscription terms, and warranty disclaimers for Digital NEXUS titles.</p>
+          <span class="cat-tag tag-life">All apps</span>
+          <h3>Terms of service</h3>
+          <p>Licence terms, Google Play purchases and disclaimers for Digital NEXUS apps.</p>
         </a>
       </div>
     </div>
@@ -1204,15 +905,15 @@
     <img src="brand/mascot_web_360.jpg" alt="Digital NEXUS robot mascot" width="96" height="96" loading="lazy"
          style="width:96px;height:96px;flex:0 0 auto;-webkit-mask-image:radial-gradient(circle at 50% 48%,#000 52%,transparent 71%);mask-image:radial-gradient(circle at 50% 48%,#000 52%,transparent 71%);">
     <div>
-      <strong>Digital NEXUS</strong> &bull; Official Mobile Software &amp; Gaming Studio<br>
+      <strong>Digital NEXUS</strong> &bull; Android apps &amp; browser games<br>
       <span>&copy; 2026 Digital NEXUS. All rights reserved.</span>
     </div>
     <div class="footer-links">
       <a href="links.html">Mobile App Hub</a>
-      <a href="jobproof.html">JobProof Pro</a>
-      <a href="fleetdvir.html">FleetDVIR Pro</a>
-      <a href="leakcheck.html">LeakCheck Pro</a>
-      <a href="privacy.html">Master Privacy Policy</a>
+      <a href="taphook.html">TapHook</a>
+      <a href="fleetdvir.html">FleetDVIR</a>
+      <a href="jobproof.html">JobProof</a>
+      <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Service</a>
       <a href="https://www.youtube.com/@DigitalNexusApps" target="_blank" rel="noopener">YouTube Channel</a>
       <a href="mailto:digital.nexus.studios2@gmail.com">digital.nexus.studios2@gmail.com</a>
