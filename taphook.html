@@ -84,7 +84,19 @@ footer a{margin:0 8px}
 <div class="card"><h3>How it works</h3><ul><li>Put a cheap NFC tag where you need a trigger: a door, a machine, a desk, a toolbox.</li><li>In TapHook, link the tag to a request: URL, method (GET, POST, PUT or PATCH), headers and body.</li><li>Tap the tag. TapHook sends the request and shows the result.</li></ul></div>
 <div class="card"><h3>What you can send</h3><ul><li>Values filled in at each tap: <code>{{tag_uid}}</code>, <code>{{timestamp}}</code>, <code>{{iso_timestamp}}</code>, <code>{{device_id}}</code> and, if you turn it on for a trigger, <code>{{latitude}}</code> and <code>{{longitude}}</code>.</li><li>Custom headers, for example a Bearer token or an API key for your endpoint.</li><li>A JSON or text body built from your template.</li></ul></div>
 <div class="card"><h3>See what happened</h3><ul><li>A sound and a vibration tell you whether the request worked.</li><li>A log of each tap: HTTP status code, response time, what was sent and the start of the reply.</li></ul></div>
-<div class="card"><h3>Free and Pro</h3><ul><li>Free: up to 5 triggers and the last 50 log entries.</li><li>TapHook Pro, a one-time in-app purchase through Google Play, adds unlimited triggers, up to 1,000 log entries and CSV export. No subscription. Pro arrives with version 1.1.</li></ul></div>
+<div class="card"><h3>Free and Pro</h3><ul><li>Free: up to 5 triggers and the last 50 log entries.</li><li>TapHook Pro, a one-time €3.99 in-app purchase through Google Play (no subscription), adds unlimited triggers, up to 1,000 log entries and CSV export. Available live in version 1.1.2.</li></ul></div>
+    </div>
+  </section>
+
+  <section id="guide">
+    <h2>Home Assistant Webhook in 2 Minutes</h2>
+    <div class="card" style="margin-bottom: 16px;">
+      <ol style="padding-left: 20px; color: var(--muted); display: flex; flex-direction: column; gap: 10px;">
+        <li><strong style="color: var(--text);">1. Create your Webhook in Home Assistant:</strong> Go to <em>Settings → Automations & Scenes → Create Automation</em>. Add a trigger, choose <em>Webhook</em>, and copy the Webhook ID or full URL (e.g. <code>https://your-ha-instance/api/webhook/tag_front_door</code>).</li>
+        <li><strong style="color: var(--text);">2. Tap your NFC Tag in TapHook:</strong> Open TapHook on your Android phone, tap <em>Add Trigger</em>, and hold your NFC tag to the back of the phone. TapHook instantly captures the hardware tag UID.</li>
+        <li><strong style="color: var(--text);">3. Paste the URL & Save:</strong> Set method to <code>POST</code>, paste your Home Assistant webhook URL, and optionally customize the JSON payload with variables like <code>{{tag_uid}}</code> and <code>{{timestamp}}</code>.</li>
+        <li><strong style="color: var(--text);">4. Tap & Automate:</strong> Tap your physical tag anytime. TapHook fires the webhook instantly in the background with immediate haptic and audio feedback.</li>
+      </ol>
     </div>
   </section>
   <section>
