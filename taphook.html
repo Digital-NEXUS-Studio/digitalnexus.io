@@ -93,9 +93,9 @@ footer a{margin:0 8px}
     <div class="card" style="margin-bottom: 16px;">
       <ol style="padding-left: 20px; color: var(--muted); display: flex; flex-direction: column; gap: 10px;">
         <li><strong style="color: var(--text);">1. Create your Webhook in Home Assistant:</strong> Go to <em>Settings → Automations & Scenes → Create Automation</em>. Add a trigger, choose <em>Webhook</em>, and copy the Webhook ID or full URL (e.g. <code>https://your-ha-instance/api/webhook/tag_front_door</code>).</li>
-        <li><strong style="color: var(--text);">2. Tap your NFC Tag in TapHook:</strong> Open TapHook on your Android phone, tap <em>Add Trigger</em>, and hold your NFC tag to the back of the phone. TapHook instantly captures the hardware tag UID.</li>
+        <li><strong style="color: var(--text);">2. Tap your NFC Tag in TapHook:</strong> Open TapHook on your Android phone, tap <em>New Trigger</em>, and hold your NFC tag to the back of the phone. TapHook instantly captures the hardware tag UID.</li>
         <li><strong style="color: var(--text);">3. Paste the URL & Save:</strong> Set method to <code>POST</code>, paste your Home Assistant webhook URL, and optionally customize the JSON payload with variables like <code>{{tag_uid}}</code> and <code>{{timestamp}}</code>.</li>
-        <li><strong style="color: var(--text);">4. Tap & Automate:</strong> Tap your physical tag anytime. TapHook fires the webhook instantly in the background with immediate haptic and audio feedback.</li>
+        <li><strong style="color: var(--text);">4. Tap & Automate:</strong> Tap your physical tag anytime to open TapHook and fire the webhook with immediate haptic and audio feedback.</li>
       </ol>
     </div>
   </section>
