@@ -34,16 +34,6 @@
     h2 { color: var(--accent); margin-top: 32px; font-size: 20px; }
     p, li { color: var(--text); font-size: 15px; }
     ul { padding-left: 20px; }
-    .badge {
-      display: inline-block;
-      background: #0284c7;
-      color: #fff;
-      font-size: 12px;
-      font-weight: bold;
-      padding: 4px 10px;
-      border-radius: 20px;
-      margin-bottom: 16px;
-    }
     .footer {
       margin-top: 40px;
       padding-top: 20px;
@@ -57,39 +47,39 @@
 </head>
 <body>
   <div class="container">
-    <h1>Split: Group Expense Sharing Privacy Policy</h1>
-    <p><strong>Effective Date:</strong> October 17, 2026<br>
+    <h1>Split: Group Expense Sharing — Privacy Policy</h1>
+    <p><strong>Effective Date:</strong> November 11, 2026<br>
     <strong>Developer Brand:</strong> Digital NEXUS (digitalnexus.studio)<br>
     <strong>Package Identifier:</strong> <code>com.split.nexus</code></p>
 
-    <h2>1. Introduction & Overview</h2>
-    <p>This Privacy Policy governs the use of <strong>Split: Group Expense Sharing</strong>, developed and distributed by <strong>Digital NEXUS</strong>. We are committed to transparency and to protecting your personal data.</p>
+    <h2>1. Summary</h2>
+    <p><strong>Split: Group Expense Sharing</strong> is an offline-first group expense splitter and receipt itemizer. Groups, expenses, balances, settlements, and payment handles are stored locally on your device. Split contains no ads, no address-book harvesting, and no Google Play Billing or paywalls.</p>
 
-    <h2>2. Data Collection, Transmission & Usage</h2>
-    <p>Split operates on an offline-first architecture. All expense calculations, bill divisions, currency conversions, and transaction histories are stored locally on your device in secure database storage. We do not transmit or store your banking credentials, payment card numbers, or personal financial accounts.</p>
+    <h2>2. Data Stored Locally</h2>
+    <p>Member names you enter, group balances, itemized receipt line items, settlements, and payment links/QR strings remain in private on-device storage (AsyncStorage and Expo SecureStore). Split does not upload your phone contacts and never asks for bank card numbers.</p>
 
-    <h2>3. Permissions & Device Access</h2>
-    <p>Split may request camera or storage access solely for scanning paper receipts and bills at your explicit direction. Receipt images are processed locally on-device.</p>
-
-    <h2>4. Third-Party Services & Libraries</h2>
-    <p>Optional cloud synchronization utilizes encrypted endpoints. Google Play In-App Billing is used for premium tier upgrades.</p>
-
-    <h2>5. Data Retention, Security & Deletion</h2>
-    <p>We implement robust technical encryption standards (HTTPS/TLS) for any data transmitted over networks. Offline data is stored securely in sandbox app storage on your device. You can ask us at any time to delete any support emails you have sent us, by writing to the address below.</p>
-
-    <h2>6. Children's Privacy</h2>
-    <p>This application is intended for adult and professional users (age 18 and older) and does not knowingly collect personally identifiable information from children under 13.</p>
-
-    <h2>7. Developer Contact & Legal Entity</h2>
-    <p>If you have any questions, feedback, or data privacy requests, please contact us:</p>
+    <h2>3. Permissions</h2>
     <ul>
-      <li><strong>Developer Organization:</strong> Digital NEXUS</li>
-      <li><strong>Website:</strong> <a href="https://digital-nexus.pages.dev">https://digital-nexus.pages.dev</a></li>
-      <li><strong>Privacy & Support Email:</strong> <a href="mailto:digital.nexus.studios2@gmail.com">digital.nexus.studios2@gmail.com</a></li>
+      <li><strong>Camera &amp; Photo Library:</strong> Requested contextually only when you scan a payment/join QR code or snap/select a receipt image.</li>
+      <li><strong>Internet &amp; Network State:</strong> Used only when you choose optional cloud sync (via Supabase when backend keys are configured) or when you submit a receipt photo using your own optional Google Gemini API key.</li>
+      <li><strong>Zero Notification or Overlay Permissions:</strong> Split does not declare push-notification, contacts, or overlay permissions.</li>
+    </ul>
+
+    <h2>4. Optional AI OCR &amp; Cloud Sync</h2>
+    <p>If you manually itemize a receipt, nothing leaves your phone. If you enter your own Google Gemini API key (saved locally in encrypted SecureStore) and run AI receipt extraction, the receipt image is sent over HTTPS directly to Google's Gemini API under your key. Optional group synchronization via Supabase uses encrypted HTTPS when enabled.</p>
+
+    <h2>5. Payments</h2>
+    <p>Split is 100% free and includes zero Google Play Billing library, subscriptions, or paid add-ons.</p>
+
+    <h2>6. Contact</h2>
+    <ul>
+      <li><strong>Developer:</strong> Digital NEXUS</li>
+      <li><strong>Website:</strong> <a href="https://digitalnexus.studio">https://digitalnexus.studio</a></li>
+      <li><strong>Email:</strong> <a href="mailto:digital.nexus.studios2@gmail.com">digital.nexus.studios2@gmail.com</a></li>
     </ul>
 
     <div class="footer">
-      <div>&copy; 2026 Digital NEXUS (digitalnexus.studio). All rights reserved. &bull; <a href="index.html">Back to Legal Portal</a></div>
+      <div>&copy; 2026 Digital NEXUS (digitalnexus.studio). All rights reserved. &bull; <a href="privacy.html">All App Policies</a> &bull; <a href="index.html">Back to Digital NEXUS</a></div>
     </div>
   </div>
 </body>

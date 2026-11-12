@@ -58,7 +58,7 @@
 <body>
   <div class="container">
     <h1>DeciSafe: Privacy Policy</h1>
-    <p><strong>Effective date:</strong> November 9, 2026<br>
+    <p><strong>Effective date:</strong> November 11, 2026<br>
     <strong>Developer:</strong> Digital NEXUS (digitalnexus.studio)<br>
     <strong>Package:</strong> <code>com.decisafe.nexus</code></p>
 
@@ -70,10 +70,10 @@
 
     <h2>3. Microphone and other permissions</h2>
     <p>The app measures sound with your phone's microphone. It asks for the microphone permission when you first tap Start microphone or Start measuring, and uses the microphone only while the meter is on. The sound is analysed on your phone in real time, in memory: only the resulting numbers (sound levels in dB, noise dose and peak) are shown and, for shifts you save, stored. No audio is recorded, saved or sent, and no audio leaves your phone. If you refuse the permission, the app cannot measure and tells you how to allow it in Android settings.</p>
-    <p>The app asks for no other permission that needs your approval: no camera, location, contacts or files. It also declares four standard Android permissions that need no approval: audio settings, internet, network state and Google Play billing. While the dosimeter is measuring, the app keeps the screen on, because Android does not let apps use the microphone in the background; this needs no permission.</p>
+    <p>The app asks for no other permission that needs your approval: no camera, location, contacts or files. It declares standard Android audio-settings permission alongside microphone measurement access (no <code>INTERNET</code> or <code>ACCESS_NETWORK_STATE</code> permissions and no Google Play Billing library). While the dosimeter is measuring, the app keeps the screen on, because Android does not let apps use the microphone in the background; this needs no permission.</p>
 
     <h2>4. Internet use</h2>
-    <p>The app's features work offline, and it does not send anything you enter over the internet. When it opens, it loads its fonts from Google Fonts. Like any web request, this lets Google see your device's IP address; it contains nothing you have entered. The app also contains the Google Play Billing library, which asks the Google Play app on your phone about earlier purchases. The app sells nothing, and no payment can be made in it.</p>
+    <p>From the latest offline build, the app's features and bundled typography work completely offline with zero network requests and zero billing libraries. (Earlier builds loaded fonts from Google Fonts and included the billing library without selling anything.)</p>
 
     <h2>5. Printing</h2>
     <p>If you tap Export / Print Shift Report, Android's print screen opens with your shift report. You choose a printer, or Save as PDF and where to save the file. That only happens when you do it, and the print service you choose is covered by its own privacy policy.</p>

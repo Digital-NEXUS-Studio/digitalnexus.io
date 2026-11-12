@@ -58,7 +58,7 @@
 <body>
   <div class="container">
     <h1>JobProof: Field GPS &amp; Quote: Privacy Policy</h1>
-    <p><strong>Effective date:</strong> November 9, 2026<br>
+    <p><strong>Effective date:</strong> November 11, 2026<br>
     <strong>Developer:</strong> Digital NEXUS (digitalnexus.studio)<br>
     <strong>Package:</strong> <code>com.jobproof.nexus</code></p>
 
@@ -69,10 +69,10 @@
     <p>Your projects: the client's name, phone, email and job address; job photos with the time, GPS coordinates, street address, compass heading and your notes and markings; and quote line items, prices and terms. This data is saved in the app's private storage on your device. The app never sends it to us; section 4 describes what does leave your phone.</p>
 
     <h2>3. Permissions</h2>
-    <ul><li><strong>Camera:</strong> to take job photos inside the app.</li><li><strong>Location:</strong> to stamp a photo with where it was taken, only while you use the app. The app does not track your location in the background.</li></ul><p>The app asks for both when it starts; you can refuse and still use the rest of the app. You can also add an existing photo with Android's file picker; the app only gets the photo you pick. The app does not use the microphone or your contacts.</p>
+    <ul><li><strong>Camera:</strong> to take job photos inside the app.</li><li><strong>Location:</strong> to stamp a photo with where it was taken, only while you use the app. The app does not track your location in the background.</li></ul><p>The app requests camera and location permissions contextually only when you open the in-app camera viewfinder—never on startup—and if location is denied or unavailable it records "Location unavailable" without inventing coordinates. You can refuse either permission and still use manual photo import and quotes. You can also add an existing photo with Android's file picker; the app only gets the photo you pick. The app does not use the microphone or your contacts.</p>
 
     <h2>4. Internet use</h2>
-    <p>To turn a photo's GPS coordinates into a street address, the app sends the latitude and longitude, and nothing else you entered, to OpenStreetMap's Nominatim service (nominatim.openstreetmap.org). That service is run by the OpenStreetMap Foundation under its own privacy policy and, like any web service, sees your device's IP address. Without a connection, the photo keeps its coordinates without a street address. When it opens, the app loads its fonts from Google Fonts. Like any web request, this lets Google see your device's IP address; it contains nothing you have entered. The app contains the Google Play Billing library, which talks to the Google Play app on your phone. The app takes no payments: nothing can be bought in it.</p>
+    <p>To turn a photo's GPS coordinates into a street address, the app sends the latitude and longitude, and nothing else you entered, to OpenStreetMap's Nominatim service (nominatim.openstreetmap.org). That service is run by the OpenStreetMap Foundation under its own privacy policy and, like any web service, sees your device's IP address. Without a connection, the photo keeps its coordinates without a street address. All fonts and UI assets run locally offline and the app contains no Google Play Billing library; nothing can be bought in it. (Earlier builds loaded fonts from Google Fonts and included the billing library without selling anything.)</p>
 
     <h2>5. Printing</h2>
     <p>If you print a quote or report, Android's print screen opens. You choose a printer, or Save as PDF and where to save the file. That only happens when you do it, and the print service you choose is covered by its own privacy policy.</p>
